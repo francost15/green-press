@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #f8fafc;
+  --color-bg-alt: #ffffff;
+  --color-card: rgba(255, 255, 255, 0.85);
+  --color-card-border: rgba(0, 0, 0, 0.08);
+  --color-accent-blue: #3b82f6;
+  --color-accent-purple: #7c3aed;
+  --color-accent-cyan: #06b6d4;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-text-tertiary: #94a3b8;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--color-accent-purple);
+  color: white;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* Print-friendly: Ctrl+P generates a clean PDF resume */
+@media print {
+  *,
+  *::before,
+  *::after {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    border-color: #ddd !important;
+  }
+
+  body {
+    font-size: 11pt;
+    line-height: 1.4;
+  }
+
+  nav,
+  footer,
+  .scroll-progress,
+  .no-print,
+  button[aria-label],
+  [data-remotion-player] {
+    display: none !important;
+  }
+
+  section {
+    page-break-inside: avoid;
+    padding: 1rem 0 !important;
+  }
+
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+
+  a {
+    text-decoration: underline !important;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #666 !important;
+  }
+
+  a[href^="#"]::after,
+  a[href^="javascript"]::after {
+    content: "";
+  }
+
+  .print-only {
+    display: block !important;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.print-only {
+  display: none;
+}
