@@ -66,20 +66,29 @@ export function Terminal() {
 
       case "skills":
         return [
-          t("AI & Visión:", "AI & Vision:") + "    Python, YOLO, OpenCV, TensorFlow, LangChain, Claude API",
+          t("AI & Visión:", "AI & Vision:") +
+            "    Python, YOLO, OpenCV, TensorFlow, LangChain, Claude API",
           t("Backend:", "Backend:") + "          FastAPI, NestJS, Node.js, PostgreSQL, Redis",
-          t("Frontend:", "Frontend:") + "         React, Next.js, TypeScript, React Native, Tailwind",
+          t("Frontend:", "Frontend:") +
+            "         React, Next.js, TypeScript, React Native, Tailwind",
           t("Infra:", "Infra:") + "            Docker, AWS, Linux, GitHub Actions, Vercel",
         ].join("\n");
 
       case "projects":
         return [
-          "1. PCB Visual Inspector     — " + t("Inspección automatizada con IA", "AI-powered automated inspection"),
-          "2. evArchitect AI           — " + t("Arquitectura enterprise con IA", "AI enterprise architecture"),
-          "3. AgriVision ML            — " + t("Detección de enfermedades agrícolas", "Crop disease detection"),
-          "4. Multi-Agent Support      — " + t("Sistema multi-agente de soporte", "Multi-agent support system"),
+          "1. PCB Visual Inspector     — " +
+            t("Inspección automatizada con IA", "AI-powered automated inspection"),
+          "2. evArchitect AI           — " +
+            t("Arquitectura enterprise con IA", "AI enterprise architecture"),
+          "3. AgriVision ML            — " +
+            t("Detección de enfermedades agrícolas", "Crop disease detection"),
+          "4. Multi-Agent Support      — " +
+            t("Sistema multi-agente de soporte", "Multi-agent support system"),
           "",
-          t("Visita la sección de proyectos para más detalles.", "Visit the projects section for more details."),
+          t(
+            "Visita la sección de proyectos para más detalles.",
+            "Visit the projects section for more details.",
+          ),
         ].join("\n");
 
       case "contact":
@@ -112,10 +121,7 @@ export function Terminal() {
       return;
     }
 
-    const newLines: TerminalLine[] = [
-      ...lines,
-      { type: "input", content: PROMPT + input },
-    ];
+    const newLines: TerminalLine[] = [...lines, { type: "input", content: PROMPT + input }];
 
     if (output) {
       newLines.push({ type: "output", content: output });
@@ -183,10 +189,7 @@ export function Terminal() {
           </div>
 
           <p className="mt-4 text-center text-sm text-text-tertiary">
-            {t(
-              "Escribe un comando y presiona Enter",
-              "Type a command and press Enter",
-            )}
+            {t("Escribe un comando y presiona Enter", "Type a command and press Enter")}
           </p>
         </motion.div>
       </div>

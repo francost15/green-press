@@ -3,6 +3,7 @@
 @theme {
   --color-bg: #f8fafc;
   --color-bg-alt: #ffffff;
+  --color-bg-secondary: #f1f5f9;
   --color-card: rgba(255, 255, 255, 0.85);
   --color-card-border: rgba(0, 0, 0, 0.08);
   --color-accent-blue: #3b82f6;
@@ -11,8 +12,42 @@
   --color-text-primary: #0f172a;
   --color-text-secondary: #64748b;
   --color-text-tertiary: #94a3b8;
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --color-font-sans: "Inter", system-ui, sans-serif;
+  --color-font-mono: "JetBrains Mono", monospace;
+}
+
+:root {
+  color-scheme: light dark;
+}
+
+[data-theme="dark"] {
+  --color-bg: #0f172a;
+  --color-bg-alt: #1e293b;
+  --color-bg-secondary: #1e293b;
+  --color-card: rgba(30, 41, 59, 0.9);
+  --color-card-border: rgba(255, 255, 255, 0.1);
+  --color-accent-blue: #60a5fa;
+  --color-accent-purple: #a78bfa;
+  --color-accent-cyan: #22d3ee;
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #cbd5e1;
+  --color-text-tertiary: #94a3b8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg: #0f172a;
+    --color-bg-alt: #1e293b;
+    --color-bg-secondary: #1e293b;
+    --color-card: rgba(30, 41, 59, 0.9);
+    --color-card-border: rgba(255, 255, 255, 0.1);
+    --color-accent-blue: #60a5fa;
+    --color-accent-purple: #a78bfa;
+    --color-accent-cyan: #22d3ee;
+    --color-text-primary: #f1f5f9;
+    --color-text-secondary: #cbd5e1;
+    --color-text-tertiary: #94a3b8;
+  }
 }
 
 html {
@@ -23,9 +58,18 @@ body {
   margin: 0;
   background-color: var(--color-bg);
   color: var(--color-text-primary);
-  font-family: var(--font-sans);
+  font-family: var(--color-font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.theme-transition,
+.theme-transition * {
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    box-shadow 150ms ease !important;
 }
 
 ::selection {
@@ -42,15 +86,14 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
+  background: color-mix(in srgb, var(--color-text-tertiary) 50%, transparent);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.25);
+  background: color-mix(in srgb, var(--color-text-secondary) 50%, transparent);
 }
 
-/* Print-friendly: Ctrl+P generates a clean PDF resume */
 @media print {
   *,
   *::before,
@@ -81,7 +124,9 @@ body {
     padding: 1rem 0 !important;
   }
 
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     page-break-after: avoid;
   }
 
@@ -114,6 +159,25 @@ body {
   scrollbar-width: none;
 }
 
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .print-only {
   display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -1,37 +1,23 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { Monitor, Database, Brain, Wrench } from "@phosphor-icons/react";
 import { Section } from "../components/Section";
-import { GlassCard } from "../components/GlassCard";
 import { useLang } from "../i18n";
-import { skillCategories } from "../data/skills";
+import { skills } from "../data/skills";
 
-const iconMap: Record<string, typeof Monitor> = {
-  monitor: Monitor,
-  server: Database,
-  brain: Brain,
-  wrench: Wrench,
-};
-
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.1 },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 25 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" as const } },
-};
-
-const pillVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: (i: number) => ({
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 0.3, delay: i * 0.04 },
-  }),
+const skillIconColors: Record<string, string> = {
+  Python: "#3776AB",
+  TensorFlow: "#FF6F00",
+  LangChain: "#1C3C3C",
+  FastAPI: "#009688",
+  NestJS: "#E0234E",
+  "Node.js": "#339933",
+  Laravel: "#FF2D20",
+  React: "#61DAFB",
+  "Next.js": "#ffffff",
+  TypeScript: "#3178C6",
+  "React Native": "#ffffff",
+  "Tailwind CSS": "#06B6D4",
+  "Framer Motion": "#FF0054",
 };
 
 export function TechStack() {
@@ -43,43 +29,31 @@ export function TechStack() {
     <Section
       id="tecnologia"
       title={t("Stack Tecnológico", "Tech Stack")}
-      subtitle={t(
-        "Herramientas organizadas por área — sin barras de progreso, solo experiencia real",
-        "Tools organized by area — no progress bars, just real experience",
-      )}
+      subtitle={t("Lenguajes y frameworks que domino", "Languages and frameworks I master")}
     >
       <motion.div
         ref={ref}
-        variants={containerVariants}
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
-        className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5 }}
+        className="overflow-x-auto pb-4 scrollbar-hide"
       >
-        {skillCategories.map((category) => {
-          const Icon = iconMap[category.icon] ?? Monitor;
-          return (
-            <motion.div key={category.name.es} variants={cardVariants}>
-              <GlassCard className="p-6 transition-transform duration-300 hover:-translate-y-1">
-                <Icon className="mb-3 h-8 w-8 text-accent-blue" weight="duotone" />
-                <h3 className="mb-4 text-lg font-semibold text-text-primary">
-                  {t(category.name.es, category.name.en)}
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {category.skills.map((skill, i) => (
-                    <motion.span
-                      key={skill}
-                      custom={i}
-                      variants={pillVariants}
-                      className="rounded-md bg-accent-blue/[0.06] px-3 py-1 font-mono text-xs text-text-secondary"
-                    >
-                      {skill}
-                    </motion.span>
-                  ))}
-                </div>
-              </GlassCard>
+        <div className="flex gap-3">
+          {skills.map((skill, i) => (
+            <motion.div
+              key={skill.name}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.3, delay: i * 0.05 }}
+              className="flex shrink-0 flex-col items-center gap-2 rounded-xl border border-card-border bg-bg-secondary/50 px-5 py-3 backdrop-blur-sm transition-all duration-200 hover:border-accent-blue/30 hover:bg-bg-secondary/80 hover:shadow-lg hover:shadow-accent-blue/5"
+            >
+              <skill.icon className="h-7 w-7" color={skillIconColors[skill.name] ?? "#888"} />
+              <span className="whitespace-nowrap text-xs font-medium text-text-secondary">
+                {skill.name}
+              </span>
             </motion.div>
-          );
-        })}
+          ))}
+        </div>
       </motion.div>
     </Section>
   );

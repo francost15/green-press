@@ -1,6 +1,12 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { PaperPlaneTilt, GithubLogo, LinkedinLogo, EnvelopeSimple, Phone } from "@phosphor-icons/react";
+import {
+  PaperPlaneTilt,
+  GithubLogo,
+  LinkedinLogo,
+  EnvelopeSimple,
+  Phone,
+} from "@phosphor-icons/react";
 import { Section } from "../components/Section";
 import { GlassCard } from "../components/GlassCard";
 import { useLang } from "../i18n";
@@ -94,13 +100,19 @@ export function Contact() {
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent-purple px-6 py-3 font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
             >
               <PaperPlaneTilt size={18} weight="duotone" />
-              {status === "sending" ? t("Enviando...", "Sending...") : t("Enviar Mensaje", "Send Message")}
+              {status === "sending"
+                ? t("Enviando...", "Sending...")
+                : t("Enviar Mensaje", "Send Message")}
             </button>
             {status === "sent" && (
-              <p className="text-sm text-green-600">{t("¡Mensaje enviado correctamente!", "Message sent successfully!")}</p>
+              <p className="text-sm text-green-600">
+                {t("¡Mensaje enviado correctamente!", "Message sent successfully!")}
+              </p>
             )}
             {status === "error" && (
-              <p className="text-sm text-red-600">{t("Error al enviar. Intenta de nuevo.", "Error sending. Please try again.")}</p>
+              <p className="text-sm text-red-600">
+                {t("Error al enviar. Intenta de nuevo.", "Error sending. Please try again.")}
+              </p>
             )}
           </form>
         </GlassCard>

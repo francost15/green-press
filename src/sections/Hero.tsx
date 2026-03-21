@@ -3,117 +3,194 @@ import { CaretDown, DownloadSimple } from "@phosphor-icons/react";
 import { useLang } from "../i18n";
 import { profile } from "../data/profile";
 
-const floatingShapes = [
-  { size: 300, x: "10%", y: "20%", color: "var(--color-accent-blue)", delay: 0 },
-  { size: 200, x: "70%", y: "15%", color: "var(--color-accent-purple)", delay: 2 },
-  { size: 250, x: "80%", y: "60%", color: "var(--color-accent-cyan)", delay: 4 },
-  { size: 180, x: "20%", y: "70%", color: "var(--color-accent-purple)", delay: 1 },
+const orbs = [
+  { size: 400, x: "5%", y: "10%", color: "--color-accent-blue", delay: 0, duration: 20 },
+  { size: 350, x: "60%", y: "5%", color: "--color-accent-purple", delay: 3, duration: 25 },
+  { size: 300, x: "75%", y: "50%", color: "--color-accent-cyan", delay: 6, duration: 22 },
+  { size: 280, x: "10%", y: "55%", color: "--color-accent-purple", delay: 4, duration: 18 },
+  { size: 250, x: "40%", y: "70%", color: "--color-accent-blue", delay: 8, duration: 24 },
 ];
 
-const geometricShapes = [
-  { type: "triangle", x: "15%", y: "25%", size: 40, rotation: 15, delay: 0, color: "var(--color-accent-blue)" },
-  { type: "square", x: "85%", y: "20%", size: 30, rotation: 45, delay: 1.5, color: "var(--color-accent-purple)" },
-  { type: "circle", x: "75%", y: "75%", size: 25, rotation: 0, delay: 3, color: "var(--color-accent-cyan)" },
-  { type: "triangle", x: "90%", y: "45%", size: 35, rotation: -30, delay: 0.5, color: "var(--color-accent-purple)" },
-  { type: "square", x: "8%", y: "60%", size: 28, rotation: 20, delay: 2.5, color: "var(--color-accent-blue)" },
-  { type: "circle", x: "50%", y: "85%", size: 20, rotation: 0, delay: 1, color: "var(--color-accent-purple)" },
-  { type: "hexagon", x: "30%", y: "10%", size: 32, rotation: 0, delay: 2, color: "var(--color-accent-cyan)" },
-  { type: "hexagon", x: "65%", y: "90%", size: 28, rotation: 30, delay: 3.5, color: "var(--color-accent-blue)" },
+const particles = Array.from({ length: 25 }, (_, i) => ({
+  id: i,
+  x: `${Math.random() * 100}%`,
+  y: `${Math.random() * 100}%`,
+  size: Math.random() * 3 + 1,
+  duration: Math.random() * 10 + 15,
+  delay: Math.random() * 5,
+}));
+
+const lines = [
+  { x1: "10%", y1: "20%", x2: "30%", y2: "40%", delay: 0 },
+  { x1: "70%", y1: "15%", x2: "85%", y2: "35%", delay: 1 },
+  { x1: "60%", y1: "60%", x2: "80%", y2: "75%", delay: 2 },
+  { x1: "20%", y1: "70%", x2: "40%", y2: "85%", delay: 3 },
+  { x1: "45%", y1: "10%", x2: "55%", y2: "30%", delay: 4 },
+  { x1: "15%", y1: "45%", x2: "35%", y2: "55%", delay: 5 },
 ];
-
-function GeometricShape({ type, size, color }: { type: string; size: number; color: string }) {
-  const stroke = color;
-  const sw = 1.5;
-
-  switch (type) {
-    case "triangle":
-      return (
-        <svg width={size} height={size} viewBox="0 0 40 40" fill="none">
-          <polygon points="20,4 36,36 4,36" stroke={stroke} strokeWidth={sw} />
-        </svg>
-      );
-    case "square":
-      return (
-        <svg width={size} height={size} viewBox="0 0 40 40" fill="none">
-          <rect x="4" y="4" width="32" height="32" rx="2" stroke={stroke} strokeWidth={sw} />
-        </svg>
-      );
-    case "hexagon":
-      return (
-        <svg width={size} height={size} viewBox="0 0 40 40" fill="none">
-          <polygon points="20,2 37,11 37,29 20,38 3,29 3,11" stroke={stroke} strokeWidth={sw} />
-        </svg>
-      );
-    default:
-      return (
-        <svg width={size} height={size} viewBox="0 0 40 40" fill="none">
-          <circle cx="20" cy="20" r="16" stroke={stroke} strokeWidth={sw} />
-        </svg>
-      );
-  }
-}
 
 export function Hero() {
   const { t } = useLang();
 
   return (
-    <section id="inicio" className="relative flex min-h-screen items-center justify-center overflow-hidden bg-bg">
-      {/* Soft blobs */}
-      {floatingShapes.map((shape, i) => (
-        <motion.div
-          key={`blob-${i}`}
-          className="pointer-events-none absolute rounded-full opacity-[0.07] blur-3xl"
-          style={{
-            width: shape.size,
-            height: shape.size,
-            left: shape.x,
-            top: shape.y,
-            background: shape.color,
-          }}
-          animate={{
-            x: [0, 30, -20, 0],
-            y: [0, -25, 15, 0],
-            scale: [1, 1.1, 0.95, 1],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            delay: shape.delay,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
+    <section
+      id="inicio"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-bg"
+    >
+      {/* Animated gradient mesh */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        {orbs.map((orb, i) => (
+          <motion.div
+            key={`orb-${i}`}
+            className="absolute rounded-full blur-[120px]"
+            style={{
+              width: orb.size,
+              height: orb.size,
+              left: orb.x,
+              top: orb.y,
+              background: `var(${orb.color})`,
+              opacity: 0.08,
+            }}
+            animate={{
+              x: [0, 50, -30, 0],
+              y: [0, -40, 30, 0],
+              scale: [1, 1.15, 0.9, 1],
+              opacity: [0.08, 0.12, 0.06, 0.08],
+            }}
+            transition={{
+              duration: orb.duration,
+              repeat: Infinity,
+              delay: orb.delay,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
 
-      {/* Geometric wireframe shapes */}
-      {geometricShapes.map((shape, i) => (
-        <motion.div
-          key={`geo-${i}`}
-          className="pointer-events-none absolute opacity-[0.12]"
-          style={{ left: shape.x, top: shape.y, rotate: shape.rotation }}
-          animate={{
-            y: [0, -15, 5, 0],
-            rotate: [shape.rotation, shape.rotation + 20, shape.rotation - 10, shape.rotation],
-            opacity: [0.12, 0.18, 0.08, 0.12],
-          }}
-          transition={{
-            duration: 8 + i * 1.5,
-            repeat: Infinity,
-            delay: shape.delay,
-            ease: "easeInOut",
-          }}
-        >
-          <GeometricShape type={shape.type} size={shape.size} color={shape.color} />
-        </motion.div>
-      ))}
+      {/* Particle field */}
+      <div className="pointer-events-none absolute inset-0">
+        {particles.map((p) => (
+          <motion.div
+            key={p.id}
+            className="absolute rounded-full bg-accent-blue"
+            style={{
+              left: p.x,
+              top: p.y,
+              width: p.size,
+              height: p.size,
+              opacity: 0.3,
+            }}
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0.3, 0.6, 0.3],
+              scale: [1, 1.5, 1],
+            }}
+            transition={{
+              duration: p.duration,
+              repeat: Infinity,
+              delay: p.delay,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
 
-      {/* Dot grid */}
+      {/* Connecting lines */}
+      <svg className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.06]">
+        {lines.map((line, i) => (
+          <motion.line
+            key={`line-${i}`}
+            x1={line.x1}
+            y1={line.y1}
+            x2={line.x2}
+            y2={line.y2}
+            stroke="var(--color-accent-purple)"
+            strokeWidth="1"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: [0, 1, 0], opacity: [0, 0.5, 0] }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              delay: line.delay,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </svg>
+
+      {/* Subtle animated grid */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.03]"
+        className="pointer-events-none absolute inset-0 opacity-[0.02]"
         style={{
-          backgroundImage: "radial-gradient(circle, var(--color-text-primary) 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
+          backgroundImage:
+            "linear-gradient(var(--color-text-primary) 1px, transparent 1px), linear-gradient(90deg, var(--color-text-primary) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
         }}
       />
+
+      {/* Floating geometric accents */}
+      <motion.div
+        className="pointer-events-none absolute left-[8%] top-[15%] opacity-10"
+        animate={{
+          y: [0, -20, 0],
+          rotate: [0, 10, 0],
+        }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+          <polygon points="30,5 55,50 5,50" stroke="var(--color-accent-blue)" strokeWidth="1.5" />
+        </svg>
+      </motion.div>
+
+      <motion.div
+        className="pointer-events-none absolute right-[12%] top-[20%] opacity-10"
+        animate={{
+          y: [0, 15, 0],
+          rotate: [45, 55, 45],
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+      >
+        <svg width="50" height="50" viewBox="0 0 50 50" fill="none">
+          <rect
+            x="5"
+            y="5"
+            width="40"
+            height="40"
+            stroke="var(--color-accent-purple)"
+            strokeWidth="1.5"
+          />
+        </svg>
+      </motion.div>
+
+      <motion.div
+        className="pointer-events-none absolute bottom-[25%] right-[20%] opacity-10"
+        animate={{
+          y: [0, -25, 0],
+          scale: [1, 1.1, 1],
+        }}
+        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+      >
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <circle cx="20" cy="20" r="15" stroke="var(--color-accent-cyan)" strokeWidth="1.5" />
+        </svg>
+      </motion.div>
+
+      <motion.div
+        className="pointer-events-none absolute left-[20%] bottom-[15%] opacity-10"
+        animate={{
+          y: [0, 20, 0],
+          rotate: [0, -15, 0],
+        }}
+        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+      >
+        <svg width="45" height="45" viewBox="0 0 45 45" fill="none">
+          <polygon
+            points="22.5,3 42,15 42,32 22.5,44 3,32 3,15"
+            stroke="var(--color-accent-blue)"
+            strokeWidth="1.5"
+          />
+        </svg>
+      </motion.div>
 
       <div className="relative z-10 px-6 text-center">
         <motion.p

@@ -7,7 +7,19 @@ const rings = [
   { radius: 210, speed: 0.4, items: ["OpenAI", "Docker", "AWS", "TensorFlow", "Git", "Claude"] },
 ];
 
-function OrbitItem({ label, angle, radius, centerX, centerY }: { label: string; angle: number; radius: number; centerX: number; centerY: number }) {
+function OrbitItem({
+  label,
+  angle,
+  radius,
+  centerX,
+  centerY,
+}: {
+  label: string;
+  angle: number;
+  radius: number;
+  centerX: number;
+  centerY: number;
+}) {
   const x = centerX + Math.cos(angle) * radius;
   const y = centerY + Math.sin(angle) * radius;
 
@@ -98,7 +110,7 @@ export function TechOrbit() {
               centerY={centerY}
             />
           );
-        })
+        }),
       )}
     </AbsoluteFill>
   );

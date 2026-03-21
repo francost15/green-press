@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { List, X, DownloadSimple, Translate } from "@phosphor-icons/react";
 import { useLang } from "../i18n";
+import { ThemeToggle } from "./ThemeToggle";
 
 const navLinks = [
   { href: "#inicio", es: "Inicio", en: "Home" },
@@ -49,12 +50,14 @@ export function Navbar() {
           <button
             type="button"
             onClick={toggle}
-            className="flex items-center gap-1.5 rounded-lg border border-card-border px-3 py-1.5 text-sm text-text-secondary transition-colors hover:text-text-primary"
+            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-text-secondary transition-colors hover:text-text-primary"
             aria-label="Toggle language"
           >
             <Translate size={16} weight="duotone" />
             {lang === "es" ? "EN" : "ES"}
           </button>
+
+          <ThemeToggle />
 
           <a
             href="/cv-franco-sanchez.pdf"
@@ -70,7 +73,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={toggle}
-            className="rounded-lg border border-card-border px-2 py-1.5 text-xs font-medium text-text-secondary"
+            className="rounded-lg px-2 py-1.5 text-xs font-medium text-text-secondary"
           >
             {lang === "es" ? "EN" : "ES"}
           </button>
@@ -86,7 +89,7 @@ export function Navbar() {
       </div>
 
       {isOpen && (
-        <div className="border-t border-card-border bg-bg-alt/95 backdrop-blur-xl md:hidden">
+        <div className="bg-bg-alt/95 backdrop-blur-xl md:hidden">
           <div className="flex flex-col gap-4 px-6 py-6">
             {navLinks.map((link) => (
               <a

@@ -27,9 +27,7 @@ export function Section({ id, title, subtitle, children, className = "" }: Secti
             <h2 className="mb-4 bg-gradient-to-r from-accent-blue via-accent-purple to-accent-cyan bg-clip-text text-3xl font-bold text-transparent md:text-4xl">
               {title}
             </h2>
-            {subtitle && (
-              <p className="mx-auto max-w-2xl text-text-secondary">{subtitle}</p>
-            )}
+            {subtitle && <p className="mx-auto max-w-2xl text-text-secondary">{subtitle}</p>}
           </motion.div>
         )}
         <motion.div

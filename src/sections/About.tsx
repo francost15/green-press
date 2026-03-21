@@ -5,7 +5,15 @@ import { GlassCard } from "../components/GlassCard";
 import { useLang } from "../i18n";
 import { profile } from "../data/profile";
 
-function AnimatedCounter({ value, suffix, label }: { value: number; suffix: string; label: string }) {
+function AnimatedCounter({
+  value,
+  suffix,
+  label,
+}: {
+  value: number;
+  suffix: string;
+  label: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true });
   const [count, setCount] = useState(0);
@@ -40,7 +48,8 @@ function AnimatedCounter({ value, suffix, label }: { value: number; suffix: stri
     >
       <GlassCard className="p-6 text-center" hover={false}>
         <div className="mb-1 bg-gradient-to-r from-accent-blue to-accent-purple bg-clip-text text-4xl font-bold text-transparent">
-          {count}{suffix}
+          {count}
+          {suffix}
         </div>
         <div className="text-sm text-text-secondary">{label}</div>
       </GlassCard>

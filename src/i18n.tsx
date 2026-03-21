@@ -22,16 +22,9 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     setLang((prev) => (prev === "es" ? "en" : "es"));
   }, []);
 
-  const t = useCallback(
-    (es: string, en: string) => (lang === "es" ? es : en),
-    [lang],
-  );
+  const t = useCallback((es: string, en: string) => (lang === "es" ? es : en), [lang]);
 
-  return (
-    <I18nContext.Provider value={{ lang, toggle, t }}>
-      {children}
-    </I18nContext.Provider>
-  );
+  return <I18nContext.Provider value={{ lang, toggle, t }}>{children}</I18nContext.Provider>;
 }
 
 export function useLang() {

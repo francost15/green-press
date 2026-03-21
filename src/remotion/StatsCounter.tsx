@@ -40,7 +40,8 @@ export function StatsCounter({ target, label, suffix = "" }: StatsCounterProps) 
           transform: `scale(${scale})`,
         }}
       >
-        {currentValue}{suffix}
+        {currentValue}
+        {suffix}
       </div>
       <div
         style={{

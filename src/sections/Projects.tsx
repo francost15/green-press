@@ -1,12 +1,21 @@
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { ArrowSquareOut, GithubLogo, Play, Lightning, Target, Crosshair, CaretLeft, CaretRight } from "@phosphor-icons/react";
+import {
+  ArrowSquareOut,
+  GithubLogo,
+  Play,
+  Lightning,
+  Target,
+  Crosshair,
+  CaretLeft,
+  CaretRight,
+} from "@phosphor-icons/react";
 import { Section } from "../components/Section";
 import { GlassCard } from "../components/GlassCard";
 import { useLang } from "../i18n";
 import { projects } from "../data/projects";
 
-function ProjectCard({ project }: { project: typeof projects[number] }) {
+function ProjectCard({ project }: { project: (typeof projects)[number] }) {
   const { t } = useLang();
 
   return (
@@ -19,17 +28,35 @@ function ProjectCard({ project }: { project: typeof projects[number] }) {
             <h3 className="text-lg font-bold text-text-primary">{project.title}</h3>
             <div className="flex shrink-0 gap-2">
               {project.demo && (
-                <a href={project.demo} target="_blank" rel="noopener noreferrer" className="rounded-md bg-accent-purple/[0.08] p-1.5 text-accent-purple transition-colors hover:bg-accent-purple/[0.15]" aria-label="Demo">
+                <a
+                  href={project.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-md bg-accent-purple/[0.08] p-1.5 text-accent-purple transition-colors hover:bg-accent-purple/[0.15]"
+                  aria-label="Demo"
+                >
                   <Play size={16} weight="fill" />
                 </a>
               )}
               {project.github && (
-                <a href={project.github} target="_blank" rel="noopener noreferrer" className="rounded-md bg-accent-blue/[0.08] p-1.5 text-accent-blue transition-colors hover:bg-accent-blue/[0.15]" aria-label="GitHub">
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-md bg-accent-blue/[0.08] p-1.5 text-accent-blue transition-colors hover:bg-accent-blue/[0.15]"
+                  aria-label="GitHub"
+                >
                   <GithubLogo size={16} weight="duotone" />
                 </a>
               )}
               {project.link && (
-                <a href={project.link} target="_blank" rel="noopener noreferrer" className="rounded-md bg-accent-cyan/[0.08] p-1.5 text-accent-cyan transition-colors hover:bg-accent-cyan/[0.15]" aria-label="Live">
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-md bg-accent-cyan/[0.08] p-1.5 text-accent-cyan transition-colors hover:bg-accent-cyan/[0.15]"
+                  aria-label="Live"
+                >
                   <ArrowSquareOut size={16} weight="duotone" />
                 </a>
               )}
@@ -45,7 +72,11 @@ function ProjectCard({ project }: { project: typeof projects[number] }) {
               </p>
             </div>
             <div className="flex gap-3">
-              <Lightning size={18} weight="duotone" className="mt-0.5 shrink-0 text-accent-purple" />
+              <Lightning
+                size={18}
+                weight="duotone"
+                className="mt-0.5 shrink-0 text-accent-purple"
+              />
               <p className="text-sm leading-relaxed text-text-secondary">
                 <span className="font-medium text-text-primary">{t("Solución", "Solution")}:</span>{" "}
                 {t(project.solution.es, project.solution.en)}
@@ -62,7 +93,10 @@ function ProjectCard({ project }: { project: typeof projects[number] }) {
 
           <div className="flex flex-wrap gap-2">
             {project.tags.map((tag) => (
-              <span key={tag} className="rounded-md bg-accent-blue/[0.06] px-2.5 py-1 font-mono text-xs text-text-secondary">
+              <span
+                key={tag}
+                className="rounded-md bg-accent-blue/[0.06] px-2.5 py-1 font-mono text-xs text-text-secondary"
+              >
                 {tag}
               </span>
             ))}

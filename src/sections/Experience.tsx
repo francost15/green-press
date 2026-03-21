@@ -5,7 +5,7 @@ import { Section } from "../components/Section";
 import { useLang } from "../i18n";
 import { experience } from "../data/experience";
 
-function TimelineItem({ item, index }: { item: typeof experience[number]; index: number }) {
+function TimelineItem({ item, index }: { item: (typeof experience)[number]; index: number }) {
   const { t } = useLang();
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
@@ -28,9 +28,7 @@ function TimelineItem({ item, index }: { item: typeof experience[number]; index:
         animate={isInView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.5, delay: index * 0.1 + 0.2 }}
       >
-        <span className="mb-1 inline-block font-mono text-xs text-accent-blue">
-          {item.period}
-        </span>
+        <span className="mb-1 inline-block font-mono text-xs text-accent-blue">{item.period}</span>
         <h3 className="text-lg font-semibold text-text-primary">{t(item.role.es, item.role.en)}</h3>
         <p className="mb-3 text-sm font-medium text-accent-purple">{item.company}</p>
         <p className="mb-4 text-sm leading-relaxed text-text-secondary">

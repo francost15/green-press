@@ -24,9 +24,28 @@ function Particle({ delay, x, size }: { delay: number; x: number; size: number }
   );
 }
 
-const codeSnippets = ["async function", "AI.predict()", "<Component />", "await fetch()", "const model =", "export default", "return data;", "import { Brain }"];
+const codeSnippets = [
+  "async function",
+  "AI.predict()",
+  "<Component />",
+  "await fetch()",
+  "const model =",
+  "export default",
+  "return data;",
+  "import { Brain }",
+];
 
-function FloatingCode({ text, delay, x, y: baseY }: { text: string; delay: number; x: number; y: number }) {
+function FloatingCode({
+  text,
+  delay,
+  x,
+  y: baseY,
+}: {
+  text: string;
+  delay: number;
+  x: number;
+  y: number;
+}) {
   const frame = useCurrentFrame();
   const adjustedFrame = (frame + delay) % 300;
   const y = baseY + interpolate(adjustedFrame, [0, 150, 300], [0, -8, 0]);
@@ -59,16 +78,24 @@ const particles = Array.from({ length: 60 }, (_, i) => ({
 const codeElements = codeSnippets.map((text, i) => ({
   text,
   delay: i * 37,
-  x: 5 + (i * 12) % 85,
-  y: 10 + (i * 11) % 75,
+  x: 5 + ((i * 12) % 85),
+  y: 10 + ((i * 11) % 75),
 }));
 
 export function HeroComposition() {
   const frame = useCurrentFrame();
   const progress = frame / 300;
 
-  const bg1 = interpolateColors(frame, [0, 100, 200, 300], [colors.bg, "#eef2ff", "#ecfeff", colors.bg]);
-  const bg2 = interpolateColors(frame, [0, 100, 200, 300], [colors.purple, colors.blue, colors.cyan, colors.purple]);
+  const bg1 = interpolateColors(
+    frame,
+    [0, 100, 200, 300],
+    [colors.bg, "#eef2ff", "#ecfeff", colors.bg],
+  );
+  const bg2 = interpolateColors(
+    frame,
+    [0, 100, 200, 300],
+    [colors.purple, colors.blue, colors.cyan, colors.purple],
+  );
 
   return (
     <AbsoluteFill>
