@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://fsanchezt.dev/sitemap.xml
+Sitemap: https://fsanchezt.com/sitemap.xml

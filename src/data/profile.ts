@@ -13,7 +13,7 @@ export const profile = {
   phone: "+52 220 157 0694",
   location: "Puebla, México",
   links: {
-    github: "https://github.com/fsanchez",
+    github: "https://github.com/francost15",
     linkedin: "https://www.linkedin.com/in/franco-alessandro-sanchez-trinidad-2320742a3/",
   },
   stats: [
