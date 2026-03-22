@@ -26,7 +26,6 @@ describe("Contact", () => {
 
   it("renders contact links", () => {
     renderContact();
-    expect(screen.getByText("GitHub")).toBeInTheDocument();
     expect(screen.getByText("LinkedIn")).toBeInTheDocument();
   });
 
@@ -35,10 +34,10 @@ describe("Contact", () => {
     expect(container.querySelector("[aria-live='polite']")).toBeInTheDocument();
   });
 
-  it("external links open in new tab with security attributes", () => {
+  it("linkedin opens in new tab with security attributes", () => {
     renderContact();
-    const github = screen.getByText("GitHub").closest("a");
-    expect(github).toHaveAttribute("target", "_blank");
-    expect(github).toHaveAttribute("rel", "noopener noreferrer");
+    const linkedin = screen.getByText("LinkedIn").closest("a");
+    expect(linkedin).toHaveAttribute("target", "_blank");
+    expect(linkedin).toHaveAttribute("rel", "noopener noreferrer");
   });
 });

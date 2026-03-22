@@ -38,10 +38,14 @@ export function Section({ id, title, subtitle, children, className = "" }: Secti
               visible ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"
             }`}
           >
-            <h2 className="mb-3 font-[family-name:var(--color-font-display)] text-4xl font-semibold tracking-tight text-text-primary md:text-5xl">
+            <h2 className="mb-4 font-[family-name:var(--color-font-display)] text-5xl font-black tracking-tighter text-text-primary md:text-7xl lg:text-8xl">
               {title}
             </h2>
-            {subtitle && <p className="max-w-xl text-lg text-text-secondary">{subtitle}</p>}
+            {subtitle && (
+              <p className="max-w-2xl text-lg font-light leading-relaxed tracking-wide text-text-secondary md:text-xl">
+                {subtitle}
+              </p>
+            )}
           </div>
         )}
         <div

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://francosanchez.dev/sitemap.xml
+Sitemap: https://fsanchezt.dev/sitemap.xml

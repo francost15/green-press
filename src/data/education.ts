@@ -18,10 +18,10 @@ export const education: Education[] = [
     period: { start: "2026", end: "" },
     status: "in-progress",
     description: {
-      es: "Programa enfocado en las 5 ramas principales de IA: machine learning, deep learning, NLP, visión por computador y desarrollo de algoritmos. Herramientas: Python, TensorFlow, Keras, AWS, Azure.",
-      en: "Program focused on 5 main AI branches: machine learning, deep learning, NLP, computer vision, and algorithm development. Tools: Python, TensorFlow, Keras, AWS, Azure.",
+      es: "Especialización avanzada en las 5 ramas principales de IA: machine learning, deep learning, NLP, visión por computadora y desarrollo de algoritmos. Ecosistema tecnológico: Python, TensorFlow, Keras, AWS, Azure.",
+      en: "Advanced specialization in the 5 main branches of AI: machine learning, deep learning, NLP, computer vision, and algorithm development. Tech ecosystem: Python, TensorFlow, Keras, AWS, Azure.",
     },
-    highlights: ["Machine Learning", "Deep Learning", "NLP", "Visión por Computador"],
+    highlights: ["Machine Learning", "Deep Learning", "NLP", "Visión por Computadora"],
   },
   {
     degree: { es: "Diplomado en Inteligencia Artificial", en: "Artificial Intelligence Diploma" },
@@ -30,8 +30,8 @@ export const education: Education[] = [
     period: { start: "Sept. 2024", end: "Jun. 2025" },
     status: "completed",
     description: {
-      es: "Diplomado enfocado en el diseño, desarrollo e implementación de soluciones de IA en entornos empresariales. Herramientas: Python, scikit-learn, TensorFlow. Desarrollo de modelos de clasificación, análisis predictivo y NLP.",
-      en: "Diploma focused on designing, developing, and implementing AI solutions in enterprise environments. Tools: Python, scikit-learn, TensorFlow. Classification models, predictive analysis, and NLP.",
+      es: "Especialización en diseño y despliegue de soluciones de IA para entornos empresariales. Creación de modelos de clasificación, análisis predictivo y NLP utilizando Python, scikit-learn y TensorFlow.",
+      en: "Specialization in designing and deploying AI solutions for enterprise environments. Creation of classification models, predictive analysis, and NLP using Python, scikit-learn, and TensorFlow.",
     },
     highlights: ["Aprendizaje profundo", "Aprendizaje automático"],
   },
@@ -45,13 +45,9 @@ export const education: Education[] = [
     period: { start: "Ago. 2021", end: "Jun. 2025" },
     status: "completed",
     description: {
-      es: "Desarrollo de habilidades en programación, análisis de datos, IA y gestión de proyectos tecnológicos. Proyectos incluyen aplicaciones web, sistemas de automatización y soluciones basadas en IA.",
-      en: "Development of skills in programming, data analysis, AI, and technological project management. Projects include web applications, automation systems, and AI-based solutions.",
+      es: "Fundamentos sólidos en ingeniería de software, arquitectura de sistemas e IA. Liderazgo en proyectos de desarrollo web, automatización de procesos y soluciones de machine learning.",
+      en: "Solid foundations in software engineering, systems architecture, and AI. Leadership in web development projects, process automation, and machine learning solutions.",
     },
-    highlights: [
-      "Participación en hackatones universitarios",
-      "Organización de eventos estudiantiles",
-      "Integrante del grupo IEEE",
-    ],
+    highlights: ["Mentor de Carrera", "Hackatones", "Eventos Estudiantiles", "Miembro IEEE"],
   },
 ];

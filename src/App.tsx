@@ -6,10 +6,6 @@ const Competencies = lazy(() =>
   import("./sections/Competencies").then((m) => ({ default: m.Competencies })),
 );
 const Projects = lazy(() => import("./sections/Projects").then((m) => ({ default: m.Projects })));
-const TechStack = lazy(() =>
-  import("./sections/TechStack").then((m) => ({ default: m.TechStack })),
-);
-const About = lazy(() => import("./sections/About").then((m) => ({ default: m.About })));
 const Experience = lazy(() =>
   import("./sections/Experience").then((m) => ({ default: m.Experience })),
 );
@@ -41,12 +37,6 @@ export function App() {
       </LazySection>
       <LazySection>
         <Projects />
-      </LazySection>
-      <LazySection>
-        <TechStack />
-      </LazySection>
-      <LazySection>
-        <About />
       </LazySection>
       <LazySection>
         <Experience />

@@ -6,7 +6,6 @@ import { ThemeToggle } from "./ThemeToggle";
 const navLinks = [
   { href: "#proyectos", es: "Proyectos", en: "Projects" },
   { href: "#experiencia", es: "Experiencia", en: "Experience" },
-  { href: "#sobre-mi", es: "Sobre Mí", en: "About" },
   { href: "#contacto", es: "Contacto", en: "Contact" },
 ];
 
@@ -112,21 +111,21 @@ export function Navbar() {
           <button
             type="button"
             onClick={toggle}
-            className="flex items-center gap-1 text-sm text-text-tertiary transition-colors hover:text-accent"
+            className="flex items-center gap-1.5 rounded-full border border-border/50 bg-bg-secondary px-3 py-1.5 text-[11px] font-bold tracking-widest text-text-secondary transition-all hover:border-accent hover:text-text-primary uppercase"
             aria-label="Toggle language"
           >
-            <Translate size={15} weight="bold" />
-            {lang === "es" ? "EN" : "ES"}
+            <Translate size={14} weight="bold" className="text-accent" />
+            <span className="flex w-5 justify-center">{lang === "es" ? "EN" : "ES"}</span>
           </button>
 
           <ThemeToggle />
         </div>
 
-        <div className="flex items-center gap-3 md:hidden">
+        <div className="flex items-center gap-4 md:hidden">
           <button
             type="button"
             onClick={toggle}
-            className="text-xs font-medium text-text-secondary"
+            className="flex items-center justify-center rounded-full border border-border/50 bg-bg-secondary px-2.5 py-1 text-[10px] font-bold tracking-widest text-text-secondary transition-all hover:border-accent hover:text-text-primary uppercase"
           >
             {lang === "es" ? "EN" : "ES"}
           </button>

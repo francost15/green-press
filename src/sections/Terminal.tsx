@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import type { KeyboardEvent } from "react";
 import { useLang } from "../i18n";
+import { profile } from "../data/profile";
 
 interface TerminalLine {
   type: "input" | "output";
@@ -113,10 +114,10 @@ export function Terminal() {
 
       case "contact":
         return [
-          "Email:    franco@example.com",
-          "GitHub:   github.com/fsanchez",
-          "LinkedIn: linkedin.com/in/fsanchez",
-          t("Tel:", "Phone:") + "      +52 222 123 4567",
+          `Email:    ${profile.email}`,
+          `GitHub:   ${profile.links.github.replace("https://", "")}`,
+          `LinkedIn: ${profile.links.linkedin.replace(/^https?:\/\//, "")}`,
+          t("Tel:", "Phone:") + `      ${profile.phone}`,
         ].join("\n");
 
       case "clear":

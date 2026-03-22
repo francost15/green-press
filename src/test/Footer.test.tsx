@@ -11,15 +11,14 @@ describe("Footer", () => {
 
   it("renders social links with aria-labels", () => {
     render(<Footer />);
-    expect(screen.getByLabelText("GitHub")).toBeInTheDocument();
     expect(screen.getByLabelText("LinkedIn")).toBeInTheDocument();
     expect(screen.getByLabelText("Email")).toBeInTheDocument();
   });
 
-  it("social links have security attributes", () => {
+  it("linkedin link has security attributes", () => {
     render(<Footer />);
-    const github = screen.getByLabelText("GitHub");
-    expect(github).toHaveAttribute("target", "_blank");
-    expect(github).toHaveAttribute("rel", "noopener noreferrer");
+    const linkedin = screen.getByLabelText("LinkedIn");
+    expect(linkedin).toHaveAttribute("target", "_blank");
+    expect(linkedin).toHaveAttribute("rel", "noopener noreferrer");
   });
 });

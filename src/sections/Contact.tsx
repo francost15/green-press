@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { GithubLogo, LinkedinLogo, EnvelopeSimple, Phone } from "../components/Icons";
+import { LinkedinLogo, EnvelopeSimple, Phone } from "../components/Icons";
 import { Section } from "../components/Section";
 import { useLang } from "../i18n";
 import { profile } from "../data/profile";
@@ -24,6 +24,10 @@ export function Contact() {
       if (response.ok) {
         setStatus("sent");
         form.reset();
+        // Clear the success message after 5 seconds
+        setTimeout(() => {
+          setStatus("idle");
+        }, 5000);
       } else {
         setStatus("error");
       }
@@ -33,7 +37,6 @@ export function Contact() {
   };
 
   const contactLinks = [
-    { icon: GithubLogo, label: "GitHub", href: profile.links.github },
     { icon: LinkedinLogo, label: "LinkedIn", href: profile.links.linkedin },
     { icon: EnvelopeSimple, label: profile.email, href: `mailto:${profile.email}` },
     { icon: Phone, label: profile.phone, href: `tel:${profile.phone}` },
@@ -95,31 +98,65 @@ export function Contact() {
           <button
             type="submit"
             disabled={status === "sending"}
-            className="self-start rounded-lg bg-accent px-8 py-3 text-sm font-medium text-white transition-colors hover:bg-accent-hover disabled:opacity-50"
+            className="btn-primary btn-primary-pulse self-start disabled:animate-none disabled:cursor-not-allowed disabled:opacity-50"
           >
             {status === "sending"
               ? t("Enviando...", "Sending...")
               : t("Enviar Mensaje", "Send Message")}
           </button>
-          <div aria-live="polite">
-            {status === "sent" && (
-              <p className="text-sm text-green-600">
-                {t("¡Mensaje enviado correctamente!", "Message sent successfully!")}
+        </form>
+
+        {/* Floating Toast Notification */}
+        <div
+          className={`fixed bottom-8 right-8 z-50 transition-all duration-500 ${
+            status === "sent" || status === "error"
+              ? "translate-y-0 opacity-100"
+              : "translate-y-10 opacity-0 pointer-events-none"
+          }`}
+          aria-live="polite"
+        >
+          {status === "sent" && (
+            <div className="flex items-center gap-3 rounded-xl border border-green-500/20 bg-green-500/10 px-6 py-4 text-green-500 shadow-lg backdrop-blur-md">
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              <p className="text-sm font-medium">
+                {t(
+                  "¡Mensaje enviado! Te responderé lo más pronto posible.",
+                  "Message sent! I'll get back to you as soon as possible.",
+                )}
               </p>
-            )}
-            {status === "error" && (
-              <p id="form-error" className="text-sm text-red-600">
+            </div>
+          )}
+          {status === "error" && (
+            <div className="flex items-center gap-3 rounded-xl border border-red-500/20 bg-red-500/10 px-6 py-4 text-red-500 shadow-lg backdrop-blur-md">
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              <p className="text-sm font-medium">
                 {t("Error al enviar. Intenta de nuevo.", "Error sending. Please try again.")}
               </p>
-            )}
-          </div>
-        </form>
+            </div>
+          )}
+        </div>
 
         <div className="flex flex-col justify-center">
           <p className="mb-10 text-lg leading-relaxed text-text-secondary">
             {t(
-              "Busco proyectos donde la IA no sea un buzzword sino la ventaja competitiva. Si tienes un problema complejo y necesitas resultados medibles, hablemos.",
-              "I'm looking for projects where AI isn't a buzzword but the competitive edge. If you have a complex problem and need measurable results, let's talk.",
+              "¿Listo para pasar de la experimentación a la producción? Ayudo a empresas a desplegar soluciones de IA que realmente mueven la aguja. Cuéntame tu desafío y tracemos el camino técnico para resolverlo.",
+              "Ready to move from experimentation to production? I help companies deploy AI solutions that actually move the needle. Tell me about your challenge, and let's map out the technical path to solve it.",
             )}
           </p>
           <div className="flex flex-col gap-5">
