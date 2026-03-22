@@ -48,7 +48,7 @@ export function Education() {
               <h3 className="mb-2 font-[family-name:var(--color-font-display)] text-2xl font-black tracking-tight text-text-primary md:text-3xl">
                 {t(edu.degree.es, edu.degree.en)}
                 {edu.status === "in-progress" && (
-                  <span className="ml-3 font-mono text-[10px] font-bold tracking-widest text-accent uppercase">
+                  <span className="ml-3 font-mono text-[11px] font-bold tracking-widest text-accent uppercase">
                     [{t("en curso", "in progress")}]
                   </span>
                 )}
@@ -63,7 +63,7 @@ export function Education() {
                 </p>
               )}
               {edu.highlights && edu.highlights.length > 0 && (
-                <div className="flex flex-wrap gap-x-4 gap-y-2 font-mono text-[10px] font-medium tracking-wider text-text-tertiary uppercase">
+                <div className="flex flex-wrap gap-x-4 gap-y-2 font-mono text-[11px] font-medium tracking-wider text-text-tertiary uppercase">
                   {edu.highlights.map((high) => (
                     <span key={high} className="flex items-center gap-2">
                       <span className="h-1 w-1 rounded-full bg-border" />

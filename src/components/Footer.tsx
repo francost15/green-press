@@ -11,7 +11,7 @@ export function Footer() {
             <span className="font-[family-name:var(--color-font-display)] text-lg font-black tracking-tighter text-text-primary">
               Franco Sanchez
             </span>
-            <span className="font-mono text-[10px] font-medium tracking-[0.2em] text-text-tertiary uppercase">
+            <span className="font-mono text-[11px] font-medium tracking-[0.2em] text-text-tertiary uppercase">
               AI & Software Engineering — {currentYear}
             </span>
           </div>
@@ -24,7 +24,7 @@ export function Footer() {
               className="group flex flex-col items-center gap-1"
               aria-label="LinkedIn"
             >
-              <span className="font-mono text-[10px] font-bold tracking-[0.2em] text-text-tertiary uppercase transition-colors group-hover:text-accent">
+              <span className="font-mono text-[11px] font-bold tracking-[0.2em] text-text-tertiary uppercase transition-colors group-hover:text-accent">
                 LinkedIn
               </span>
               <div className="h-[1px] w-0 bg-accent transition-all duration-300 group-hover:w-full" />
@@ -34,7 +34,7 @@ export function Footer() {
               className="group flex flex-col items-center gap-1"
               aria-label="Email"
             >
-              <span className="font-mono text-[10px] font-bold tracking-[0.2em] text-text-tertiary uppercase transition-colors group-hover:text-accent">
+              <span className="font-mono text-[11px] font-bold tracking-[0.2em] text-text-tertiary uppercase transition-colors group-hover:text-accent">
                 Email
               </span>
               <div className="h-[1px] w-0 bg-accent transition-all duration-300 group-hover:w-full" />
@@ -43,7 +43,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 text-center md:text-left">
-          <p className="font-mono text-[9px] leading-relaxed text-text-tertiary opacity-40 uppercase">
+          <p className="font-mono text-[11px] leading-relaxed text-text-tertiary opacity-90 uppercase">
             Built with React, TypeScript & Passion for Product.
             <br />
             Designed for high-impact AI implementation.

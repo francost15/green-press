@@ -59,7 +59,7 @@ function ProjectRow({ project, index }: { project: (typeof projects)[number]; in
       {/* Right: problem/solution/impact */}
       <div className="space-y-8">
         <div>
-          <p className="mb-2 font-mono text-[10px] font-bold tracking-[0.3em] text-accent uppercase opacity-80">
+          <p className="mb-2 font-mono text-[11px] font-bold tracking-[0.3em] text-accent uppercase">
             {t("Problema", "The Problem")}
           </p>
           <p className="text-lg leading-relaxed text-text-secondary">
@@ -67,7 +67,7 @@ function ProjectRow({ project, index }: { project: (typeof projects)[number]; in
           </p>
         </div>
         <div>
-          <p className="mb-2 font-mono text-[10px] font-bold tracking-[0.3em] text-accent uppercase opacity-80">
+          <p className="mb-2 font-mono text-[11px] font-bold tracking-[0.3em] text-accent uppercase">
             {t("Solución", "The Solution")}
           </p>
           <p className="text-lg leading-relaxed text-text-secondary">
@@ -75,7 +75,7 @@ function ProjectRow({ project, index }: { project: (typeof projects)[number]; in
           </p>
         </div>
         <div className="rounded-2xl bg-bg-secondary p-6 transition-colors hover:bg-accent/5">
-          <p className="mb-2 font-mono text-[10px] font-bold tracking-[0.3em] text-accent uppercase">
+          <p className="mb-2 font-mono text-[11px] font-bold tracking-[0.3em] text-accent uppercase">
             {t("Impacto Medible", "Measurable Impact")}
           </p>
           <p className="text-xl font-bold leading-tight text-text-primary md:text-2xl">

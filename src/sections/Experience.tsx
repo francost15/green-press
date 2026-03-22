@@ -59,7 +59,7 @@ export function Experience() {
               <p className="mb-6 text-[16px] leading-relaxed text-text-secondary">
                 {t(item.description.es, item.description.en)}
               </p>
-              <div className="flex flex-wrap gap-x-4 gap-y-2 font-mono text-[10px] font-medium tracking-wider text-text-tertiary uppercase">
+              <div className="flex flex-wrap gap-x-4 gap-y-2 font-mono text-[11px] font-medium tracking-wider text-text-tertiary uppercase">
                 {item.tags.map((tag) => (
                   <span key={tag} className="flex items-center gap-2">
                     <span className="h-1 w-1 rounded-full bg-border" />

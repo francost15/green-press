@@ -27,8 +27,8 @@
   --color-bg-secondary: #171717;
   --color-card: #141414;
   --color-card-border: #262626;
-  --color-accent: #8b5cf6; /* More vibrant purple for dark mode */
-  --color-accent-hover: #a78bfa;
+  --color-accent: #7c3aed; /* Darker purple for dark mode to pass 4.5:1 with white text */
+  --color-accent-hover: #8b5cf6;
   --color-text-primary: #fafafa;
   --color-text-secondary: #a3a3a3;
   --color-text-tertiary: #8a8a8a;

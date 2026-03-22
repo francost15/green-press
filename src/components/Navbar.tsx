@@ -125,7 +125,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={toggle}
-            className="flex items-center justify-center rounded-full border border-border/50 bg-bg-secondary px-2.5 py-1 text-[10px] font-bold tracking-widest text-text-secondary transition-all hover:border-accent hover:text-text-primary uppercase"
+            className="flex items-center justify-center rounded-full border border-border/50 bg-bg-secondary px-2.5 py-1 text-[11px] font-bold tracking-widest text-text-secondary transition-all hover:border-accent hover:text-text-primary uppercase"
           >
             {lang === "es" ? "EN" : "ES"}
           </button>
