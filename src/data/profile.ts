@@ -2,12 +2,12 @@ export const profile = {
   name: "Franco Sanchez",
   title: "AI & Software Engineer",
   tagline: {
-    es: "Construyo soluciones de IA y software que resuelven problemas reales.",
-    en: "I build AI and software solutions that solve real-world problems.",
+    es: "De idea a producto con IA — reduzco semanas a horas y convierto datos en decisiones.",
+    en: "From idea to product with AI — I turn weeks into hours and data into decisions.",
   },
   bio: {
-    es: "Ingeniero de software especializado en inteligencia artificial y visión por computadora. Desarrollo productos que generan impacto medible — desde sistemas de inspección industrial hasta plataformas multi-agente. He liderado equipos técnicos y construido soluciones desde cero para startups y empresas establecidas.",
-    en: "Software engineer specialized in artificial intelligence and computer vision. I build products that generate measurable impact — from industrial inspection systems to multi-agent platforms. I've led technical teams and built solutions from scratch for startups and established companies.",
+    es: "En 5 años he llevado 4 productos de IA desde la idea hasta producción — reduciendo costos hasta 85% y llevando la precisión por encima del 97%. Mi enfoque: entender el problema antes de escribir una línea de código, construir rápido, y medir todo. Trabajo en la intersección de IA, ingeniería de software y producto.",
+    en: "In 5 years, I've shipped 4 AI products from idea to production — cutting costs up to 85% and pushing accuracy above 97%. My approach: understand the problem before writing a line of code, build fast, and measure everything. I work at the intersection of AI, software engineering, and product.",
   },
   email: "franco@example.com",
   phone: "+52 222 123 4567",
@@ -23,4 +23,5 @@ export const profile = {
     { value: 4, suffix: "", label: { es: "Certificaciones", en: "Certifications" } },
   ],
   cvUrl: "/cv-franco-sanchez.pdf",
+  formspreeId: "your-form-id", // TODO: replace with real Formspree form ID
 };

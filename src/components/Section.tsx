@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
 interface SectionProps {
@@ -12,31 +11,46 @@ interface SectionProps {
 
 export function Section({ id, title, subtitle, children, className = "" }: SectionProps) {
   const ref = useRef<HTMLElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "-100px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section id={id} ref={ref} className={`px-6 py-24 ${className}`}>
-      <div className="mx-auto max-w-7xl">
+    <section id={id} ref={ref} className={`px-6 py-28 md:py-32 ${className}`}>
+      <div className="mx-auto max-w-[1200px]">
         {title && (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-            className="mb-16 text-center"
+          <div
+            className={`mb-16 transition-all duration-500 ${
+              visible ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"
+            }`}
           >
-            <h2 className="mb-4 bg-gradient-to-r from-accent-blue via-accent-purple to-accent-cyan bg-clip-text text-3xl font-bold text-transparent md:text-4xl">
+            <h2 className="mb-3 font-[family-name:var(--color-font-display)] text-4xl font-semibold tracking-tight text-text-primary md:text-5xl">
               {title}
             </h2>
-            {subtitle && <p className="mx-auto max-w-2xl text-text-secondary">{subtitle}</p>}
-          </motion.div>
+            {subtitle && <p className="max-w-xl text-lg text-text-secondary">{subtitle}</p>}
+          </div>
         )}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
+        <div
+          className={`transition-all duration-500 delay-100 ${
+            visible ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"
+          }`}
         >
           {children}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

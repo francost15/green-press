@@ -17,7 +17,10 @@
     />
     <meta name="author" content="Franco Sanchez" />
     <meta name="robots" content="index, follow" />
-    <meta name="canonical" content="https://francosanchez.dev" />
+    <link rel="canonical" href="https://francosanchez.dev" />
+    <link rel="alternate" hreflang="es" href="https://francosanchez.dev" />
+    <link rel="alternate" hreflang="en" href="https://francosanchez.dev" />
+    <link rel="alternate" hreflang="x-default" href="https://francosanchez.dev" />
     <meta property="og:title" content="Franco Sanchez — AI & Software Engineer" />
     <meta
       property="og:description"
@@ -26,21 +29,51 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://francosanchez.dev" />
     <meta property="og:locale" content="es_ES" />
+    <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:site_name" content="Franco Sanchez Portfolio" />
+    <meta property="og:image" content="https://francosanchez.dev/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Franco Sanchez — AI & Software Engineer" />
     <meta
       name="twitter:description"
       content="Portfolio profesional de Franco Sanchez. AI, Full-Stack Development & Technical Leadership."
     />
+    <meta name="twitter:image" content="https://francosanchez.dev/og-image.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media = 'all'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Franco Sanchez",
+        "jobTitle": "AI & Software Engineer",
+        "url": "https://francosanchez.dev",
+        "sameAs": ["https://github.com/fsanchez", "https://linkedin.com/in/fsanchez"],
+        "knowsAbout": [
+          "Artificial Intelligence",
+          "Machine Learning",
+          "Full-Stack Development",
+          "Computer Vision"
+        ],
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Puebla",
+          "addressCountry": "MX"
+        }
+      }
+    </script>
     <script>
       !(function () {
         var t =
@@ -51,7 +84,9 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Empty root — React handles all rendering with its own fade-in animation -->
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

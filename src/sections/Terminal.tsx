@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import type { KeyboardEvent } from "react";
-import { motion } from "framer-motion";
 import { useLang } from "../i18n";
 
 interface TerminalLine {
@@ -15,8 +14,27 @@ export function Terminal() {
   const [lines, setLines] = useState<TerminalLine[]>([]);
   const [input, setInput] = useState("");
   const [ready, setReady] = useState(false);
+  const [visible, setVisible] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // IntersectionObserver for fade-in (replaces framer-motion)
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "-80px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // Auto-type welcome message
   useEffect(() => {
@@ -31,11 +49,13 @@ export function Terminal() {
     return () => clearTimeout(timer);
   }, [t]);
 
-  // Auto-scroll to bottom
+  // Auto-scroll to bottom (deferred to avoid forced reflow)
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
+    const el = scrollRef.current;
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.scrollTop = el.scrollHeight;
+    });
   }, [lines]);
 
   function processCommand(cmd: string): string {
@@ -132,17 +152,12 @@ export function Terminal() {
   }
 
   return (
-    <section id="terminal" className="px-6 py-24">
+    <section ref={sectionRef} id="terminal" className="px-6 py-24">
       <div className="mx-auto max-w-4xl">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5 }}
-        >
+        <div className="transition-opacity duration-500" style={{ opacity: visible ? 1 : 0 }}>
           {/* Terminal window */}
           <div
-            className="overflow-hidden rounded-xl border border-black/10 shadow-2xl"
+            className="overflow-hidden rounded-xl border border-border shadow-lg"
             onClick={() => inputRef.current?.focus()}
           >
             {/* Title bar */}
@@ -168,7 +183,7 @@ export function Terminal() {
                 </div>
               ))}
 
-              {/* Input line */}
+              {/* Input line with blinking caret */}
               {ready && (
                 <div className="flex items-center text-green-400">
                   <span className="shrink-0">{PROMPT}</span>
@@ -178,10 +193,11 @@ export function Terminal() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    className="flex-1 border-none bg-transparent text-green-400 caret-green-400 outline-none"
+                    className="terminal-input flex-1 border-none bg-transparent text-green-400 outline-none"
                     spellCheck={false}
                     autoCapitalize="off"
                     autoComplete="off"
+                    aria-label={t("Comando de terminal", "Terminal command")}
                   />
                 </div>
               )}
@@ -191,7 +207,7 @@ export function Terminal() {
           <p className="mt-4 text-center text-sm text-text-tertiary">
             {t("Escribe un comando y presiona Enter", "Type a command and press Enter")}
           </p>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

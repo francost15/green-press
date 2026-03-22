@@ -1,39 +1,98 @@
-import { useState, useEffect } from "react";
-import { List, X, DownloadSimple, Translate } from "@phosphor-icons/react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { List, X, Translate } from "./Icons";
 import { useLang } from "../i18n";
 import { ThemeToggle } from "./ThemeToggle";
 
 const navLinks = [
-  { href: "#inicio", es: "Inicio", en: "Home" },
   { href: "#proyectos", es: "Proyectos", en: "Projects" },
-  { href: "#tecnologia", es: "Tecnología", en: "Tech Stack" },
   { href: "#experiencia", es: "Experiencia", en: "Experience" },
+  { href: "#sobre-mi", es: "Sobre Mí", en: "About" },
   { href: "#contacto", es: "Contacto", en: "Contact" },
 ];
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { lang, toggle, t } = useLang();
+  const [activeSection, setActiveSection] = useState("");
+  const { lang, toggle } = useLang();
+  const menuRef = useRef<HTMLDivElement>(null);
+  const toggleBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 50);
+          ticking = false;
+        });
+      }
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Track active section via IntersectionObserver
+  useEffect(() => {
+    const ids = navLinks.map((l) => l.href.replace("#", ""));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveSection("#" + entry.target.id);
+          }
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px" },
+    );
+    for (const id of ids) {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    }
+    return () => observer.disconnect();
+  }, []);
+
+  // Focus trap for mobile menu
+  const handleMenuKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setIsOpen(false);
+      toggleBtnRef.current?.focus();
+      return;
+    }
+    if (e.key !== "Tab" || !menuRef.current) return;
+    const focusable = menuRef.current.querySelectorAll<HTMLElement>(
+      'a[href], button, [tabindex]:not([tabindex="-1"])',
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }, []);
+
   return (
     <nav
-      className={`fixed top-0 right-0 left-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-bg-alt/80 shadow-sm backdrop-blur-xl" : "bg-transparent"
+      aria-label="Main navigation"
+      className={`fixed top-0 right-0 left-0 z-50 transition-all duration-500 ${
+        scrolled
+          ? "translate-y-0 bg-bg/80 shadow-[0_1px_0_var(--color-border)] backdrop-blur-xl"
+          : "-translate-y-full"
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+      <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-5">
         <a
           href="#inicio"
-          className="bg-gradient-to-r from-accent-blue via-accent-purple to-accent-cyan bg-clip-text font-mono text-xl font-bold text-transparent"
+          className={`font-[family-name:var(--color-font-display)] text-lg font-bold text-text-primary transition-all duration-300 ${
+            scrolled ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"
+          }`}
         >
-          FS
+          Franco Sanchez
         </a>
 
         <div className="hidden items-center gap-8 md:flex">
@@ -41,7 +100,10 @@ export function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="text-sm text-text-secondary transition-colors hover:text-text-primary"
+              aria-current={activeSection === link.href ? "true" : undefined}
+              className={`text-sm transition-colors hover:text-accent ${
+                activeSection === link.href ? "text-accent" : "text-text-secondary"
+              }`}
             >
               {lang === "es" ? link.es : link.en}
             </a>
@@ -50,65 +112,62 @@ export function Navbar() {
           <button
             type="button"
             onClick={toggle}
-            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-text-secondary transition-colors hover:text-text-primary"
+            className="flex items-center gap-1 text-sm text-text-tertiary transition-colors hover:text-accent"
             aria-label="Toggle language"
           >
-            <Translate size={16} weight="duotone" />
+            <Translate size={15} weight="bold" />
             {lang === "es" ? "EN" : "ES"}
           </button>
 
           <ThemeToggle />
-
-          <a
-            href="/cv-franco-sanchez.pdf"
-            download
-            className="inline-flex items-center gap-2 rounded-lg bg-accent-purple px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
-          >
-            <DownloadSimple size={16} weight="bold" />
-            {t("Descargar CV", "Download CV")}
-          </a>
         </div>
 
         <div className="flex items-center gap-3 md:hidden">
           <button
             type="button"
             onClick={toggle}
-            className="rounded-lg px-2 py-1.5 text-xs font-medium text-text-secondary"
+            className="text-xs font-medium text-text-secondary"
           >
             {lang === "es" ? "EN" : "ES"}
           </button>
+          <ThemeToggle />
           <button
+            ref={toggleBtnRef}
             type="button"
             className="text-text-primary"
             onClick={() => setIsOpen(!isOpen)}
             aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
           >
-            {isOpen ? <X size={24} weight="bold" /> : <List size={24} weight="bold" />}
+            {isOpen ? <X size={22} weight="bold" /> : <List size={22} weight="bold" />}
           </button>
         </div>
       </div>
 
       {isOpen && (
-        <div className="bg-bg-alt/95 backdrop-blur-xl md:hidden">
-          <div className="flex flex-col gap-4 px-6 py-6">
+        <div
+          id="mobile-menu"
+          ref={menuRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Navigation menu"
+          onKeyDown={handleMenuKeyDown}
+          className="border-t border-border bg-bg/95 backdrop-blur-xl md:hidden"
+        >
+          <div className="flex flex-col gap-5 px-6 py-8">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="text-text-secondary transition-colors hover:text-text-primary"
+                className={`text-lg transition-colors hover:text-accent ${
+                  activeSection === link.href ? "text-accent" : "text-text-secondary"
+                }`}
               >
                 {lang === "es" ? link.es : link.en}
               </a>
             ))}
-            <a
-              href="/cv-franco-sanchez.pdf"
-              download
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent-purple px-4 py-2 text-sm font-medium text-white"
-            >
-              <DownloadSimple size={16} weight="bold" />
-              {t("Descargar CV", "Download CV")}
-            </a>
           </div>
         </div>
       )}

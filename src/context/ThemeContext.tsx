@@ -7,7 +7,6 @@ interface ThemeContextValue {
   resolvedTheme: "light" | "dark";
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
-  isTransitioning: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
@@ -15,44 +14,31 @@ const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 const STORAGE_KEY = "theme-preference";
 
 function getSystemTheme(): "light" | "dark" {
-  if (typeof window === "undefined") return "light";
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-function getStoredTheme(): Theme | null {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem(STORAGE_KEY) as Theme | null;
-}
-
-function storeTheme(theme: Theme): void {
-  localStorage.setItem(STORAGE_KEY, theme);
-}
+// Read stored theme + resolve once at module load to avoid double render
+const storedTheme = (localStorage.getItem(STORAGE_KEY) as Theme | null) ?? "system";
+const initialResolved = storedTheme === "system" ? getSystemTheme() : storedTheme;
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("system");
-  const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [theme, setThemeState] = useState<Theme>(storedTheme);
+  const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">(initialResolved);
 
   useEffect(() => {
-    const stored = getStoredTheme();
-    if (stored) {
-      setThemeState(stored);
-    }
-  }, []);
-
-  useEffect(() => {
-    const updateResolved = () => {
-      const resolved = theme === "system" ? getSystemTheme() : theme;
-      setResolvedTheme(resolved);
+    const resolved = theme === "system" ? getSystemTheme() : theme;
+    setResolvedTheme(resolved);
+    // Only touch the DOM if the attribute is stale (inline script in index.html sets it first)
+    if (document.documentElement.getAttribute("data-theme") !== resolved) {
       document.documentElement.setAttribute("data-theme", resolved);
-    };
-
-    updateResolved();
+    }
 
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleChange = () => {
       if (theme === "system") {
-        updateResolved();
+        const r = getSystemTheme();
+        setResolvedTheme(r);
+        document.documentElement.setAttribute("data-theme", r);
       }
     };
 
@@ -61,15 +47,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [theme]);
 
   const setTheme = useCallback((newTheme: Theme) => {
-    document.documentElement.classList.add("theme-transition");
-    setIsTransitioning(true);
     setThemeState(newTheme);
-    storeTheme(newTheme);
-
-    setTimeout(() => {
-      document.documentElement.classList.remove("theme-transition");
-      setIsTransitioning(false);
-    }, 150);
+    localStorage.setItem(STORAGE_KEY, newTheme);
   }, []);
 
   const toggleTheme = useCallback(() => {
@@ -78,7 +57,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [resolvedTheme, setTheme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme, toggleTheme, isTransitioning }}>
+    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
