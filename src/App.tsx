@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import { Layout } from "./components/Layout";
 import { Hero } from "./sections/Hero";
 
@@ -47,6 +48,7 @@ export function App() {
       <LazySection>
         <Contact />
       </LazySection>
+      <Analytics />
     </Layout>
   );
 }
