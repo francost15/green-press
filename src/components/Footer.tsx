@@ -43,7 +43,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 text-center md:text-left">
-          <p className="font-mono text-[11px] leading-relaxed text-text-secondary opacity-70 uppercase">
+          <p className="font-mono text-[11px] leading-relaxed text-text-tertiary uppercase">
             Built with React, TypeScript & Passion for Product.
             <br />
             Designed for high-impact AI implementation.

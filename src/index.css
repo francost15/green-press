@@ -23,11 +23,11 @@
   --color-bg: #0a0a0a;
   --color-bg-alt: #141414;
   --color-bg-secondary: #171717;
-  --color-accent: #7c3aed;
-  --color-accent-hover: #8b5cf6;
+  --color-accent: #8b5cf6;
+  --color-accent-hover: #a78bfa;
   --color-text-primary: #fafafa;
   --color-text-secondary: #a3a3a3;
-  --color-text-tertiary: #999;
+  --color-text-tertiary: #b0b0b0;
   --color-border: #262626;
 }
 
@@ -40,7 +40,7 @@
     --color-accent-hover: #a78bfa;
     --color-text-primary: #fafafa;
     --color-text-secondary: #a3a3a3;
-    --color-text-tertiary: #999;
+    --color-text-tertiary: #b0b0b0;
     --color-border: #262626;
   }
 }
