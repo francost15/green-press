@@ -11,7 +11,7 @@ export function Footer() {
             <span className="font-[family-name:var(--color-font-display)] text-lg font-black tracking-tighter text-text-primary">
               Franco Sanchez
             </span>
-            <span className="font-mono text-[11px] font-medium tracking-[0.2em] text-text-tertiary uppercase">
+            <span className="font-mono text-[11px] font-medium tracking-[0.2em] text-text-secondary uppercase">
               AI & Software Engineering — {currentYear}
             </span>
           </div>
@@ -43,7 +43,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 text-center md:text-left">
-          <p className="font-mono text-[11px] leading-relaxed text-text-tertiary opacity-90 uppercase">
+          <p className="font-mono text-[11px] leading-relaxed text-text-secondary opacity-70 uppercase">
             Built with React, TypeScript & Passion for Product.
             <br />
             Designed for high-impact AI implementation.

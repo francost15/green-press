@@ -7,7 +7,7 @@ export interface Project {
   tags: string[];
   link?: string;
   github?: string;
-  demo?: string;
+  images?: string[];
 }
 
 export const projects: Project[] = [
@@ -27,6 +27,13 @@ export const projects: Project[] = [
       en: "90% reduction in report generation time and increased speed in strategic decision-making.",
     },
     tags: ["React", "Python", "LangGraph", "LLMs", "Data Visualization"],
+    images: [
+      "/projects/ai-dashboard-1.png",
+      "/projects/ai-dashboard-2.png",
+      "/projects/ai-dashboard-3.png",
+      "/projects/ai-dashboard-4.png",
+      "/projects/ai-dashboard-5.png",
+    ],
   },
   {
     id: "cfdi-billing-ai",
@@ -44,6 +51,16 @@ export const projects: Project[] = [
       en: "80% automation of the accounting workflow and financial projection with over 92% accuracy.",
     },
     tags: ["Node.js", "Python", "OCR", "APIs", "Predicción"],
+    images: [
+      "/projects/cfdi-1.jpeg",
+      "/projects/cfdi-2.jpeg",
+      "/projects/cfdi-3.jpeg",
+      "/projects/cfdi-4.jpeg",
+      "/projects/cfdi-5.jpeg",
+      "/projects/cfdi-6.jpeg",
+      "/projects/cfdi-7.jpeg",
+      "/projects/cfdi-8.jpeg",
+    ],
   },
   {
     id: "rag-chatbot-uvp",
@@ -61,6 +78,7 @@ export const projects: Project[] = [
       en: "Autonomous resolution of 65% of level 1 (L1) queries, freeing up hundreds of support hours per month.",
     },
     tags: ["LangChain", "RAG", "Vector DB", "Chatbots", "OpenAI"],
+    images: ["/projects/rag-chatbot-1.png", "/projects/rag-chatbot-2.png"],
   },
   {
     id: "textile-erp",
@@ -95,5 +113,10 @@ export const projects: Project[] = [
       en: "75% reduction in initial screening time and a frictionless application process for the candidate.",
     },
     tags: ["Next.js", "Python", "NLP", "Algoritmos de Match", "AWS"],
+    images: [
+      "/projects/ltc-job-board-1.png",
+      "/projects/ltc-job-board-2.png",
+      "/projects/ltc-job-board-3.png",
+    ],
   },
 ];

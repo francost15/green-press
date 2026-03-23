@@ -88,6 +88,54 @@ export function Phone(p: IconProps) {
     p,
   );
 }
+export function Eye(p: IconProps) {
+  const s = p.size ?? 24;
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={s}
+      height={s}
+      viewBox="0 0 256 256"
+      fill="currentColor"
+      className={p.className}
+    >
+      <path d="M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,123.97,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4a8,8,0,0,0,0-6.5ZM128,192c-30.78,0-57.67-11.19-79.93-33.29A169.47,169.47,0,0,1,24.3,128a169.47,169.47,0,0,1,23.77-30.71C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.29A169.47,169.47,0,0,1,231.7,128c-7.14,13.25-43.73,64-103.7,64Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z" />
+    </svg>
+  );
+}
+
+export function CaretLeft(p: IconProps) {
+  const s = p.size ?? 24;
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={s}
+      height={s}
+      viewBox="0 0 256 256"
+      fill="currentColor"
+      className={p.className}
+    >
+      <path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z" />
+    </svg>
+  );
+}
+
+export function CaretRight(p: IconProps) {
+  const s = p.size ?? 24;
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={s}
+      height={s}
+      viewBox="0 0 256 256"
+      fill="currentColor"
+      className={p.className}
+    >
+      <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z" />
+    </svg>
+  );
+}
+
 export function ArrowSquareOut(p: IconProps) {
   return svg(
     "M224 104a8 8 0 01-16 0V59.32l-66.33 66.34a8 8 0 01-11.32-11.32L196.68 48H152a8 8 0 010-16h64a8 8 0 018 8zm-40 24a8 8 0 00-8 8v72H48V80h72a8 8 0 000-16H48a16 16 0 00-16 16v128a16 16 0 0016 16h128a16 16 0 0016-16v-72a8 8 0 00-8-8z",

@@ -5,7 +5,12 @@ import { HeroAnimation } from "../components/HeroAnimation";
 
 export function Hero() {
   const { t } = useLang();
-  const heroContacts: { href: string; label: string; icon: any; external?: boolean }[] = [
+  const heroContacts: {
+    href: string;
+    label: string;
+    icon: React.ComponentType<{ size?: number; weight?: string; className?: string }>;
+    external?: boolean;
+  }[] = [
     {
       href: `mailto:${profile.email}`,
       label: profile.email,

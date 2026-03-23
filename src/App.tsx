@@ -1,4 +1,5 @@
-import { lazy, Suspense } from "react";
+import { Component, lazy, Suspense } from "react";
+import type { ErrorInfo, ReactNode } from "react";
 import { Layout } from "./components/Layout";
 import { Hero } from "./sections/Hero";
 
@@ -14,17 +15,42 @@ const Education = lazy(() =>
 );
 const Contact = lazy(() => import("./sections/Contact").then((m) => ({ default: m.Contact })));
 
-function LazySection({ children }: { children: React.ReactNode }) {
-  return (
-    <Suspense
-      fallback={
-        <div className="flex h-96 items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error("Section failed to load:", error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="flex h-48 items-center justify-center text-text-tertiary">
+          <p className="text-sm">Something went wrong loading this section.</p>
         </div>
-      }
-    >
-      {children}
-    </Suspense>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+function LazySection({ children }: { children: ReactNode }) {
+  return (
+    <ErrorBoundary>
+      <Suspense
+        fallback={
+          <div className="flex h-96 items-center justify-center">
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+          </div>
+        }
+      >
+        {children}
+      </Suspense>
+    </ErrorBoundary>
   );
 }
 

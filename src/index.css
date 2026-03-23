@@ -4,13 +4,11 @@
   --color-bg: #fafafa;
   --color-bg-alt: #ffffff;
   --color-bg-secondary: #f5f5f5;
-  --color-card: #ffffff;
-  --color-card-border: #e5e5e5;
   --color-accent: #7c3aed;
   --color-accent-hover: #6d28d9;
   --color-text-primary: #1a1a1a;
   --color-text-secondary: #525252;
-  --color-text-tertiary: #525252;
+  --color-text-tertiary: #737373;
   --color-border: #e5e5e5;
   --color-font-sans: "Inter", system-ui, sans-serif;
   --color-font-display: "Bricolage Grotesque", system-ui, sans-serif;
@@ -25,13 +23,11 @@
   --color-bg: #0a0a0a;
   --color-bg-alt: #141414;
   --color-bg-secondary: #171717;
-  --color-card: #141414;
-  --color-card-border: #262626;
-  --color-accent: #7c3aed; /* Darker purple for dark mode to pass 4.5:1 with white text */
+  --color-accent: #7c3aed;
   --color-accent-hover: #8b5cf6;
   --color-text-primary: #fafafa;
   --color-text-secondary: #a3a3a3;
-  --color-text-tertiary: #8a8a8a;
+  --color-text-tertiary: #999;
   --color-border: #262626;
 }
 
@@ -40,13 +36,11 @@
     --color-bg: #0a0a0a;
     --color-bg-alt: #141414;
     --color-bg-secondary: #171717;
-    --color-card: #141414;
-    --color-card-border: #262626;
     --color-accent: #8b5cf6;
     --color-accent-hover: #a78bfa;
     --color-text-primary: #fafafa;
     --color-text-secondary: #a3a3a3;
-    --color-text-tertiary: #8a8a8a;
+    --color-text-tertiary: #999;
     --color-border: #262626;
   }
 }
@@ -98,6 +92,21 @@ body {
   box-shadow: 0 0 12px 2px color-mix(in srgb, var(--color-accent) 40%, transparent);
   animation: scroll-progress-fill linear both;
   animation-timeline: scroll();
+}
+
+@keyframes btn-pulse-ring {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
 }
 
 @keyframes scroll-progress-fill {
@@ -183,45 +192,8 @@ body {
   }
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
 .print-only {
   display: none;
-}
-
-/* Terminal blinking caret */
-.terminal-input {
-  caret-color: #4ade80;
-}
-
-.terminal-input:focus {
-  animation: terminal-blink 1s step-end infinite;
-}
-
-@keyframes terminal-blink {
-  0%,
-  100% {
-    caret-color: #4ade80;
-  }
-  50% {
-    caret-color: transparent;
-  }
 }
 
 /* Hero entrance — single animation on the whole grid, inline style={opacity:0}
