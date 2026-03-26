@@ -11,7 +11,7 @@
   --color-text-tertiary: #737373;
   --color-border: #e5e5e5;
   --color-font-sans: "Inter", system-ui, sans-serif;
-  --color-font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --color-font-display: "Space Grotesk", system-ui, sans-serif;
   --color-font-mono: "JetBrains Mono", monospace;
 }
 
@@ -20,28 +20,28 @@
 }
 
 [data-theme="dark"] {
-  --color-bg: #0a0a0a;
-  --color-bg-alt: #141414;
-  --color-bg-secondary: #171717;
-  --color-accent: #8b5cf6;
-  --color-accent-hover: #a78bfa;
+  --color-bg: #0b0f19;
+  --color-bg-alt: #131929;
+  --color-bg-secondary: #1a2238;
+  --color-accent: #9333ea;
+  --color-accent-hover: #a855f7;
   --color-text-primary: #fafafa;
   --color-text-secondary: #a3a3a3;
   --color-text-tertiary: #b0b0b0;
-  --color-border: #262626;
+  --color-border: #2d3748;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --color-bg: #0a0a0a;
-    --color-bg-alt: #141414;
-    --color-bg-secondary: #171717;
-    --color-accent: #8b5cf6;
-    --color-accent-hover: #a78bfa;
+    --color-bg: #0b0f19;
+    --color-bg-alt: #131929;
+    --color-bg-secondary: #1a2238;
+    --color-accent: #9333ea;
+    --color-accent-hover: #a855f7;
     --color-text-primary: #fafafa;
     --color-text-secondary: #a3a3a3;
     --color-text-tertiary: #b0b0b0;
-    --color-border: #262626;
+    --color-border: #2d3748;
   }
 }
 
@@ -71,6 +71,40 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Background Animated Gradient Mesh */
+.bg-mesh-dark {
+  background-color: var(--color-bg);
+  background-image:
+    radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
+    radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 0.2) 0, transparent 50%),
+    radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 0.2) 0, transparent 50%);
+  background-size: 200% 200%;
+  animation: bg-mesh 15s ease infinite alternate;
+}
+
+@keyframes bg-mesh {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+/* Scroll Reveal Classes */
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.8s ease-out,
+    transform 0.8s ease-out;
+  will-change: opacity, transform;
+}
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 body {

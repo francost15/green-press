@@ -171,6 +171,8 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
   );
 }
 
+import { useScrollReveal } from "../hooks/useScrollReveal";
+
 /* ── Project Row ── */
 function ProjectRow({
   project,
@@ -182,9 +184,13 @@ function ProjectRow({
   onPreview: () => void;
 }) {
   const { t } = useLang();
+  const revealRef = useScrollReveal({ threshold: 0.2, triggerOnce: true });
 
   return (
-    <div className="relative z-10 grid gap-8 bg-bg py-16 md:grid-cols-[1fr_1.5fr] md:gap-16">
+    <div
+      ref={revealRef as React.RefObject<HTMLDivElement>}
+      className="reveal-hidden relative z-10 grid gap-8 bg-bg py-16 md:grid-cols-[1fr_1.5fr] md:gap-16"
+    >
       {/* Left: title + meta */}
       <div>
         <span className="mb-3 block font-mono text-xs font-medium tracking-[0.2em] text-accent uppercase">

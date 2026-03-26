@@ -72,31 +72,42 @@ export function Competencies() {
         />
 
         {competencies.map((comp) => (
-          <div
-            key={comp.title.es}
-            className="relative z-10 bg-bg px-8 py-12 transition-colors hover:bg-bg/80 md:px-10"
-          >
-            <h3 className="mb-4 font-[family-name:var(--color-font-display)] text-xl font-bold tracking-tight text-text-primary">
-              {t(comp.title.es, comp.title.en)}
-            </h3>
-            <p className="mb-8 text-[15px] leading-relaxed text-text-secondary">
-              {t(comp.description.es, comp.description.en)}
-            </p>
-            <div className="flex flex-wrap gap-x-4 gap-y-3">
-              {comp.techs.map((tech) => (
-                <span
-                  key={tech}
-                  className="inline-flex items-center text-xs font-mono font-medium tracking-widest uppercase text-text-tertiary"
-                  title={tech}
-                >
-                  <span className="mr-2 h-1 w-1 rounded-full bg-border" />
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
+          <CompetencyItem key={comp.title.es} comp={comp} />
         ))}
       </div>
     </Section>
+  );
+}
+
+import { useScrollReveal } from "../hooks/useScrollReveal";
+
+function CompetencyItem({ comp }: { comp: (typeof competencies)[0] }) {
+  const { t } = useLang();
+  const revealRef = useScrollReveal({ threshold: 0.2, triggerOnce: true });
+
+  return (
+    <div
+      ref={revealRef as React.RefObject<HTMLDivElement>}
+      className="reveal-hidden relative z-10 bg-bg px-8 py-12 transition-colors hover:bg-bg/80 md:px-10"
+    >
+      <h3 className="mb-4 font-[family-name:var(--color-font-display)] text-xl font-bold tracking-tight text-text-primary">
+        {t(comp.title.es, comp.title.en)}
+      </h3>
+      <p className="mb-8 text-[15px] leading-relaxed text-text-secondary">
+        {t(comp.description.es, comp.description.en)}
+      </p>
+      <div className="flex flex-wrap gap-x-4 gap-y-3">
+        {comp.techs.map((tech) => (
+          <span
+            key={tech}
+            className="inline-flex items-center text-xs font-mono font-medium tracking-widest uppercase text-text-tertiary"
+            title={tech}
+          >
+            <span className="mr-2 h-1 w-1 rounded-full bg-border" />
+            {tech}
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }

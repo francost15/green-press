@@ -9,7 +9,7 @@ export function Layout({ children }: { children: ReactNode }) {
   return (
     <I18nProvider>
       <ThemeProvider>
-        <div className="relative min-h-screen bg-bg">
+        <div className="relative min-h-screen bg-bg dark:bg-mesh-dark transition-colors duration-500">
           <ScrollProgress />
           <Navbar />
           <main>{children}</main>
