@@ -50,4 +50,15 @@ describe("ProjectPage", () => {
       expect(Number(img.getAttribute("height"))).toBeGreaterThan(0);
     }
   });
+
+  it("offers a phone-sized variant of every screenshot", async () => {
+    const { container } = await renderAstro(ProjectPage, { lang: "en", project: cfdi });
+    for (const img of container.querySelectorAll("main img")) {
+      const src = img.getAttribute("src")!;
+      expect(img.getAttribute("srcset")).toBe(
+        `${src.replace(/\.webp$/, "-sm.webp")} 768w, ${src} 1536w`,
+      );
+      expect(img).toHaveAttribute("sizes");
+    }
+  });
 });
