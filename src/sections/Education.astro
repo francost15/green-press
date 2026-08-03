@@ -1,0 +1,67 @@
+---
+import Section from "../components/Section.astro";
+import { education } from "../data/education";
+import { formatPeriod } from "../lib/dates";
+import { useTranslations, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<Section id="educacion" number="04" title={t("Educación", "Education")}>
+  <div class="mx-auto max-w-3xl" data-reveal-group>
+    <div class="relative pl-8 md:pl-10">
+      <div class="timeline-line" aria-hidden="true"></div>
+
+      <div class="space-y-2">
+        {
+          education.map((edu, i) => (
+            <div class={`stagger-item relative pb-10 ${i === education.length - 1 ? "pb-0" : ""}`}>
+              <div class="timeline-dot" style="top: 28px" aria-hidden="true" />
+
+              <div class="card p-6 md:p-8">
+                <div class="mb-4 flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <h3 class="font-[family-name:var(--color-font-display)] text-xl font-black tracking-tight text-text-primary md:text-2xl">
+                      {t(edu.degree.es, edu.degree.en)}
+                      {edu.status === "in-progress" && (
+                        <span class="ml-2 section-label align-middle">
+                          [{t("en curso", "in progress")}]
+                        </span>
+                      )}
+                    </h3>
+                    <p class="mt-1 text-sm font-semibold text-accent">
+                      {edu.institution}
+                      {edu.location && ` — ${edu.location}`}
+                    </p>
+                  </div>
+                  <span class="mt-1 shrink-0 font-mono text-[11px] font-bold tracking-[0.15em] text-text-tertiary uppercase sm:mt-0">
+                    {formatPeriod(edu.period, lang)}
+                  </span>
+                </div>
+
+                {edu.description && (
+                  <p class="mb-4 text-sm leading-relaxed text-text-secondary">
+                    {t(edu.description.es, edu.description.en)}
+                  </p>
+                )}
+
+                {edu.highlights && (
+                  <div class="flex flex-wrap gap-1.5">
+                    {(lang === "es" ? edu.highlights.es : edu.highlights.en).map((h) => (
+                      <span class="tech-pill">{h}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</Section>

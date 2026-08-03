@@ -1,0 +1,111 @@
+---
+import Icon from "../components/Icon.astro";
+import HeroAnimation from "../components/HeroAnimation.astro";
+import { profile } from "../data/profile";
+import { useTranslations, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const stats = [
+  profile.stats[0],
+  profile.stats[1],
+  { value: 85, suffix: "%", label: { es: "Reducción de costos", en: "Cost reduction" } },
+];
+---
+
+<section id="inicio" class="relative flex min-h-dvh items-center overflow-hidden bg-bg">
+  {/* Background: dot grid + canvas + gradient overlay */}
+  <div class="absolute inset-0 z-0">
+    <div class="absolute inset-0 dot-grid-bg opacity-40"></div>
+    <HeroAnimation />
+    {/* Gradient: strong on left so text is legible, fades to transparent right */}
+    <div
+      class="pointer-events-none absolute inset-0"
+      style="background: linear-gradient(105deg, var(--color-bg) 30%, color-mix(in srgb, var(--color-bg) 80%, transparent) 60%, transparent 100%)"
+    >
+    </div>
+    {/* Radial glow from top-left for depth */}
+    <div
+      class="pointer-events-none absolute inset-0"
+      style="background: radial-gradient(ellipse 70% 60% at 5% 20%, color-mix(in srgb, var(--color-accent) 7%, transparent), transparent)"
+    >
+    </div>
+  </div>
+
+  {/* Per-element stagger: each direct child gets hero-item nth-child delay */}
+  <div class="relative z-10 mx-auto w-full max-w-[1200px] px-6 pb-24 pt-36">
+    {/* 1 — Status indicator */}
+    <div class="hero-item mb-10 flex items-center gap-3 border-l-2 border-accent pl-4">
+      <span class="relative flex h-2 w-2 shrink-0" aria-hidden="true">
+        <span
+          class="absolute inset-0 rounded-full bg-accent opacity-50"
+          style="animation: status-ping 2.4s ease-out infinite"></span>
+        <span class="relative h-2 w-2 rounded-full bg-accent"></span>
+      </span>
+      <span class="font-mono text-[11px] font-bold tracking-[0.25em] text-accent uppercase">
+        {t("Disponible para proyectos", "Available for projects")}
+      </span>
+    </div>
+
+    {/* 2 — Name */}
+    <h1
+      class="hero-item mb-4 font-[family-name:var(--color-font-display)] text-[clamp(52px,8vw,100px)] font-black leading-[0.95] tracking-tighter text-text-primary"
+    >
+      {/* Two block spans rather than a <br>: a <br> contributes no whitespace to text
+          extraction, so crawlers read the single token "FrancoSanchez". */}
+      <span class="block">Franco</span>
+      <span
+        class="block text-transparent"
+        style="-webkit-text-stroke: 2px var(--color-text-primary)">Sanchez</span
+      >
+    </h1>
+
+    {/* 3 — Role */}
+    <p
+      class="hero-item mb-6 font-mono text-[11px] font-bold tracking-[0.3em] text-accent uppercase"
+    >
+      {profile.title}
+    </p>
+
+    {/* 4 — Tagline */}
+    <p class="hero-item mb-12 max-w-lg text-lg font-light leading-relaxed text-text-secondary">
+      {t(profile.tagline.es, profile.tagline.en)}
+    </p>
+
+    {/* 5 — Stats row */}
+    <div
+      class="hero-item mb-12 flex flex-wrap items-start gap-8 border-y border-border py-8 md:gap-14"
+    >
+      {
+        stats.map((stat) => (
+          <div class="flex flex-col gap-0.5">
+            <span class="font-[family-name:var(--color-font-display)] text-3xl font-black leading-none tracking-tighter text-text-primary md:text-4xl">
+              {stat.value}
+              {stat.suffix}
+            </span>
+            <span class="text-xs leading-tight text-text-tertiary">
+              {t(stat.label.es, stat.label.en)}
+            </span>
+          </div>
+        ))
+      }
+    </div>
+
+    {/* 6 — CTAs */}
+    <div class="hero-item flex flex-wrap items-center gap-4">
+      <a href="#proyectos" class="btn-primary">
+        {t("Ver Proyectos", "View Projects")}
+        <Icon name="ArrowRight" size={17} />
+      </a>
+      <a href={profile.cvUrl} download class="btn-secondary">
+        <Icon name="DownloadSimple" size={17} />
+        {t("Descargar CV", "Download CV")}
+      </a>
+    </div>
+  </div>
+</section>

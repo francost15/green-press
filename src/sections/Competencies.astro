@@ -1,0 +1,96 @@
+---
+import Section from "../components/Section.astro";
+import { useTranslations, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Inner SVG markup per card — authored here, injected with set:html so the card
+// loop below stays a single template.
+const competencies = [
+  {
+    title: { es: "Inteligencia Artificial", en: "Artificial Intelligence" },
+    description: {
+      es: "Desarrollo de sistemas de IA que resuelven problemas de negocio reales. Especializado en agentes autónomos, LLMs y visión por computadora listos para producción.",
+      en: "Development of AI systems that solve real business problems. Specialized in production-ready autonomous agents, LLMs, and computer vision.",
+    },
+    techs: ["LangGraph", "LangChain", "TensorFlow", "Pandas", "OpenCV"],
+    icon: `<circle cx="12" cy="12" r="3" /><circle cx="4" cy="6" r="1.5" /><circle cx="20" cy="6" r="1.5" /><circle cx="4" cy="18" r="1.5" /><circle cx="20" cy="18" r="1.5" /><line x1="5.5" y1="6.8" x2="10.2" y2="10.8" /><line x1="18.5" y1="6.8" x2="13.8" y2="10.8" /><line x1="5.5" y1="17.2" x2="10.2" y2="13.2" /><line x1="18.5" y1="17.2" x2="13.8" y2="13.2" />`,
+  },
+  {
+    title: { es: "Arquitectura Full-Stack", en: "Full-Stack Architecture" },
+    description: {
+      es: "Construcción de plataformas escalables de principio a fin. Diseño arquitecturas en la nube que soportan alta concurrencia con latencia mínima.",
+      en: "End-to-end construction of scalable platforms. I design cloud architectures that handle high concurrency with minimal latency.",
+    },
+    techs: ["React", "Next.js", "NestJS", "PostgreSQL", "AWS"],
+    icon: `<polygon points="12 2 22 7.5 12 13 2 7.5" /><polyline points="2 13 12 18.5 22 13" /><polyline points="2 10 12 15.5 22 10" />`,
+  },
+  {
+    title: { es: "Liderazgo Técnico & PM", en: "Tech Leadership & PM" },
+    description: {
+      es: "Alineación entre tecnología y objetivos de negocio. Defino roadmaps, optimizo flujos ágiles y guío equipos hacia el cumplimiento de OKRs.",
+      en: "Aligning technology with business goals. I define roadmaps, optimize agile workflows, and guide teams toward OKRs.",
+    },
+    techs: ["Scrum & Kanban", "Jira", "Product Strategy", "OKRs", "Mentoring"],
+    icon: `<circle cx="12" cy="5" r="2.5" /><circle cx="5" cy="18" r="2" /><circle cx="19" cy="18" r="2" /><line x1="12" y1="7.5" x2="12" y2="12" /><line x1="12" y1="12" x2="6" y2="16" /><line x1="12" y1="12" x2="18" y2="16" />`,
+  },
+];
+---
+
+<Section
+  id="competencias"
+  number="01"
+  title={t("Competencias", "Competencies")}
+  subtitle={t("Lo que me contratarías para resolver", "What you'd hire me to solve")}
+>
+  <div class="grid gap-5 md:grid-cols-3" data-reveal-group>
+    {
+      competencies.map((comp) => (
+        <div class="stagger-item card group relative flex flex-col overflow-hidden p-8">
+          {/* Accent top strip */}
+          <div
+            class="absolute inset-x-0 top-0 h-[3px]"
+            style="background: linear-gradient(90deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 30%, transparent))"
+          />
+
+          {/* Hover glow */}
+          <div
+            class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            style="background: radial-gradient(ellipse 80% 50% at 20% 20%, color-mix(in srgb, var(--color-accent) 5%, transparent), transparent)"
+          />
+
+          {/* Icon — rounded-[14px] harmonizes with the card's rounded-[20px] outer curve */}
+          <div class="relative mb-6 flex h-11 w-11 items-center justify-center rounded-[14px] border border-accent/20 bg-accent/10 text-accent">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              class="h-6 w-6"
+              aria-hidden="true"
+              set:html={comp.icon}
+            />
+          </div>
+
+          <h3 class="mb-3 font-[family-name:var(--color-font-display)] text-xl font-bold tracking-tight text-text-primary">
+            {t(comp.title.es, comp.title.en)}
+          </h3>
+          <p class="mb-7 flex-1 text-sm leading-relaxed text-text-secondary">
+            {t(comp.description.es, comp.description.en)}
+          </p>
+
+          <div class="flex flex-wrap gap-2">
+            {comp.techs.map((tech) => (
+              <span class="tech-pill">{tech}</span>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</Section>

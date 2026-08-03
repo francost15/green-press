@@ -1,0 +1,165 @@
+---
+import { personSchema, projectsSchema } from "../data/structuredData";
+import { SITE, localePath, type Lang } from "../i18n";
+import "../index.css";
+
+interface Props {
+  lang: Lang;
+  /** Page title. Defaults to the site-level title for this locale. */
+  title?: string;
+  /** Meta description. Defaults to the site-level description for this locale. */
+  description?: string;
+  /** Path below the locale root, e.g. "projects/foo/". Empty for the home page. */
+  path?: string;
+  /** Same path in the other locale, for hreflang. Defaults to `path`. */
+  altPath?: string;
+  /** JSON-LD blocks. Defaults to the Person + project list used on the home page. */
+  schemas?: unknown[];
+}
+
+const {
+  lang,
+  title: titleOverride,
+  description: descriptionOverride,
+  path = "",
+  altPath,
+  schemas = [personSchema, projectsSchema],
+} = Astro.props;
+
+const copy = {
+  en: {
+    title: "Franco Sanchez — AI & Software Engineer",
+    description:
+      "Franco Sanchez — AI Engineer and Software Architect. I turn technical complexity into profitability, cutting operational costs by up to 85%.",
+    social:
+      "Turning technical complexity into profitability, cutting operational costs by up to 85%.",
+    ogLocale: "en_US",
+    altLocale: "es_ES",
+  },
+  es: {
+    title: "Franco Sanchez — Ingeniero de IA y Software",
+    description:
+      "Franco Sanchez — Ingeniero de IA y Arquitecto de Software. Transformo complejidad técnica en rentabilidad, reduciendo costos operativos hasta un 85%.",
+    social:
+      "Transformo complejidad técnica en rentabilidad, reduciendo costos operativos hasta un 85%.",
+    ogLocale: "es_ES",
+    altLocale: "en_US",
+  },
+}[lang];
+
+const title = titleOverride ?? copy.title;
+const description = descriptionOverride ?? copy.description;
+const social = descriptionOverride ?? copy.social;
+
+const enPath = lang === "en" ? path : (altPath ?? path);
+const esPath = lang === "es" ? path : (altPath ?? path);
+
+const canonical = `${SITE}${localePath(lang, path)}`;
+const enHref = `${SITE}${localePath("en", enPath)}`;
+const esHref = `${SITE}${localePath("es", esPath)}`;
+
+const ogImage = `${SITE}/og-image.png`;
+const fontHref =
+  "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap";
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta
+      name="keywords"
+      content="AI Engineer, Machine Learning, Full-Stack Architecture, React, Python, RAG, LangChain, CTO, Tech Lead"
+    />
+    <meta name="author" content="Franco Sanchez" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={enHref} />
+    <link rel="alternate" hreflang="es" href={esHref} />
+    <link rel="alternate" hreflang="x-default" href={enHref} />
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={social} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Franco Sanchez — AI & Software Engineer" />
+    <meta property="og:locale" content={copy.ogLocale} />
+    <meta property="og:locale:alternate" content={copy.altLocale} />
+    <meta property="og:site_name" content="Franco Sanchez" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={social} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href={fontHref} rel="stylesheet" media="print" onload="this.media = 'all'" />
+    <noscript><link href={fontHref} rel="stylesheet" /></noscript>
+
+    <!-- Structured data — readable by AI crawlers without JavaScript -->
+    {
+      schemas.map((schema) => (
+        <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+      ))
+    }
+
+    <!-- Theme init — must run before paint to avoid a flash of the wrong theme -->
+    <script is:inline>
+      !(function () {
+        var t =
+          localStorage.getItem("theme-preference") ||
+          (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+
+    <script>
+      // Scroll reveal. Replaces the per-component IntersectionObserver that each
+      // React section used to own. `.anim-enter` reveals itself; a
+      // `[data-reveal-group]` reveals all its `.stagger-item` children at once so
+      // the CSS nth-child delays produce the stagger.
+      const reveal = (el: Element) => {
+        if (el.hasAttribute("data-reveal-group")) {
+          el.querySelectorAll(".stagger-item").forEach((c) => c.classList.add("is-visible"));
+        } else {
+          el.classList.add("is-visible");
+        }
+      };
+
+      const targets = document.querySelectorAll(".anim-enter, [data-reveal-group]");
+
+      if (!("IntersectionObserver" in window)) {
+        targets.forEach(reveal);
+      } else {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              reveal(entry.target);
+              observer.unobserve(entry.target);
+            }
+          },
+          { rootMargin: "-80px" },
+        );
+        targets.forEach((el) => observer.observe(el));
+      }
+    </script>
+  </body>
+</html>

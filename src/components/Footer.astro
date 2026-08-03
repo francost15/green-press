@@ -1,0 +1,49 @@
+---
+import { profile } from "../data/profile";
+
+const links = [
+  { label: "GitHub", href: profile.links.github },
+  { label: "LinkedIn", href: profile.links.linkedin },
+  { label: "Email", href: `mailto:${profile.email}` },
+];
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="border-t border-border bg-bg">
+  <div class="mx-auto max-w-[1200px] px-6 py-12">
+    <div class="flex flex-col items-center justify-between gap-6 md:flex-row">
+      <div>
+        <span
+          class="font-[family-name:var(--color-font-display)] text-base font-black tracking-tight text-text-primary"
+        >
+          Franco Sanchez
+        </span>
+        <p
+          class="mt-1 font-mono text-[11px] font-medium tracking-[0.18em] text-text-tertiary uppercase"
+        >
+          AI &amp; Software Engineer — {currentYear}
+        </p>
+      </div>
+
+      <div class="flex items-center gap-8">
+        {
+          links.map((link) => (
+            <a
+              href={link.href}
+              aria-label={link.label}
+              target={link.href.startsWith("http") ? "_blank" : undefined}
+              rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+              class="group flex flex-col items-center gap-1"
+            >
+              <span class="font-mono text-[11px] font-bold tracking-[0.18em] text-text-tertiary uppercase transition-colors group-hover:text-accent">
+                {link.label}
+              </span>
+              <div class="footer-link-underline" aria-hidden="true" />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</footer>

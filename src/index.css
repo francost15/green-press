@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #fafafa;
+  --color-bg: #f8f8fd;
   --color-bg-alt: #ffffff;
-  --color-bg-secondary: #f5f5f5;
+  --color-bg-secondary: #f1f0fb;
   --color-accent: #7c3aed;
   --color-accent-hover: #6d28d9;
-  --color-text-primary: #1a1a1a;
-  --color-text-secondary: #525252;
-  --color-text-tertiary: #737373;
-  --color-border: #e5e5e5;
+  --color-text-primary: #0f0f1a;
+  --color-text-secondary: #505070;
+  --color-text-tertiary: #787898;
+  --color-border: #e2e2f0;
   --color-font-sans: "Inter", system-ui, sans-serif;
   --color-font-display: "Bricolage Grotesque", system-ui, sans-serif;
   --color-font-mono: "JetBrains Mono", monospace;
@@ -17,60 +17,143 @@
 
 :root {
   color-scheme: light dark;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --radius-card: 20px;
+
+  /* Shadow-as-border (3-layer, light) — replaces solid border on cards */
+  --shadow-card:
+    0px 0px 0px 1px rgba(0, 0, 0, 0.06),
+    0px 1px 2px -1px rgba(0, 0, 0, 0.06),
+    0px 2px 4px 0px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover:
+    0px 0px 0px 1px color-mix(in srgb, var(--color-accent) 55%, rgba(0,0,0,.1)),
+    0px 4px 20px -4px color-mix(in srgb, var(--color-accent) 22%, transparent);
+  --glow-accent: 0 0 40px -8px color-mix(in srgb, var(--color-accent) 35%, transparent);
 }
 
 [data-theme="dark"] {
-  --color-bg: #0a0a0a;
-  --color-bg-alt: #141414;
-  --color-bg-secondary: #171717;
+  --color-bg: #08081a;
+  --color-bg-alt: #0e0e22;
+  --color-bg-secondary: #14142c;
   --color-accent: #8b5cf6;
   --color-accent-hover: #a78bfa;
-  --color-text-primary: #fafafa;
-  --color-text-secondary: #a3a3a3;
-  --color-text-tertiary: #b0b0b0;
-  --color-border: #262626;
+  --color-text-primary: #f2f2ff;
+  --color-text-secondary: #9090b8;
+  --color-text-tertiary: #6a6a90;
+  --color-border: #1e1e38;
+  /* Single white ring for dark mode (layered depth isn't visible on dark) */
+  --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --shadow-card-hover:
+    0 0 0 1px color-mix(in srgb, var(--color-accent) 65%, rgba(255,255,255,.13)),
+    0 4px 20px -4px color-mix(in srgb, var(--color-accent) 28%, transparent);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --color-bg: #0a0a0a;
-    --color-bg-alt: #141414;
-    --color-bg-secondary: #171717;
+    --color-bg: #08081a;
+    --color-bg-alt: #0e0e22;
+    --color-bg-secondary: #14142c;
     --color-accent: #8b5cf6;
     --color-accent-hover: #a78bfa;
-    --color-text-primary: #fafafa;
-    --color-text-secondary: #a3a3a3;
-    --color-text-tertiary: #b0b0b0;
-    --color-border: #262626;
+    --color-text-primary: #f2f2ff;
+    --color-text-secondary: #9090b8;
+    --color-text-tertiary: #6a6a90;
+    --color-border: #1e1e38;
+    --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.08);
+    --shadow-card-hover:
+      0 0 0 1px color-mix(in srgb, var(--color-accent) 65%, rgba(255,255,255,.13)),
+      0 4px 20px -4px color-mix(in srgb, var(--color-accent) 28%, transparent);
   }
 }
 
 @layer components {
+  /* ── Buttons ── */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-accent px-8 py-4 text-base font-semibold text-white transition-all hover:scale-[1.02] hover:bg-accent-hover active:scale-[0.98] shadow-[0_4px_20px_-4px_rgba(124,58,237,0.4)] dark:shadow-[0_4px_24px_-4px_rgba(139,92,246,0.5)];
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-accent px-8 py-3.5 text-sm font-semibold text-white cursor-pointer;
+    transition-property: transform, background-color, box-shadow;
+    transition-duration: 160ms;
+    transition-timing-function: var(--ease-out);
   }
-
-  .btn-primary-pulse {
-    position: relative;
-    z-index: 10;
+  @media (hover: hover) and (pointer: fine) {
+    .btn-primary:hover {
+      @apply bg-accent-hover;
+      transform: scale(1.02);
+      box-shadow: var(--glow-accent);
+    }
   }
-  .btn-primary-pulse::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background-color: var(--color-accent);
-    z-index: -1;
-    animation: btn-pulse-ring 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
+  .btn-primary:active { transform: scale(0.96); }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-border bg-bg-alt px-8 py-4 text-base font-medium text-text-secondary transition-all hover:border-accent hover:text-text-primary hover:bg-bg-secondary;
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-border bg-bg-alt px-8 py-3.5 text-sm font-medium text-text-secondary cursor-pointer;
+    transition-property: transform, border-color, color, background-color;
+    transition-duration: 160ms;
+    transition-timing-function: var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .btn-secondary:hover {
+      @apply border-accent text-text-primary bg-bg-secondary;
+    }
+  }
+  .btn-secondary:active { transform: scale(0.96); }
+
+  /* ── Card — shadow-only border (no solid border) ── */
+  .card {
+    @apply rounded-[20px] bg-bg-alt;
+    box-shadow: var(--shadow-card);
+    transition-property: box-shadow;
+    transition-duration: 200ms;
+    transition-timing-function: ease-out;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .card:hover { box-shadow: var(--shadow-card-hover); }
+  }
+
+  /* ── Section label ── */
+  .section-label {
+    @apply font-mono text-[11px] font-bold tracking-[0.3em] text-accent uppercase;
+  }
+
+  /* ── Tech pill ── */
+  .tech-pill {
+    @apply inline-flex items-center gap-1.5 rounded-lg border border-border bg-bg-secondary px-2.5 py-1 text-[11px] font-mono font-medium text-text-tertiary;
+  }
+
+  /* ── Image with subtle outline ── */
+  .img-outlined {
+    outline: 1px solid rgba(0, 0, 0, 0.10);
+    outline-offset: -1px;
   }
 }
 
+/* Image outline flips in dark mode */
+[data-theme="dark"] .img-outlined {
+  outline-color: rgba(255, 255, 255, 0.10);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .img-outlined {
+    outline-color: rgba(255, 255, 255, 0.10);
+  }
+}
+
+/* ── Root — font smoothing lives here, not on body ── */
 html {
   scroll-behavior: smooth;
+  /* macOS text renders heavier by default; antialiasing makes it crisper */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Global text wrapping ── */
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
 }
 
 body {
@@ -78,132 +161,213 @@ body {
   background-color: var(--color-bg);
   color: var(--color-text-primary);
   font-family: var(--color-font-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Theme transitions handled via CSS custom property changes — no JS class toggling needed */
-
-/* Scroll progress bar — pure CSS, zero JS reflows */
+/* ── Scroll progress ── */
 .scroll-progress {
-  height: 3px;
+  height: 2px;
   transform: scaleX(0);
   background-color: var(--color-accent);
-  box-shadow: 0 0 12px 2px color-mix(in srgb, var(--color-accent) 40%, transparent);
+  box-shadow: 0 0 10px 1px color-mix(in srgb, var(--color-accent) 50%, transparent);
   animation: scroll-progress-fill linear both;
   animation-timeline: scroll();
 }
+@keyframes scroll-progress-fill { to { transform: scaleX(1); } }
 
-@keyframes btn-pulse-ring {
-  0% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0;
-    transform: scale(1.5);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.5);
+::selection { background-color: var(--color-accent); color: white; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-tertiary); }
+
+/* ── Hero: per-element stagger (split-and-stagger pattern) ── */
+.hero-item {
+  opacity: 0;
+  transform: translateY(12px);
+  filter: blur(4px);
+  animation: hero-item-enter 0.55s var(--ease-out) both;
+  will-change: transform, opacity, filter;
+}
+.hero-item:nth-child(1) { animation-delay: 0.08s; }
+.hero-item:nth-child(2) { animation-delay: 0.18s; }
+.hero-item:nth-child(3) { animation-delay: 0.27s; }
+.hero-item:nth-child(4) { animation-delay: 0.36s; }
+.hero-item:nth-child(5) { animation-delay: 0.45s; }
+.hero-item:nth-child(6) { animation-delay: 0.54s; }
+
+@keyframes hero-item-enter {
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+/* ── Status ping animation ── */
+@keyframes status-ping {
+  0% { transform: scale(1); opacity: 0.5; }
+  70% { transform: scale(2.4); opacity: 0; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+/* ── Section enter ── */
+.anim-enter {
+  opacity: 0;
+  transform: translateY(16px);
+  filter: blur(4px);
+  transition-property: opacity, transform, filter;
+  transition-duration: 420ms;
+  transition-timing-function: var(--ease-out);
+  will-change: transform, opacity;
+}
+.anim-enter.is-visible { opacity: 1; transform: translateY(0); filter: blur(0); }
+
+/* ── Stagger items — blur added for richer enter ── */
+.stagger-item {
+  opacity: 0;
+  transform: translateY(14px);
+  filter: blur(4px);
+  transition-property: opacity, transform, filter;
+  transition-duration: 370ms;
+  transition-timing-function: var(--ease-out);
+  will-change: transform, opacity;
+}
+.stagger-item.is-visible { opacity: 1; transform: translateY(0); filter: blur(0); }
+.stagger-item:nth-child(1) { transition-delay: 0ms; }
+.stagger-item:nth-child(2) { transition-delay: 65ms; }
+.stagger-item:nth-child(3) { transition-delay: 130ms; }
+.stagger-item:nth-child(4) { transition-delay: 195ms; }
+.stagger-item:nth-child(5) { transition-delay: 260ms; }
+.stagger-item:nth-child(6) { transition-delay: 325ms; }
+.stagger-item:nth-child(7) { transition-delay: 390ms; }
+.stagger-item:nth-child(8) { transition-delay: 455ms; }
+
+/* Reveal is driven by an IntersectionObserver adding .is-visible. If scripting is
+   unavailable, everything below the hero would stay at opacity 0 — so opt out of the
+   entrance state entirely rather than leaving a blank page. */
+@media (scripting: none) {
+  .anim-enter,
+  .stagger-item,
+  .hero-item {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    animation: none !important;
   }
 }
 
-@keyframes scroll-progress-fill {
-  to {
-    transform: scaleX(1);
-  }
+/* ── Timeline ── */
+.timeline-line {
+  position: absolute;
+  left: 11px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--color-border) 5%, var(--color-border) 95%, transparent);
 }
-
-::selection {
+.timeline-dot {
+  position: absolute;
+  left: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--color-accent);
+  background-color: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.timeline-dot::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
   background-color: var(--color-accent);
-  color: white;
 }
 
-::-webkit-scrollbar {
-  width: 6px;
+/* ── Modal ── */
+.modal-backdrop {
+  transition-property: opacity;
+  transition-duration: 200ms;
+  transition-timing-function: var(--ease-out);
+  @starting-style { opacity: 0; }
+}
+.modal-content {
+  transition-property: opacity, transform;
+  transition-duration: 220ms;
+  transition-timing-function: var(--ease-out);
+  @starting-style { opacity: 0; transform: scale(0.95) translateY(8px); }
 }
 
-::-webkit-scrollbar-track {
-  background: var(--color-bg);
+/* ── Mobile menu ── */
+.mobile-menu-animate {
+  transition-property: opacity, transform;
+  transition-duration: 200ms;
+  transition-timing-function: var(--ease-out);
+  @starting-style { opacity: 0; transform: translateY(-6px); }
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: 3px;
+/* ── Carousel crossfade ── */
+.carousel-img {
+  transition-property: opacity;
+  transition-duration: 150ms;
+  transition-timing-function: ease;
+  @starting-style { opacity: 0; }
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-tertiary);
+/* ── Glow layer ── */
+.glow-layer {
+  transition-property: opacity;
+  transition-duration: 400ms;
+  transition-timing-function: ease;
+}
+
+/* ── Footer link underline ── */
+.footer-link-underline {
+  height: 1px;
+  width: 0;
+  background-color: var(--color-accent);
+  transition-property: width;
+  transition-duration: 250ms;
+  transition-timing-function: var(--ease-out);
+}
+.group:hover .footer-link-underline { width: 100%; }
+
+/* ── Hero dot grid ── */
+.dot-grid-bg {
+  background-image: radial-gradient(circle, var(--color-border) 1px, transparent 1px);
+  background-size: 28px 28px;
 }
 
 @media print {
-  *,
-  *::before,
-  *::after {
-    background: white !important;
-    color: black !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
+  *, *::before, *::after {
+    background: white !important; color: black !important;
+    box-shadow: none !important; text-shadow: none !important;
     border-color: #ddd !important;
   }
-
-  body {
-    font-size: 11pt;
-    line-height: 1.4;
-  }
-
-  nav,
-  footer,
-  .scroll-progress,
-  .no-print,
-  button[aria-label] {
-    display: none !important;
-  }
-
-  section {
-    page-break-inside: avoid;
-    padding: 1rem 0 !important;
-  }
-
-  h1,
-  h2,
-  h3 {
-    page-break-after: avoid;
-  }
-
-  a {
-    text-decoration: underline !important;
-  }
-
-  a[href]::after {
-    content: " (" attr(href) ")";
-    font-size: 9pt;
-    color: #666 !important;
-  }
-
-  a[href^="#"]::after,
-  a[href^="javascript"]::after {
-    content: "";
-  }
-
-  .print-only {
-    display: block !important;
-  }
+  body { font-size: 11pt; line-height: 1.4; }
+  nav, footer, .scroll-progress, .no-print, button[aria-label] { display: none !important; }
+  section { page-break-inside: avoid; padding: 1rem 0 !important; }
+  h1, h2, h3 { page-break-after: avoid; }
+  a { text-decoration: underline !important; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #666 !important; }
+  a[href^="#"]::after, a[href^="javascript"]::after { content: ""; }
+  .print-only { display: block !important; }
 }
+.print-only { display: none; }
 
-.print-only {
-  display: none;
-}
-
-/* Hero entrance — single animation on the whole grid, inline style={opacity:0}
-   guarantees nothing is visible before CSS loads (no FOUC) */
-.hero-entrance {
-  animation: hero-enter 0.7s ease 0.05s forwards;
-}
-
-@keyframes hero-enter {
-  to {
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Show everything up front rather than tying visibility to a scroll observer. */
+  .hero-item,
+  .anim-enter,
+  .stagger-item {
+    animation: none;
     opacity: 1;
+    transform: none;
+    filter: none;
   }
+  .scroll-progress { animation: none; transform: scaleX(1); }
 }

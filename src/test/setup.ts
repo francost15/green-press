@@ -1,9 +1,9 @@
 import * as matchers from "@testing-library/jest-dom/matchers";
-import { expect } from "vite-plus/test";
+import { expect, beforeEach } from "vitest";
 
 expect.extend(matchers);
 
-// Mock matchMedia (not available in jsdom)
+// Not implemented by jsdom, but the component scripts rely on both.
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: (query: string) => ({
@@ -18,7 +18,6 @@ Object.defineProperty(window, "matchMedia", {
   }),
 });
 
-// Mock IntersectionObserver (not available in jsdom)
 class MockIntersectionObserver {
   observe() {}
   unobserve() {}
@@ -28,4 +27,11 @@ class MockIntersectionObserver {
 Object.defineProperty(window, "IntersectionObserver", {
   writable: true,
   value: MockIntersectionObserver,
+});
+
+// Theme and menu state persist across a page; keep tests independent.
+beforeEach(() => {
+  localStorage.clear();
+  document.documentElement.removeAttribute("data-theme");
+  document.body.innerHTML = "";
 });

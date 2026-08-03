@@ -1,0 +1,43 @@
+---
+import { techIconMarkup } from "../data/iconMarkup";
+import { techIcons, type TechIconVariant } from "../data/techIcons";
+
+interface Props {
+  name: string;
+  variant?: TechIconVariant;
+  size?: number;
+  class?: string;
+}
+
+const { name, variant = "mono", size = 24, class: className } = Astro.props;
+
+const definition = techIcons[name];
+
+// Unknown tech names render nothing, same as the old component returning null.
+const icon = definition ? techIconMarkup[definition.icon] : undefined;
+
+const resolvedVariant: TechIconVariant =
+  variant === "brand" && definition?.brandSafe ? "brand" : "mono";
+---
+
+{/* Decorative: every call site renders this glyph next to a visible text label with the
+    same name. Giving it role/aria-label/<title> made text extractors read the name twice
+    ("Python Python") and inflated keyword density. */}
+{
+  icon && (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox={icon.viewBox}
+      fill="currentColor"
+      class={className}
+      aria-hidden="true"
+      focusable="false"
+      data-variant={resolvedVariant}
+      style={icon.brandColor ? `--icon-brand: ${icon.brandColor}` : undefined}
+    >
+      <Fragment set:html={icon.inner} />
+    </svg>
+  )
+}

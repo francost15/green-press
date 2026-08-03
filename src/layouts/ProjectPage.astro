@@ -1,0 +1,164 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import ScrollProgress from "../components/ScrollProgress.astro";
+import Icon from "../components/Icon.astro";
+import TechIcon from "../components/TechIcon.astro";
+import { imageSizes } from "../data/imageSizes";
+import type { Project } from "../data/projects";
+import { SITE, localePath, useTranslations, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+  project: Project;
+}
+
+const { lang, project } = Astro.props;
+const t = useTranslations(lang);
+
+const tags = lang === "es" ? project.tags.es : project.tags.en;
+const images = project.images ?? [];
+
+const indexPath = lang === "es" ? "proyectos/" : "projects/";
+const path = `${indexPath}${project.slug}/`;
+const altPath = `${lang === "es" ? "projects/" : "proyectos/"}${project.slug}/`;
+
+// localePath supplies the leading slash; `${SITE}${path}` would concatenate into
+// "https://fsanchezt.comprojects/…".
+const canonicalUrl = `${SITE}${localePath(lang, path)}`;
+
+const description = t(project.impact.es, project.impact.en);
+
+// One CreativeWork per page, bound to the shared Person node — the home page's ItemList
+// stays where it is and is not repeated here.
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "@id": `${canonicalUrl}#project`,
+  name: project.title,
+  headline: project.title,
+  description,
+  url: canonicalUrl,
+  inLanguage: lang,
+  creator: { "@id": `${SITE}/#person` },
+  author: { "@id": `${SITE}/#person` },
+  keywords: tags.join(", "),
+  ...(images.length > 0 ? { image: images.map((src) => `${SITE}${src}`) } : {}),
+};
+
+const sections = [
+  { title: t("Problema", "The problem"), body: t(project.problem.es, project.problem.en) },
+  { title: t("Solución", "The solution"), body: t(project.solution.es, project.solution.en) },
+];
+---
+
+<BaseLayout
+  lang={lang}
+  title={`${project.title} — Franco Sanchez`}
+  description={description}
+  path={path}
+  altPath={altPath}
+  schemas={[schema]}
+>
+  <div class="relative min-h-screen bg-bg">
+    <ScrollProgress />
+    <Navbar lang={lang} altPath={altPath} />
+
+    <main class="mx-auto max-w-3xl px-6 pt-32 pb-24">
+      <a
+        href={localePath(lang)}
+        class="inline-flex items-center gap-2 font-mono text-[11px] font-bold tracking-[0.18em] text-text-tertiary uppercase transition-colors hover:text-accent"
+      >
+        <Icon name="CaretLeft" size={14} />
+        {t("Volver al inicio", "Back to home")}
+      </a>
+
+      <h1
+        class="mt-8 font-[family-name:var(--color-font-display)] text-4xl font-black leading-tight tracking-tighter text-text-primary md:text-5xl"
+      >
+        {project.title}
+      </h1>
+
+      <div class="mt-5 flex flex-wrap gap-1.5">
+        {
+          tags.map((tag) => (
+            <span class="tech-pill">
+              <TechIcon name={tag} variant="mono" class="h-3 w-3 opacity-60" />
+              {tag}
+            </span>
+          ))
+        }
+      </div>
+
+      {/* Impact leads, because it is the most citable sentence on the page. */}
+      <div class="mt-8 rounded-xl border border-accent/20 bg-accent/5 px-5 py-4">
+        <p class="mb-1 section-label">{t("Impacto", "Impact")}</p>
+        <p class="text-base font-semibold leading-snug text-text-primary">{description}</p>
+      </div>
+
+      {
+        sections.map((section) => (
+          <section class="mt-10">
+            <h2 class="mb-3 font-[family-name:var(--color-font-display)] text-2xl font-bold tracking-tight text-text-primary">
+              {section.title}
+            </h2>
+            <p class="text-base leading-relaxed text-text-secondary">{section.body}</p>
+          </section>
+        ))
+      }
+
+      {
+        images.length > 0 && (
+          <section class="mt-12">
+            <h2 class="mb-5 font-[family-name:var(--color-font-display)] text-2xl font-bold tracking-tight text-text-primary">
+              {t("Capturas", "Screenshots")}
+            </h2>
+            <div class="flex flex-col gap-5">
+              {images.map((src, i) => (
+                <img
+                  src={src}
+                  alt={`${project.title} — ${t("captura", "screenshot")} ${i + 1}`}
+                  width={imageSizes[src]?.width}
+                  height={imageSizes[src]?.height}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                  class="img-outlined h-auto w-full rounded-xl"
+                />
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      {
+        (project.github || project.link) && (
+          <div class="mt-12 flex items-center gap-5 border-t border-border pt-6">
+            {project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 text-sm font-semibold text-text-secondary transition-colors hover:text-text-primary"
+              >
+                <Icon name="GithubLogo" size={18} /> GitHub
+              </a>
+            )}
+            {project.link && (
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 text-sm font-semibold text-text-secondary transition-colors hover:text-text-primary"
+              >
+                <Icon name="ArrowSquareOut" size={18} /> Live Demo
+              </a>
+            )}
+          </div>
+        )
+      }
+    </main>
+
+    <Footer />
+  </div>
+</BaseLayout>

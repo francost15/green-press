@@ -1,10 +1,12 @@
 export interface Project {
   id: string;
+  /** URL segment for /projects/<slug>/ and /es/proyectos/<slug>/ */
+  slug: string;
   title: string;
   problem: { es: string; en: string };
   solution: { es: string; en: string };
   impact: { es: string; en: string };
-  tags: string[];
+  tags: { es: string[]; en: string[] };
   link?: string;
   github?: string;
   images?: string[];
@@ -13,6 +15,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: "ai-dashboard-towel",
+    slug: "ai-business-intelligence-dashboard",
     title: "AI Business Intelligence Dashboard",
     problem: {
       es: "La toma de decisiones gerenciales era lenta por la dependencia de analistas para cruzar datos de ventas y generar reportes estáticos.",
@@ -26,17 +29,21 @@ export const projects: Project[] = [
       es: "Reducción del 90% en el tiempo de generación de reportes e incremento de la velocidad en toma de decisiones estratégicas.",
       en: "90% reduction in report generation time and increased speed in strategic decision-making.",
     },
-    tags: ["React", "Python", "LangGraph", "LLMs", "Data Visualization"],
+    tags: {
+      es: ["React", "Python", "LangGraph", "LLMs", "Visualización de Datos"],
+      en: ["React", "Python", "LangGraph", "LLMs", "Data Visualization"],
+    },
     images: [
-      "/projects/ai-dashboard-1.png",
-      "/projects/ai-dashboard-2.png",
-      "/projects/ai-dashboard-3.png",
-      "/projects/ai-dashboard-4.png",
-      "/projects/ai-dashboard-5.png",
+      "/projects/ai-dashboard-1.webp",
+      "/projects/ai-dashboard-2.webp",
+      "/projects/ai-dashboard-3.webp",
+      "/projects/ai-dashboard-4.webp",
+      "/projects/ai-dashboard-5.webp",
     ],
   },
   {
     id: "cfdi-billing-ai",
+    slug: "smart-cfdi-billing-system",
     title: "Smart CFDI Billing System",
     problem: {
       es: "La facturación manual y el registro de ingresos consumía horas de trabajo administrativo, con un alto margen de error humano en la captura.",
@@ -50,20 +57,24 @@ export const projects: Project[] = [
       es: "Automatización del 80% del flujo contable y proyección financiera con una precisión superior al 92%.",
       en: "80% automation of the accounting workflow and financial projection with over 92% accuracy.",
     },
-    tags: ["Node.js", "Python", "OCR", "APIs", "Predicción"],
+    tags: {
+      es: ["Node.js", "Python", "OCR", "APIs", "Predicción"],
+      en: ["Node.js", "Python", "OCR", "APIs", "Forecasting"],
+    },
     images: [
-      "/projects/cfdi-1.jpeg",
-      "/projects/cfdi-2.jpeg",
-      "/projects/cfdi-3.jpeg",
-      "/projects/cfdi-4.jpeg",
-      "/projects/cfdi-5.jpeg",
-      "/projects/cfdi-6.jpeg",
-      "/projects/cfdi-7.jpeg",
-      "/projects/cfdi-8.jpeg",
+      "/projects/cfdi-1.webp",
+      "/projects/cfdi-2.webp",
+      "/projects/cfdi-3.webp",
+      "/projects/cfdi-4.webp",
+      "/projects/cfdi-5.webp",
+      "/projects/cfdi-6.webp",
+      "/projects/cfdi-7.webp",
+      "/projects/cfdi-8.webp",
     ],
   },
   {
     id: "rag-chatbot-uvp",
+    slug: "rag-institutional-assistant",
     title: "RAG Institutional Assistant",
     problem: {
       es: "El equipo de atención escolar estaba saturado respondiendo las mismas dudas sobre trámites y normativas a miles de estudiantes diariamente.",
@@ -77,11 +88,15 @@ export const projects: Project[] = [
       es: "Resolución autónoma del 65% de las consultas nivel 1 (L1), liberando cientos de horas de soporte al mes.",
       en: "Autonomous resolution of 65% of level 1 (L1) queries, freeing up hundreds of support hours per month.",
     },
-    tags: ["LangChain", "RAG", "Vector DB", "Chatbots", "OpenAI"],
-    images: ["/projects/rag-chatbot-1.png", "/projects/rag-chatbot-2.png"],
+    tags: {
+      es: ["LangChain", "RAG", "Vector DB", "Chatbots", "OpenAI"],
+      en: ["LangChain", "RAG", "Vector DB", "Chatbots", "OpenAI"],
+    },
+    images: ["/projects/rag-chatbot-1.webp", "/projects/rag-chatbot-2.webp"],
   },
   {
     id: "textile-erp",
+    slug: "textile-production-erp",
     title: "Textile Production ERP",
     problem: {
       es: "Falta de trazabilidad en tiempo real en la línea de producción textil, causando cuellos de botella no detectados e inventarios desfasados.",
@@ -95,10 +110,14 @@ export const projects: Project[] = [
       es: "Mejora del 40% en la visibilidad del flujo de trabajo y eliminación casi total del uso de papel en planta.",
       en: "40% improvement in workflow visibility and near-total elimination of paper use on the plant floor.",
     },
-    tags: ["React", "PostgreSQL", "Arquitectura", "Gestión Industrial"],
+    tags: {
+      es: ["React", "PostgreSQL", "Arquitectura", "Gestión Industrial"],
+      en: ["React", "PostgreSQL", "Architecture", "Industrial Management"],
+    },
   },
   {
     id: "ltc-job-board-ai",
+    slug: "ai-powered-job-matching-board",
     title: "AI-Powered Job Matching Board",
     problem: {
       es: "El equipo de reclutamiento invertía cientos de horas revisando CVs no estructurados para encontrar el perfil adecuado para vacantes técnicas.",
@@ -112,11 +131,14 @@ export const projects: Project[] = [
       es: "Reducción del 75% en el tiempo de filtrado inicial (screening) y un proceso de postulación sin fricción para el candidato.",
       en: "75% reduction in initial screening time and a frictionless application process for the candidate.",
     },
-    tags: ["Next.js", "Python", "NLP", "Algoritmos de Match", "AWS"],
+    tags: {
+      es: ["Next.js", "Python", "NLP", "Algoritmos de Match", "AWS"],
+      en: ["Next.js", "Python", "NLP", "Matching Algorithms", "AWS"],
+    },
     images: [
-      "/projects/ltc-job-board-1.png",
-      "/projects/ltc-job-board-2.png",
-      "/projects/ltc-job-board-3.png",
+      "/projects/ltc-job-board-1.webp",
+      "/projects/ltc-job-board-2.webp",
+      "/projects/ltc-job-board-3.webp",
     ],
   },
 ];

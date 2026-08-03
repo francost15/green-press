@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+.astro/
 *.local
 
 # Editor directories and files
@@ -32,3 +33,6 @@ dist-ssr
 .vite-hooks/
 .superpowers/
 .docs/
+
+# TanStack Start experiment leftovers
+app.config.timestamp_*.js

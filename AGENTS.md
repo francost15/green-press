@@ -1,76 +1,96 @@
-<!--VITE PLUS START-->
+# green-press — fsanchezt.com portfolio
 
-# Using Vite+, the Unified Toolchain for the Web
+Astro 7 static site. No UI framework: every component is `.astro`, and the little
+interactivity there is runs as plain TypeScript modules. Package manager is pnpm.
 
-This project is using Vite+, a unified toolchain built on top of Vite, Rolldown, Vitest, tsdown, Oxlint, Oxfmt, and Vite Task. Vite+ wraps runtime management, package management, and frontend tooling in a single global CLI called `vp`. Vite+ is distinct from Vite, but it invokes Vite through `vp dev` and `vp build`.
+## Architecture
 
-## Vite+ Workflow
+Twelve prerendered routes: a home page and five project pages per language, plus a
+generated sitemap.
 
-`vp` is a global binary that handles the full development lifecycle. Run `vp help` to print a list of commands and `vp <command> --help` for information about a specific command.
+- `src/pages/index.astro` — English, the default locale, unprefixed
+- `src/pages/es/index.astro` — Spanish
+- `src/pages/projects/[slug].astro` and `src/pages/es/proyectos/[slug].astro` — one page per
+  project, from `getStaticPaths` over `src/data/projects.ts`
+- `src/pages/sitemap.xml.ts` — generated at build time, so routes and `lastmod` cannot drift.
+  There is deliberately no `public/sitemap.xml`.
+- `src/layouts/Portfolio.astro` — the shared page body; takes `lang` and passes it down
+- `src/layouts/BaseLayout.astro` — `<head>`: per-locale SEO meta, hreflang, JSON-LD, and
+  the inline theme-init script that must run before first paint
 
-### Start
+`src/i18n.ts` holds the whole translation layer: `useTranslations(lang)` returns
+`t(spanish, english)`. The argument order is deliberate — it matches how the copy was
+originally authored, so the markup reads the same as before the migration. Language is a
+URL, not client state; the toggle in the navbar is an `<a>` to the other locale.
 
-- create - Create a new project from a template
-- migrate - Migrate an existing project to Vite+
-- config - Configure hooks and agent integration
-- staged - Run linters on staged files
-- install (`i`) - Install dependencies
-- env - Manage Node.js versions
+Sections live in `src/sections/*.astro`, shared pieces in `src/components/*.astro`.
+Content comes from `src/data/*.ts`.
 
-### Develop
+## Interactivity
 
-- dev - Run the development server
-- check - Run format, lint, and TypeScript type checks
-- lint - Lint code
-- fmt - Format code
-- test - Run tests
+There is no client framework. Behaviour lives in two places:
 
-### Execute
+- `src/scripts/theme.ts` and `src/scripts/navbar.ts` — imported by the `<script>` block of
+  the matching `.astro` component. They are separate modules specifically so the test suite
+  can drive them against real rendered markup.
+- Inline `<script>` blocks in `Projects.astro`, `Contact.astro`, `HeroAnimation.astro`,
+  `ScrollProgress.astro`, and the scroll-reveal observer in `BaseLayout.astro`.
 
-- run - Run monorepo tasks
-- exec - Execute a command from local `node_modules/.bin`
-- dlx - Execute a package binary without installing it as a dependency
-- cache - Manage the task cache
+The build ships **zero external JavaScript** — Astro inlines all of it. Keep it that way:
+adding a UI framework component with a `client:*` directive would pull a runtime back in.
 
-### Build
+Two things deliberately do not use JS where CSS suffices: the theme knob is styled from
+`html[data-theme]`, and the scroll progress bar uses `animation-timeline: scroll()` with a
+small fallback for browsers that lack it.
 
-- build - Build for production
-- pack - Build libraries
-- preview - Preview production build
+## SEO / GEO
 
-### Manage Dependencies
+Every page ships complete static HTML, and all of it must stay extractable.
 
-Vite+ automatically detects and wraps the underlying package manager such as pnpm, npm, or Yarn through the `packageManager` field in `package.json` or package manager-specific lockfiles.
+**Never put content behind `[hidden]`, `sr-only`, or `opacity:0` to "expose it to
+crawlers".** The site used to prerender project detail into hidden modals on the strength of
+that reasoning. The 2026-08-02 audit measured it: 708 of the home page's 1000 words were
+inside those subtrees, and the boilerplate-removal pipelines AI retrieval systems run
+(Readability, trafilatura) discard hidden subtrees before embedding — so effective
+extractable content was ~292 words. The modals are gone; project detail now lives on
+`/projects/<slug>/`, which took extractable English content to ~1,170 words.
 
-- add - Add packages to dependencies
-- remove (`rm`, `un`, `uninstall`) - Remove packages from dependencies
-- update (`up`) - Update packages to latest versions
-- dedupe - Deduplicate dependencies
-- outdated - Check for outdated packages
-- list (`ls`) - List installed packages
-- why (`explain`) - Show why a package is installed
-- info (`view`, `show`) - View package information from the registry
-- link (`ln`) / unlink - Manage local package links
-- pm - Forward a command to the package manager
+**`SITE` in `src/i18n.ts` is the only place the origin is written.** Canonicals, hreflang,
+`og:url`, the sitemap, and every JSON-LD `@id` derive from it. It is set to
+`https://www.fsanchezt.com` because the apex 308-redirects there — declaring the apex would
+point all of those at a redirect. Changing to the apex means editing that constant *and*
+flipping the Vercel primary domain. `src/test/canonical-host.test.ts` guards this.
 
-### Maintain
+**Content in `src/data/` must be bilingual.** `tags`, `highlights`, and prose fields are all
+`{ es, en }`, and dates are ISO (`{ start: "2025-10", end: "present" }`) formatted through
+`src/lib/dates.ts`. A monolingual string leaks onto the wrong locale — 43 Spanish tokens
+were shipping on the English page before this was enforced. `src/test/dates.test.ts` guards
+the date half of that.
 
-- upgrade - Update `vp` itself to the latest version
+## Commands
 
-These commands map to their corresponding tools. For example, `vp dev --port 3000` runs Vite's dev server and works the same as Vite. `vp test` runs JavaScript tests through the bundled Vitest. The version of all tools can be checked using `vp --version`. This is useful when researching documentation, features, and bugs.
+- `pnpm dev` — dev server on http://localhost:4321 (a daemon; `pnpm exec astro dev stop`)
+- `pnpm build` — static build into `dist/`
+- `pnpm check` — `astro check`
+- `pnpm test` — Vitest
 
-## Common Pitfalls
+## Testing
 
-- **Using the package manager directly:** Do not use pnpm, npm, or Yarn directly. Vite+ can handle all package manager operations.
-- **Always use Vite commands to run tools:** Don't attempt to run `vp vitest` or `vp oxlint`. They do not exist. Use `vp test` and `vp lint` instead.
-- **Running scripts:** Vite+ built-in commands (`vp dev`, `vp build`, `vp test`, etc.) always run the Vite+ built-in tool, not any `package.json` script of the same name. To run a custom script that shares a name with a built-in command, use `vp run <script>`. For example, if you have a custom `dev` script that runs multiple services concurrently, run it with `vp run dev`, not `vp dev` (which always starts Vite's dev server).
-- **Do not install Vitest, Oxlint, Oxfmt, or tsdown directly:** Vite+ wraps these tools. They must not be installed directly. You cannot upgrade these tools by installing their latest versions. Always use Vite+ commands.
-- **Use Vite+ wrappers for one-off binaries:** Use `vp dlx` instead of package-manager-specific `dlx`/`npx` commands.
-- **Import JavaScript modules from `vite-plus`:** Instead of importing from `vite` or `vitest`, all modules should be imported from the project's `vite-plus` dependency. For example, `import { defineConfig } from 'vite-plus';` or `import { expect, test, vi } from 'vite-plus/test';`. You must not install `vitest` to import test utilities.
-- **Type-Aware Linting:** There is no need to install `oxlint-tsgolint`, `vp lint --type-aware` works out of the box.
+`.astro` components are rendered through the Astro container API; `src/test/render.ts`
+wraps it and returns Testing Library queries. Two constraints are easy to trip over:
 
-## Review Checklist for Agents
+- `vitest.config.mts` sets `testTransformMode: { ssr: ["**/*"] }`. Without it the jsdom
+  (web) transform compiles `.astro` into a browser stub that throws on render.
+- `renderAstro` appends to `document.body`, because `toBeInTheDocument` fails on a
+  detached node.
 
-- [ ] Run `vp install` after pulling remote changes and before getting started.
-- [ ] Run `vp check` and `vp test` to validate changes.
-<!--VITE PLUS END-->
+Container rendering does not execute a component's `<script>`, which is why the theme and
+navbar logic sit in `src/scripts/` — those are unit-tested directly. The Projects lightbox
+and the Contact form submit path are only covered by their static markup.
+
+## Notes
+
+- Tailwind 4 is wired through `@tailwindcss/vite` in `astro.config.mjs`.
+- `src/data/iconMarkup.ts` is generated — it was produced by rendering the old React icon
+  components once. Do not hand-edit the path data.
+- Deployment is Vercel, static output from `dist/` (see `vercel.json`).

@@ -1,0 +1,273 @@
+---
+import Section from "../components/Section.astro";
+import Icon from "../components/Icon.astro";
+import { profile } from "../data/profile";
+import { useTranslations, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const inputBase =
+  "w-full rounded-xl border border-border bg-bg px-4 py-3 text-sm text-text-primary outline-none placeholder:text-text-tertiary focus:border-accent focus:ring-2 focus:ring-accent/15 transition-[border-color,box-shadow]";
+
+const contactLinks = [
+  { icon: "LinkedinLogo", label: "LinkedIn", href: profile.links.linkedin, external: true },
+  { icon: "GithubLogo", label: "GitHub", href: profile.links.github, external: true },
+  { icon: "EnvelopeSimple", label: profile.email, href: `mailto:${profile.email}`, external: false },
+  {
+    icon: "Phone",
+    label: profile.phone,
+    href: `tel:${profile.phone.replace(/\s+/g, "")}`,
+    external: false,
+  },
+];
+
+const labels = {
+  idle: t("Enviar Mensaje", "Send Message"),
+  sending: t("Enviando...", "Sending..."),
+  sent: t("¡Enviado!", "Sent!"),
+};
+---
+
+<Section
+  id="contacto"
+  number="05"
+  title={t("Contacto", "Contact")}
+  subtitle={t("¿Tienes un proyecto en mente? Hablemos.", "Have a project in mind? Let's talk.")}
+>
+  <div class="grid gap-8 lg:grid-cols-[1fr_400px]">
+    {/* Form card */}
+    <div class="card p-8">
+      <form
+        data-contact-form
+        data-endpoint={`https://formspree.io/f/${profile.formspreeId}`}
+        class="flex flex-col gap-6"
+        novalidate
+      >
+        <div class="grid gap-6 sm:grid-cols-2">
+          <div>
+            <label
+              for="contact-name"
+              class="mb-2 block text-xs font-semibold text-text-secondary"
+            >
+              {t("Nombre", "Name")}
+              <span aria-hidden="true" class="text-accent">*</span>
+            </label>
+            <input
+              type="text"
+              id="contact-name"
+              name="name"
+              required
+              aria-required="true"
+              autocomplete="name"
+              class={inputBase}
+              placeholder={t("Tu nombre", "Your name")}
+            />
+          </div>
+          <div>
+            <label
+              for="contact-email"
+              class="mb-2 block text-xs font-semibold text-text-secondary"
+            >
+              Email
+              <span aria-hidden="true" class="text-accent">*</span>
+            </label>
+            <input
+              type="email"
+              id="contact-email"
+              name="email"
+              required
+              aria-required="true"
+              autocomplete="email"
+              class={inputBase}
+              placeholder={t("tu@email.com", "you@email.com")}
+            />
+          </div>
+        </div>
+
+        <div>
+          <label
+            for="contact-message"
+            class="mb-2 block text-xs font-semibold text-text-secondary"
+          >
+            {t("Mensaje", "Message")}
+            <span aria-hidden="true" class="text-accent">*</span>
+          </label>
+          <textarea
+            id="contact-message"
+            name="message"
+            required
+            aria-required="true"
+            rows="5"
+            class={`${inputBase} resize-none`}
+            placeholder={t("Cuéntame sobre tu proyecto...", "Tell me about your project...")}
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          data-submit
+          data-label-idle={labels.idle}
+          data-label-sending={labels.sending}
+          data-label-sent={labels.sent}
+          class="btn-primary self-start disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          <span data-submit-label>{labels.idle}</span>
+          <span data-submit-arrow><Icon name="ArrowRight" size={16} /></span>
+        </button>
+      </form>
+    </div>
+
+    {/* Info side */}
+    <div class="flex flex-col justify-between gap-8">
+      <div class="card p-7">
+        <p class="text-sm leading-relaxed text-text-secondary">
+          {
+            t(
+              "¿Listo para pasar de la experimentación a la producción? Ayudo a empresas a desplegar soluciones de IA que realmente mueven la aguja.",
+              "Ready to move from experimentation to production? I help companies deploy AI solutions that actually move the needle.",
+            )
+          }
+        </p>
+      </div>
+
+      <div class="card flex flex-col gap-1 p-7">
+        <p class="mb-4 section-label">{t("Encuéntrame en", "Find me on")}</p>
+        {
+          contactLinks.map(({ icon, label, href, external }) => (
+            <a
+              href={href}
+              target={external ? "_blank" : undefined}
+              rel={external ? "noopener noreferrer" : undefined}
+              class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-text-secondary transition-[background-color,color] hover:bg-bg-secondary hover:text-accent"
+            >
+              <Icon
+                name={icon}
+                size={17}
+                class="text-text-tertiary transition-colors group-hover:text-accent"
+              />
+              {label}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  {/* Toast */}
+  <div
+    data-toast
+    aria-live="polite"
+    class="toast fixed bottom-8 right-8 z-50 pointer-events-none opacity-0"
+  >
+    <div
+      data-toast-sent
+      hidden
+      class="flex items-center gap-3 rounded-xl border border-green-500/25 bg-green-500/10 px-5 py-3.5 text-sm font-medium text-green-500 shadow-xl backdrop-blur-md"
+    >
+      <svg
+        class="h-4 w-4 shrink-0"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2.5"
+        aria-hidden="true"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+      </svg>
+      {t("¡Mensaje enviado! Te responderé pronto.", "Message sent! I'll get back to you soon.")}
+    </div>
+    <div
+      data-toast-error
+      hidden
+      class="flex items-center gap-3 rounded-xl border border-red-500/25 bg-red-500/10 px-5 py-3.5 text-sm font-medium text-red-500 shadow-xl backdrop-blur-md"
+    >
+      <svg
+        class="h-4 w-4 shrink-0"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2.5"
+        aria-hidden="true"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+      {t("Error al enviar. Intenta de nuevo.", "Error sending. Please try again.")}
+    </div>
+  </div>
+</Section>
+
+<style>
+  .toast {
+    transform: translateY(1rem);
+    transition:
+      transform 300ms ease,
+      opacity 300ms ease;
+  }
+
+  .toast.is-visible {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
+  const toast = document.querySelector<HTMLElement>("[data-toast]");
+  const sentToast = document.querySelector<HTMLElement>("[data-toast-sent]");
+  const errorToast = document.querySelector<HTMLElement>("[data-toast-error]");
+  const button = document.querySelector<HTMLButtonElement>("[data-submit]");
+  const label = document.querySelector<HTMLElement>("[data-submit-label]");
+  const arrow = document.querySelector<HTMLElement>("[data-submit-arrow]");
+
+  type Status = "idle" | "sending" | "sent" | "error";
+
+  const setStatus = (status: Status) => {
+    if (button && label) {
+      button.disabled = status === "sending" || status === "sent";
+      const text =
+        status === "sending"
+          ? button.dataset.labelSending
+          : status === "sent"
+            ? button.dataset.labelSent
+            : button.dataset.labelIdle;
+      if (text) label.textContent = text;
+      if (arrow) arrow.hidden = status !== "idle";
+    }
+
+    if (!toast || !sentToast || !errorToast) return;
+    sentToast.hidden = status !== "sent";
+    errorToast.hidden = status !== "error";
+    // Errors interrupt; a success confirmation can wait for a pause in speech.
+    toast.setAttribute("aria-live", status === "error" ? "assertive" : "polite");
+    toast.classList.toggle("is-visible", status === "sent" || status === "error");
+  };
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    setStatus("sending");
+
+    try {
+      const response = await fetch(form.dataset.endpoint ?? "", {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" },
+      });
+
+      if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+
+      setStatus("sent");
+      form.reset();
+      setTimeout(() => setStatus("idle"), 5000);
+    } catch {
+      setStatus("error");
+    }
+  });
+
+  setStatus("idle");
+</script>

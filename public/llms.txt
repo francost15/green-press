@@ -1,6 +1,8 @@
 # Franco Sanchez - AI & Software Engineer
 
-> "Transformo complejidad técnica en rentabilidad, reduciendo costos operativos hasta un 85%."
+> "Turning technical complexity into profitability, cutting operational costs by up to 85%."
+
+Available in [English](https://www.fsanchezt.com/) and [Spanish](https://www.fsanchezt.com/es/).
 
 ## Overview
 Franco Sanchez is a Senior AI & Software Engineer and Tech Lead based in Puebla, Mexico. He specializes in designing and deploying production-ready AI systems, Full-Stack architectures, and managing agile technical teams.
@@ -26,4 +28,4 @@ Franco Sanchez is a Senior AI & Software Engineer and Tech Lead based in Puebla,
 
 ## Contact
 - Email: contacto@fsanchezt.dev
-- Website: https://fsanchezt.com
+- Website: https://www.fsanchezt.com
