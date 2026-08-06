@@ -1,4 +1,5 @@
 ---
+import SocialRail from "../components/SocialRail.astro";
 import { personSchema, projectsSchema } from "../data/structuredData";
 import { SITE, localePath, type Lang } from "../i18n";
 import "../index.css";
@@ -59,8 +60,6 @@ const enHref = `${SITE}${localePath("en", enPath)}`;
 const esHref = `${SITE}${localePath("es", esPath)}`;
 
 const ogImage = `${SITE}/og-image.png`;
-const fontHref =
-  "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap";
 ---
 
 <!doctype html>
@@ -69,8 +68,7 @@ const fontHref =
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#ffffff" />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -104,11 +102,8 @@ const fontHref =
     <meta name="twitter:description" content={social} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href={fontHref} rel="stylesheet" media="print" onload="this.media = 'all'" />
-    <noscript><link href={fontHref} rel="stylesheet" /></noscript>
+    <!-- Fonts — one self-hosted variable face, 38KB, no third-party origin. -->
+    <link rel="preload" href="/fonts/general-sans-var.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Structured data — readable by AI crawlers without JavaScript -->
     {
@@ -117,49 +112,40 @@ const fontHref =
       ))
     }
 
-    <!-- Theme init — must run before paint to avoid a flash of the wrong theme -->
-    <script is:inline>
-      !(function () {
-        var t =
-          localStorage.getItem("theme-preference") ||
-          (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-        document.documentElement.setAttribute("data-theme", t);
-      })();
-    </script>
+    {/* No theme-init script: this site has one appearance, so there is no
+        stored preference to read and no flash of the wrong theme to prevent. */}
   </head>
   <body>
+    <!--
+      DIRECTION CONTRACT — user-pinned (chosen from three built previews)
+      THESIS: Swiss editorial minimalism. The page is a ruled sheet: a visible
+        twelve-column grid, marginal meta, and rows — never cards. Refuses the
+        dark-canvas-plus-accent portfolio this site used to be, and decoration of
+        every kind: the ornament is the grid itself.
+      OWN-WORLD: White paper, ink #0A0A0B, mid #6B6B76, hairlines #E6E6EA, violet
+        #6D28D9 as the working accent. General Sans variable at four sizes only. Type
+        enters from behind a mask, line by line; scroll reveals are native view()
+        timelines; buttons confirm the press at scale(0.97). User-pinned evolutions,
+        2026-08-05, supersede the original once-per-viewport violet budget: a full-bleed
+        aurora wash behind the first viewport, a 2px scroll-progress hairline, an ink
+        capsule social rail, and two full-bleed colour fields pacing the sheet — ink
+        (Competencies) and deep violet #5B21B6 (Contact). The drawn grid shares the
+        layout grid's gap: they are the same grid or neither is worth drawing.
+      STORY: A recruiter reads name, role and record above the fold, in either
+        language, and takes the CV. A client reads the same rows and writes.
+      FIRST VIEWPORT: Meta column left with role, base, languages, systems shipped.
+        The name at display scale right — "Sanchez" carries the viewport's one violet —
+        with the working claim beneath and the CV as the filled action.
+      FORM: Editorial Rule, fused with the name-first masthead at the user's explicit
+        direction after comparing three built previews. Roll set aside: user-pinned.
+      FINISH: unreviewed and undocumented is unfinished; this build ends with the finish
+        review, the verdict, and DESIGN.md
+    -->
+    <div class="progress" aria-hidden="true"></div>
     <slot />
+    {/* After the slot on purpose: the skip link inside it must stay the first
+        focusable element on every route. */}
+    <SocialRail lang={lang} />
 
-    <script>
-      // Scroll reveal. Replaces the per-component IntersectionObserver that each
-      // React section used to own. `.anim-enter` reveals itself; a
-      // `[data-reveal-group]` reveals all its `.stagger-item` children at once so
-      // the CSS nth-child delays produce the stagger.
-      const reveal = (el: Element) => {
-        if (el.hasAttribute("data-reveal-group")) {
-          el.querySelectorAll(".stagger-item").forEach((c) => c.classList.add("is-visible"));
-        } else {
-          el.classList.add("is-visible");
-        }
-      };
-
-      const targets = document.querySelectorAll(".anim-enter, [data-reveal-group]");
-
-      if (!("IntersectionObserver" in window)) {
-        targets.forEach(reveal);
-      } else {
-        const observer = new IntersectionObserver(
-          (entries) => {
-            for (const entry of entries) {
-              if (!entry.isIntersecting) continue;
-              reveal(entry.target);
-              observer.unobserve(entry.target);
-            }
-          },
-          { rootMargin: "-80px" },
-        );
-        targets.forEach((el) => observer.observe(el));
-      }
-    </script>
   </body>
 </html>

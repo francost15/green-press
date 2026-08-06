@@ -1,0 +1,39 @@
+---
+import Icon from "./Icon.astro";
+import { profile } from "../data/profile";
+import type { Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const links = [
+  { icon: "GithubLogo", label: "GitHub", href: profile.links.github, external: true },
+  { icon: "LinkedinLogo", label: "LinkedIn", href: profile.links.linkedin, external: true },
+  {
+    icon: "EnvelopeSimple",
+    label: lang === "es" ? "Correo" : "Email",
+    href: `mailto:${profile.email}`,
+    external: false,
+  },
+];
+---
+
+{/* Fixed right rail, vertically centred. Desktop only: below 1200px it would
+    collide with the sheet, and the footer already carries these links. */}
+<aside class="social-rail" aria-label={lang === "es" ? "Redes" : "Social links"}>
+  {
+    links.map(({ icon, label, href, external }) => (
+      <a
+        href={href}
+        aria-label={label}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noopener noreferrer" : undefined}
+      >
+        <Icon name={icon} size={18} />
+      </a>
+    ))
+  }
+</aside>

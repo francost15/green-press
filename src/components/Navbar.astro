@@ -1,6 +1,5 @@
 ---
 import Icon from "./Icon.astro";
-import ThemeToggle from "./ThemeToggle.astro";
 import { profile } from "../data/profile";
 import { localePath, otherLang, type Lang } from "../i18n";
 
@@ -36,24 +35,30 @@ const altLabel = alt.toUpperCase();
 const altTitle = lang === "es" ? "Switch to English" : "Cambiar a Español";
 const menuOpenLabel = lang === "es" ? "Abrir menú" : "Open menu";
 const menuCloseLabel = lang === "es" ? "Cerrar menú" : "Close menu";
-const menuAriaLabel = lang === "es" ? "Menú de navegación" : "Navigation menu";
 ---
 
+{/* The masthead is a permanent ruled bar. It never translates out of view: the
+    previous build hid it at page top while its links stayed in the tab order,
+    so a keyboard user tabbed into four links sitting above the viewport. */}
 <nav aria-label="Main navigation" class="site-nav fixed top-0 right-0 left-0 z-50">
-  <div class="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-4">
-    {/* Brand — fades in once the page is scrolled */}
+  <div
+    class="sheet flex items-center justify-between gap-4 hair-b py-3"
+  >
     <a
       href={anchor("#inicio")}
-      class="nav-brand font-[family-name:var(--color-font-display)] text-base font-black tracking-tight text-text-primary"
+      class="nav-brand flex min-h-[44px] items-center"
     >
       {profile.name}
     </a>
 
     {/* Desktop nav */}
-    <div class="hidden items-center gap-7 md:flex">
+    <div class="hidden items-center gap-6 md:flex">
       {
         navLinks.map((link) => (
-          <a href={anchor(link.href)} class="nav-link relative text-sm text-text-secondary">
+          <a
+            href={anchor(link.href)}
+            class="nav-link relative flex min-h-[44px] items-center text-[13px]"
+          >
             {label(link)}
           </a>
         ))
@@ -63,56 +68,55 @@ const menuAriaLabel = lang === "es" ? "Menú de navegación" : "Navigation menu"
         href={profile.links.github}
         target="_blank"
         rel="noopener noreferrer"
-        class="text-text-tertiary transition-colors hover:text-text-primary"
+        class="flex min-h-[44px] min-w-[44px] items-center justify-center"
         aria-label="GitHub"
       >
-        <svg viewBox="0 0 24 24" fill="currentColor" class="h-4.5 w-4.5" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5" aria-hidden="true">
           <path
             d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"
           ></path>
         </svg>
       </a>
 
-      {/* Language switch — a real link to the other locale, not client state */}
-      <a
-        href={altHref}
-        data-lang-switch
-        hreflang={alt}
-        aria-label="Toggle language"
-        title={altTitle}
-        class="flex items-center gap-1.5 rounded-full border border-border/60 bg-bg-secondary px-3 py-1.5 text-[11px] font-bold tracking-widest text-text-secondary transition-[border-color,color] hover:border-accent hover:text-text-primary uppercase"
-      >
-        <Icon name="Translate" size={13} class="text-accent" />
-        <span class="flex w-5 justify-center">{altLabel}</span>
-      </a>
-
-      <ThemeToggle />
-    </div>
-
-    {/* Mobile controls */}
-    <div class="flex items-center gap-3 md:hidden">
+      {/* The language switch is a real link to the other locale, not client state.
+      */}
       <a
         href={altHref}
         data-lang-switch
         hreflang={alt}
         aria-label={altTitle}
-        class="flex items-center justify-center rounded-full border border-border/60 bg-bg-secondary px-2.5 py-1 text-[11px] font-bold tracking-widest text-text-secondary transition-[border-color,color] hover:border-accent hover:text-text-primary uppercase"
+        title={altTitle}
+        class="lang-switch flex min-h-[44px] items-center gap-1.5 px-2 text-[13px] font-bold uppercase"
+      >
+        <Icon name="Translate" size={14} />
+        <span class="flex w-6 justify-center">{altLabel}</span>
+      </a>
+
+    </div>
+
+    {/* Mobile controls */}
+    <div class="flex items-center gap-1 md:hidden">
+      <a
+        href={altHref}
+        data-lang-switch
+        hreflang={alt}
+        aria-label={altTitle}
+        class="lang-switch flex min-h-[44px] min-w-[44px] items-center justify-center text-[13px] font-bold uppercase"
       >
         {altLabel}
       </a>
-      <ThemeToggle />
       <button
         type="button"
         data-menu-button
-        class="flex h-10 w-10 items-center justify-center rounded-lg text-text-primary transition-[color,background-color] hover:bg-bg-secondary"
+        class="flex h-11 w-11 items-center justify-center"
         aria-label={menuOpenLabel}
         aria-expanded="false"
         aria-controls="mobile-menu"
         data-label-open={menuOpenLabel}
         data-label-close={menuCloseLabel}
       >
-        <span data-icon-open><Icon name="List" size={20} /></span>
-        <span data-icon-close hidden><Icon name="X" size={20} /></span>
+        <span data-icon-open><Icon name="List" size={22} /></span>
+        <span data-icon-close hidden><Icon name="X" size={22} /></span>
       </button>
     </div>
   </div>
@@ -121,18 +125,15 @@ const menuAriaLabel = lang === "es" ? "Menú de navegación" : "Navigation menu"
   <div
     id="mobile-menu"
     data-mobile-menu
-    role="dialog"
-    aria-modal="true"
-    aria-label={menuAriaLabel}
     hidden
-    class="mobile-menu-animate border-t border-border bg-bg/95 backdrop-blur-xl md:hidden"
+    class="hair-b bg-[var(--paper)] md:hidden"
   >
-    <div class="flex flex-col gap-1 px-4 py-4">
+    <div class="flex flex-col px-6 py-2">
       {
         navLinks.map((link) => (
           <a
             href={anchor(link.href)}
-            class="nav-link rounded-lg px-4 py-3 text-base text-text-secondary transition-colors hover:bg-bg-secondary hover:text-accent"
+            class="nav-link flex min-h-[52px] items-center hair-b text-base uppercase"
           >
             {label(link)}
           </a>
@@ -142,7 +143,7 @@ const menuAriaLabel = lang === "es" ? "Menú de navegación" : "Navigation menu"
         href={profile.links.github}
         target="_blank"
         rel="noopener noreferrer"
-        class="rounded-lg px-4 py-3 text-base text-text-secondary transition-colors hover:bg-bg-secondary hover:text-text-primary"
+        class="flex min-h-[52px] items-center text-base uppercase"
       >
         GitHub
       </a>
@@ -152,55 +153,49 @@ const menuAriaLabel = lang === "es" ? "Menú de navegación" : "Navigation menu"
 
 <style>
   .site-nav {
-    transform: translateY(-100%);
-    transition:
-      transform 300ms var(--ease-out),
-      background-color 300ms ease,
-      box-shadow 300ms ease;
+    background-color: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(10px);
   }
 
-  .site-nav.is-scrolled {
-    transform: translateY(0);
-    background-color: color-mix(in srgb, var(--color-bg) 85%, transparent);
-    box-shadow: 0 1px 0 var(--color-border);
-    backdrop-filter: blur(16px);
+  @supports not (backdrop-filter: blur(1px)) {
+    .site-nav { background-color: var(--paper); }
   }
 
   .nav-brand {
-    opacity: 0;
-    transform: translateY(-8px);
-    pointer-events: none;
-    transition:
-      opacity 250ms ease,
-      transform 250ms var(--ease-out);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 14px;
   }
 
-  .site-nav.is-scrolled .nav-brand {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-
-  .nav-link {
+  .nav-link,
+  .lang-switch {
+    color: var(--mid);
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 0.02em;
     transition: color 150ms ease;
   }
 
-  .nav-link:hover {
-    color: var(--color-accent);
+  .nav-link:hover,
+  .lang-switch:hover {
+    color: var(--ink);
   }
 
+  /* The section in view is marked the way a specimen marks the live setting. */
   .nav-link[aria-current="page"] {
-    color: var(--color-accent);
+    color: var(--ink);
+    font-weight: 600;
   }
 
-  /* Underline marker for the section currently in view (desktop bar only). */
   .site-nav > div .nav-link[aria-current="page"]::after {
     content: "";
     position: absolute;
     inset-inline: 0;
-    bottom: -2px;
-    height: 1px;
-    background-color: var(--color-accent);
+    bottom: 8px;
+    height: 2px;
+    background-color: var(--violet);
   }
 </style>
 

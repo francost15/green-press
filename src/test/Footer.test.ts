@@ -9,21 +9,21 @@ describe("Footer", () => {
   });
 
   it("labels the social links", async () => {
-    const { getByLabelText } = await renderAstro(Footer);
-    expect(getByLabelText("LinkedIn")).toBeInTheDocument();
-    expect(getByLabelText("GitHub")).toBeInTheDocument();
-    expect(getByLabelText("Email")).toBeInTheDocument();
+    const { getByRole } = await renderAstro(Footer);
+    expect(getByRole("link", { name: "LinkedIn" })).toBeInTheDocument();
+    expect(getByRole("link", { name: "GitHub" })).toBeInTheDocument();
+    expect(getByRole("link", { name: "Email" })).toBeInTheDocument();
   });
 
   it("opens external links safely", async () => {
-    const { getByLabelText } = await renderAstro(Footer);
-    const linkedin = getByLabelText("LinkedIn");
+    const { getByRole } = await renderAstro(Footer);
+    const linkedin = getByRole("link", { name: "LinkedIn" });
     expect(linkedin).toHaveAttribute("target", "_blank");
     expect(linkedin).toHaveAttribute("rel", "noopener noreferrer");
   });
 
   it("keeps the mailto link in the same tab", async () => {
-    const { getByLabelText } = await renderAstro(Footer);
-    expect(getByLabelText("Email")).not.toHaveAttribute("target");
+    const { getByRole } = await renderAstro(Footer);
+    expect(getByRole("link", { name: "Email" })).not.toHaveAttribute("target");
   });
 });

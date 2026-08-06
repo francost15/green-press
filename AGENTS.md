@@ -15,8 +15,8 @@ generated sitemap.
 - `src/pages/sitemap.xml.ts` — generated at build time, so routes and `lastmod` cannot drift.
   There is deliberately no `public/sitemap.xml`.
 - `src/layouts/Portfolio.astro` — the shared page body; takes `lang` and passes it down
-- `src/layouts/BaseLayout.astro` — `<head>`: per-locale SEO meta, hreflang, JSON-LD, and
-  the inline theme-init script that must run before first paint
+- `src/layouts/BaseLayout.astro` — `<head>`: per-locale SEO meta, hreflang, JSON-LD, the
+  self-hosted font preloads, and the direction contract as the first child of `<body>`
 
 `src/i18n.ts` holds the whole translation layer: `useTranslations(lang)` returns
 `t(spanish, english)`. The argument order is deliberate — it matches how the copy was
@@ -30,18 +30,29 @@ Content comes from `src/data/*.ts`.
 
 There is no client framework. Behaviour lives in two places:
 
-- `src/scripts/theme.ts` and `src/scripts/navbar.ts` — imported by the `<script>` block of
-  the matching `.astro` component. They are separate modules specifically so the test suite
-  can drive them against real rendered markup.
-- Inline `<script>` blocks in `Projects.astro`, `Contact.astro`, `HeroAnimation.astro`,
-  `ScrollProgress.astro`, and the scroll-reveal observer in `BaseLayout.astro`.
+- `src/scripts/navbar.ts` — imported by the `<script>` block of `Navbar.astro`. It is a
+  separate module specifically so the test suite can drive it against real rendered markup.
+- One inline `<script>` block, in `Contact.astro`, for form validation and submission.
+
+**Two compiler traps this project has already hit, both silent:**
+
+1. Base element styles MUST stay inside `@layer base`. An unlayered `p { margin: 0 }`
+   outranks every Tailwind utility and collapsed the hero's margins to zero.
+2. Lightning CSS folds `animation-*` longhands into the `animation` shorthand, and that
+   shorthand RESETS `animation-timeline` — producing invalid CSS that Chrome drops whole.
+   Scroll-driven animations therefore route the timeline through `var(--tl-view)`, which
+   cannot be folded. Do not "simplify" that back to a shorthand.
 
 The build ships **zero external JavaScript** — Astro inlines all of it. Keep it that way:
 adding a UI framework component with a `client:*` directive would pull a runtime back in.
 
-Two things deliberately do not use JS where CSS suffices: the theme knob is styled from
-`html[data-theme]`, and the scroll progress bar uses `animation-timeline: scroll()` with a
-small fallback for browsers that lack it.
+**The site has one appearance.** Dark mode, the theme toggle, `scripts/theme.ts` and the
+inline theme-init script were removed on 2026-08-04 by product decision. There is no
+`data-theme` attribute and no `prefers-color-scheme` branch anywhere.
+
+`src/index.css` carries the visual system. Its base element styles live inside `@layer base`
+on purpose: an unlayered `p { margin: 0 }` outranks every Tailwind utility and silently
+collapses margins to zero.
 
 ## SEO / GEO
 

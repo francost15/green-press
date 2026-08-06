@@ -18,7 +18,7 @@ describe("Contact", () => {
 
   it("renders the submit button", async () => {
     const { getByRole } = await renderAstro(Contact, { lang: "en" });
-    expect(getByRole("button", { name: /Send Message/ })).toBeInTheDocument();
+    expect(getByRole("button", { name: /Send message/i })).toBeInTheDocument();
   });
 
   it("posts to formspree", async () => {

@@ -11,9 +11,6 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
-const inputBase =
-  "w-full rounded-xl border border-border bg-bg px-4 py-3 text-sm text-text-primary outline-none placeholder:text-text-tertiary focus:border-accent focus:ring-2 focus:ring-accent/15 transition-[border-color,box-shadow]";
-
 const contactLinks = [
   { icon: "LinkedinLogo", label: "LinkedIn", href: profile.links.linkedin, external: true },
   { icon: "GithubLogo", label: "GitHub", href: profile.links.github, external: true },
@@ -26,248 +23,291 @@ const contactLinks = [
   },
 ];
 
+/* Every message names the problem and the recovery, in the reader's language.
+   They ship as data attributes so the validator stays a small, untranslated
+   script and the copy stays with the rest of the copy. */
+const messages = {
+  nameRequired: t(
+    "Escribe tu nombre para saber cómo dirigirme a ti.",
+    "Enter your name so I know how to address you.",
+  ),
+  emailRequired: t(
+    "Escribe tu correo, o no tendré cómo responderte.",
+    "Enter your email, or I will have no way to reply.",
+  ),
+  emailInvalid: t(
+    "Ese correo no parece completo. Revisa que lleve una arroba y un dominio.",
+    "That email looks incomplete. Check that it has an @ and a domain.",
+  ),
+  messageRequired: t(
+    "Cuéntame algo del proyecto, aunque sea una frase.",
+    "Tell me something about the project, even one sentence.",
+  ),
+  sendFailed: t(
+    "No se pudo enviar. Revisa tu conexión e inténtalo otra vez, o escríbeme directo a " +
+      profile.email +
+      ".",
+    "It could not be sent. Check your connection and try again, or email me directly at " +
+      profile.email +
+      ".",
+  ),
+  sent: t(
+    "Mensaje enviado. Te respondo pronto.",
+    "Message sent. I will get back to you soon.",
+  ),
+};
+
 const labels = {
-  idle: t("Enviar Mensaje", "Send Message"),
-  sending: t("Enviando...", "Sending..."),
-  sent: t("¡Enviado!", "Sent!"),
+  idle: t("Enviar mensaje", "Send message"),
+  sending: t("Enviando…", "Sending…"),
+  sent: t("Enviado", "Sent"),
 };
 ---
 
 <Section
   id="contacto"
-  number="05"
+  class="band-violet"
   title={t("Contacto", "Contact")}
-  subtitle={t("¿Tienes un proyecto en mente? Hablemos.", "Have a project in mind? Let's talk.")}
+  meta={t("4 canales", "4 channels")}
+  subtitle={t(
+    "¿Una vacante o un proyecto? Escríbeme, o llévate el CV.",
+    "An open role or a project? Write to me, or take the CV.",
+  )}
 >
-  <div class="grid gap-8 lg:grid-cols-[1fr_400px]">
-    {/* Form card */}
-    <div class="card p-8">
-      <form
-        data-contact-form
-        data-endpoint={`https://formspree.io/f/${profile.formspreeId}`}
-        class="flex flex-col gap-6"
-        novalidate
-      >
-        <div class="grid gap-6 sm:grid-cols-2">
-          <div>
-            <label
-              for="contact-name"
-              class="mb-2 block text-xs font-semibold text-text-secondary"
-            >
-              {t("Nombre", "Name")}
-              <span aria-hidden="true" class="text-accent">*</span>
-            </label>
-            <input
-              type="text"
-              id="contact-name"
-              name="name"
-              required
-              aria-required="true"
-              autocomplete="name"
-              class={inputBase}
-              placeholder={t("Tu nombre", "Your name")}
-            />
-          </div>
-          <div>
-            <label
-              for="contact-email"
-              class="mb-2 block text-xs font-semibold text-text-secondary"
-            >
-              Email
-              <span aria-hidden="true" class="text-accent">*</span>
-            </label>
-            <input
-              type="email"
-              id="contact-email"
-              name="email"
-              required
-              aria-required="true"
-              autocomplete="email"
-              class={inputBase}
-              placeholder={t("tu@email.com", "you@email.com")}
-            />
-          </div>
+  <div class="cols hair-t pt-10">
+    {/* The margin carries the direct channels; the form is the setting. */}
+    <div class="c-meta">
+      <a href={profile.cvUrl} download class="act mb-8 w-full">
+        {t("Descargar CV", "Download CV")}
+      </a>
+
+      <p class="t-meta mb-3">{t("Encuéntrame en", "Find me on")}</p>
+      <ul class="flex flex-col">
+        {
+          contactLinks.map(({ icon, label, href, external }) => (
+            <li>
+              <a
+                href={href}
+                target={external ? "_blank" : undefined}
+                rel={external ? "noopener noreferrer" : undefined}
+                class="flex min-h-[44px] items-center gap-2.5 text-[15px] text-[var(--ink)] transition-colors duration-150 hover:text-[var(--violet)]"
+              >
+                <Icon name={icon} size={16} />
+                {label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <form
+      data-contact-form
+      data-endpoint={`https://formspree.io/f/${profile.formspreeId}`}
+      class="c-main flex flex-col gap-6"
+      novalidate
+      data-msg-name={messages.nameRequired}
+      data-msg-email={messages.emailRequired}
+      data-msg-email-invalid={messages.emailInvalid}
+      data-msg-message={messages.messageRequired}
+      data-msg-failed={messages.sendFailed}
+      data-msg-sent={messages.sent}
+    >
+      <div class="grid gap-6 sm:grid-cols-2">
+        <div>
+          <label for="contact-name" class="t-meta mb-2 block">
+            {t("Nombre", "Name")} <span aria-hidden="true">*</span>
+          </label>
+          <input
+            type="text"
+            id="contact-name"
+            name="name"
+            required
+            autocomplete="name"
+            class="field"
+            aria-describedby="contact-name-error"
+          />
+          <p id="contact-name-error" class="field-error" hidden>
+            <Icon name="X" size={15} />
+            <span data-error-text></span>
+          </p>
         </div>
 
         <div>
-          <label
-            for="contact-message"
-            class="mb-2 block text-xs font-semibold text-text-secondary"
-          >
-            {t("Mensaje", "Message")}
-            <span aria-hidden="true" class="text-accent">*</span>
+          <label for="contact-email" class="t-meta mb-2 block">
+            Email <span aria-hidden="true">*</span>
           </label>
-          <textarea
-            id="contact-message"
-            name="message"
+          <input
+            type="email"
+            id="contact-email"
+            name="email"
             required
-            aria-required="true"
-            rows="5"
-            class={`${inputBase} resize-none`}
-            placeholder={t("Cuéntame sobre tu proyecto...", "Tell me about your project...")}
-          ></textarea>
+            autocomplete="email"
+            class="field"
+            aria-describedby="contact-email-error"
+          />
+          <p id="contact-email-error" class="field-error" hidden>
+            <Icon name="X" size={15} />
+            <span data-error-text></span>
+          </p>
         </div>
+      </div>
 
+      <div>
+        <label for="contact-message" class="t-meta mb-2 block">
+          {t("Mensaje", "Message")} <span aria-hidden="true">*</span>
+        </label>
+        <textarea
+          id="contact-message"
+          name="message"
+          required
+          rows="6"
+          class="field resize-y"
+          aria-describedby="contact-message-error"></textarea>
+        <p id="contact-message-error" class="field-error" hidden>
+          <Icon name="X" size={15} />
+          <span data-error-text></span>
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-4">
         <button
           type="submit"
           data-submit
           data-label-idle={labels.idle}
           data-label-sending={labels.sending}
           data-label-sent={labels.sent}
-          class="btn-primary self-start disabled:cursor-not-allowed disabled:opacity-60"
+          class="act"
         >
           <span data-submit-label>{labels.idle}</span>
-          <span data-submit-arrow><Icon name="ArrowRight" size={16} /></span>
         </button>
-      </form>
-    </div>
 
-    {/* Info side */}
-    <div class="flex flex-col justify-between gap-8">
-      <div class="card p-7">
-        <p class="text-sm leading-relaxed text-text-secondary">
-          {
-            t(
-              "¿Listo para pasar de la experimentación a la producción? Ayudo a empresas a desplegar soluciones de IA que realmente mueven la aguja.",
-              "Ready to move from experimentation to production? I help companies deploy AI solutions that actually move the needle.",
-            )
-          }
-        </p>
+        {/* One status region for the whole form, next to the control that
+            triggers it — not a toast pinned to a corner of the viewport. */}
+        <p data-form-status role="status" aria-live="polite" class="text-[15px] font-semibold"></p>
       </div>
-
-      <div class="card flex flex-col gap-1 p-7">
-        <p class="mb-4 section-label">{t("Encuéntrame en", "Find me on")}</p>
-        {
-          contactLinks.map(({ icon, label, href, external }) => (
-            <a
-              href={href}
-              target={external ? "_blank" : undefined}
-              rel={external ? "noopener noreferrer" : undefined}
-              class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-text-secondary transition-[background-color,color] hover:bg-bg-secondary hover:text-accent"
-            >
-              <Icon
-                name={icon}
-                size={17}
-                class="text-text-tertiary transition-colors group-hover:text-accent"
-              />
-              {label}
-            </a>
-          ))
-        }
-      </div>
-    </div>
-  </div>
-
-  {/* Toast */}
-  <div
-    data-toast
-    aria-live="polite"
-    class="toast fixed bottom-8 right-8 z-50 pointer-events-none opacity-0"
-  >
-    <div
-      data-toast-sent
-      hidden
-      class="flex items-center gap-3 rounded-xl border border-green-500/25 bg-green-500/10 px-5 py-3.5 text-sm font-medium text-green-500 shadow-xl backdrop-blur-md"
-    >
-      <svg
-        class="h-4 w-4 shrink-0"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        stroke-width="2.5"
-        aria-hidden="true"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
-      </svg>
-      {t("¡Mensaje enviado! Te responderé pronto.", "Message sent! I'll get back to you soon.")}
-    </div>
-    <div
-      data-toast-error
-      hidden
-      class="flex items-center gap-3 rounded-xl border border-red-500/25 bg-red-500/10 px-5 py-3.5 text-sm font-medium text-red-500 shadow-xl backdrop-blur-md"
-    >
-      <svg
-        class="h-4 w-4 shrink-0"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        stroke-width="2.5"
-        aria-hidden="true"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-      </svg>
-      {t("Error al enviar. Intenta de nuevo.", "Error sending. Please try again.")}
-    </div>
+    </form>
   </div>
 </Section>
 
-<style>
-  .toast {
-    transform: translateY(1rem);
-    transition:
-      transform 300ms ease,
-      opacity 300ms ease;
-  }
-
-  .toast.is-visible {
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;
-  }
-</style>
-
 <script>
   const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
-  const toast = document.querySelector<HTMLElement>("[data-toast]");
-  const sentToast = document.querySelector<HTMLElement>("[data-toast-sent]");
-  const errorToast = document.querySelector<HTMLElement>("[data-toast-error]");
-  const button = document.querySelector<HTMLButtonElement>("[data-submit]");
-  const label = document.querySelector<HTMLElement>("[data-submit-label]");
-  const arrow = document.querySelector<HTMLElement>("[data-submit-arrow]");
 
-  type Status = "idle" | "sending" | "sent" | "error";
+  if (form) {
+    const button = form.querySelector<HTMLButtonElement>("[data-submit]");
+    const buttonLabel = form.querySelector<HTMLElement>("[data-submit-label]");
+    const status = form.querySelector<HTMLElement>("[data-form-status]");
+    const copy = form.dataset;
 
-  const setStatus = (status: Status) => {
-    if (button && label) {
-      button.disabled = status === "sending" || status === "sent";
-      const text =
-        status === "sending"
+    const fieldOf = (id: string) => document.getElementById(id) as HTMLInputElement | null;
+
+    const setFieldError = (input: HTMLInputElement | HTMLTextAreaElement, message: string | null) => {
+      const box = document.getElementById(`${input.id}-error`);
+      const text = box?.querySelector<HTMLElement>("[data-error-text]");
+      if (message) {
+        input.setAttribute("aria-invalid", "true");
+        if (box) box.hidden = false;
+        if (text) text.textContent = message;
+      } else {
+        input.removeAttribute("aria-invalid");
+        if (box) box.hidden = true;
+        if (text) text.textContent = "";
+      }
+    };
+
+    const validate = () => {
+      const name = fieldOf("contact-name");
+      const email = fieldOf("contact-email");
+      const message = document.getElementById("contact-message") as HTMLTextAreaElement | null;
+      const invalid: (HTMLInputElement | HTMLTextAreaElement)[] = [];
+
+      if (name) {
+        const bad = !name.value.trim();
+        setFieldError(name, bad ? (copy.msgName ?? "") : null);
+        if (bad) invalid.push(name);
+      }
+
+      if (email) {
+        const value = email.value.trim();
+        // Deliberately loose: something, an @, something, a dot, something.
+        const looksLikeEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        const msg = !value ? copy.msgEmail : !looksLikeEmail ? copy.msgEmailInvalid : null;
+        setFieldError(email, msg ?? null);
+        if (msg) invalid.push(email);
+      }
+
+      if (message) {
+        const bad = !message.value.trim();
+        setFieldError(message, bad ? (copy.msgMessage ?? "") : null);
+        if (bad) invalid.push(message);
+      }
+
+      return invalid;
+    };
+
+    // Once a field has been marked, re-check it as the reader fixes it, so the
+    // error clears the moment it stops being true.
+    for (const el of form.querySelectorAll<HTMLInputElement>("input, textarea")) {
+      el.addEventListener("input", () => {
+        if (el.hasAttribute("aria-invalid")) validate();
+      });
+    }
+
+    const setBusy = (state: "idle" | "sending" | "sent") => {
+      if (!button || !buttonLabel) return;
+      button.disabled = state !== "idle";
+      const label =
+        state === "sending"
           ? button.dataset.labelSending
-          : status === "sent"
+          : state === "sent"
             ? button.dataset.labelSent
             : button.dataset.labelIdle;
-      if (text) label.textContent = text;
-      if (arrow) arrow.hidden = status !== "idle";
-    }
+      if (label) buttonLabel.textContent = label;
+    };
 
-    if (!toast || !sentToast || !errorToast) return;
-    sentToast.hidden = status !== "sent";
-    errorToast.hidden = status !== "error";
-    // Errors interrupt; a success confirmation can wait for a pause in speech.
-    toast.setAttribute("aria-live", status === "error" ? "assertive" : "polite");
-    toast.classList.toggle("is-visible", status === "sent" || status === "error");
-  };
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-  form?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    setStatus("sending");
+      const invalid = validate();
+      if (invalid.length > 0) {
+        // Errors are announced assertively and the first one takes focus, so a
+        // screen-reader user is not left guessing why nothing happened.
+        if (status) {
+          status.setAttribute("aria-live", "assertive");
+          status.textContent = "";
+        }
+        invalid[0].focus();
+        return;
+      }
 
-    try {
-      const response = await fetch(form.dataset.endpoint ?? "", {
-        method: "POST",
-        body: new FormData(form),
-        headers: { Accept: "application/json" },
-      });
+      if (status) {
+        status.setAttribute("aria-live", "polite");
+        status.textContent = "";
+      }
+      setBusy("sending");
 
-      if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+      try {
+        const response = await fetch(form.dataset.endpoint ?? "", {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+        });
+        if (!response.ok) throw new Error(`Request failed: ${response.status}`);
 
-      setStatus("sent");
-      form.reset();
-      setTimeout(() => setStatus("idle"), 5000);
-    } catch {
-      setStatus("error");
-    }
-  });
-
-  setStatus("idle");
+        setBusy("sent");
+        if (status) status.textContent = copy.msgSent ?? "";
+        form.reset();
+        setTimeout(() => {
+          setBusy("idle");
+          if (status) status.textContent = "";
+        }, 6000);
+      } catch {
+        setBusy("idle");
+        if (status) {
+          status.setAttribute("aria-live", "assertive");
+          status.textContent = copy.msgFailed ?? "";
+        }
+      }
+    });
+  }
 </script>

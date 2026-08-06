@@ -1,0 +1,182 @@
+---
+import PreviewLayout from "../../layouts/PreviewLayout.astro";
+import { profile } from "../../data/profile";
+import { projects } from "../../data/projects";
+import { experience } from "../../data/experience";
+import { education } from "../../data/education";
+import { competencies } from "../../data/competencies";
+import { formatPeriod } from "../../lib/dates";
+import "../../styles/preview-index.css";
+
+// The marquee is built from the real stack, deduplicated, and doubled so the
+// -50% translate loops seamlessly.
+const stack = [...new Set(competencies.flatMap((c) => c.techs))];
+const strip = [...stack, ...stack];
+---
+
+<PreviewLayout
+  title="Index"
+  fonts={[
+    { family: "Clash Display", file: "/fonts/clash-display-var.woff2" },
+    { family: "Switzer", file: "/fonts/switzer-var.woff2" },
+  ]}
+>
+  <header class="top wrap">
+    <a href="#top" style="font-weight:600">Franco Sanchez</a>
+    <nav>
+      <a href="#work">Work</a>
+      <a href="#record">Record</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="wrap open">
+      <p class="lbl up">AI &amp; Software Engineer — Puebla, México</p>
+      <h1 class="dsp up u2" style="margin-top:1.25rem">
+        Franco<br />Sanchez
+      </h1>
+      <p class="lead up u3" style="margin-top:clamp(1.75rem,3vw,2.75rem)">
+        I take AI systems from concept to the production floor, and measure what they save.
+      </p>
+      <div class="up u4" style="display:flex; gap:.75rem; flex-wrap:wrap; margin-top:2.25rem">
+        <a class="act" href={profile.cvUrl} download>Download CV</a>
+        <a class="act act-ghost" href="#work">Index of work</a>
+      </div>
+
+      <dl class="open-meta up u4">
+        <div><dt class="lbl">In production</dt><dd style="margin:.3rem 0 0">{projects.length} systems</dd></div>
+        <div><dt class="lbl">Posts</dt><dd style="margin:.3rem 0 0">{experience.length} · since 2020</dd></div>
+        <div><dt class="lbl">Languages</dt><dd style="margin:.3rem 0 0">Español · English</dd></div>
+      </dl>
+    </section>
+
+    <div class="strip" aria-hidden="true">
+      <div class="strip-track">
+        {strip.map((s) => <span>{s}</span>)}
+      </div>
+    </div>
+
+    {/* ── Work ─────────────────────────────────────────────── */}
+    <section class="wrap sec" id="work">
+      <div class="sec-head in">
+        <h2>Work</h2>
+        <span class="lbl">{projects.length} entries</span>
+      </div>
+
+      <ul class="idx">
+        {
+          projects.map((p, i) => (
+            <li>
+              <a class="item" href={`/projects/${p.slug}/`}>
+                <span class="item-head">
+                  <span class="lbl item-n">{String(i + 1).padStart(2, "0")}</span>
+                  <span class="item-t">{p.title.en}</span>
+                  <span class="item-go" aria-hidden="true">→</span>
+                </span>
+                <span class="item-body">
+                  <div>
+                    <span class="item-inner">
+                      <span class="body" style="display:block">{p.impact.en}</span>
+                      <ul class="chips">
+                        {p.tags.en.slice(0, 5).map((t) => (
+                          <li>{t}</li>
+                        ))}
+                      </ul>
+                    </span>
+                  </div>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    {/* ── Practice ─────────────────────────────────────────── */}
+    <section class="wrap sec" id="practice">
+      <div class="sec-head in">
+        <h2>Practice</h2>
+        <span class="lbl">{competencies.length} areas</span>
+      </div>
+
+      {
+        competencies.map((c) => (
+          <div class="line in">
+            <p class="lbl">{c.techs.slice(0, 2).join(" · ")}</p>
+            <div>
+              <h3>{c.title.en}</h3>
+              <p class="body" style="margin-top:.4rem">{c.description.en}</p>
+            </div>
+            <ul class="chips" style="align-self:start">
+              {c.techs.map((t) => (
+                <li>{t}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </section>
+
+    {/* ── Record ───────────────────────────────────────────── */}
+    <section class="wrap sec" id="record">
+      <div class="sec-head in">
+        <h2>Record</h2>
+        <span class="lbl">{experience.length} posts</span>
+      </div>
+
+      {
+        experience.map((e) => (
+          <div class="line in">
+            <p class="lbl">{formatPeriod(e.period, "en")}</p>
+            <div>
+              <h3>{e.role.en}</h3>
+              <p class="body" style="margin-top:.3rem">{e.company}</p>
+            </div>
+            <p class="body" style="font-size:.95rem">{e.description.en}</p>
+          </div>
+        ))
+      }
+
+      <div class="sec-head in" style="margin-top:3.5rem">
+        <h2>Education</h2>
+        <span class="lbl">{education.length} qualifications</span>
+      </div>
+
+      {
+        education.map((e) => (
+          <div class="line in">
+            <p class="lbl">{formatPeriod(e.period, "en")}</p>
+            <div>
+              <h3>
+                {e.degree.en}
+                {e.status === "in-progress" && (
+                  <span style="color:var(--violet)"> · in progress</span>
+                )}
+              </h3>
+              <p class="body" style="margin-top:.3rem">{e.institution}</p>
+            </div>
+            <p class="body" style="font-size:.95rem">{e.description?.en}</p>
+          </div>
+        ))
+      }
+    </section>
+
+    {/* ── Contact ──────────────────────────────────────────── */}
+    <section class="wrap sec" id="contact">
+      <div class="sec-head in">
+        <h2>Contact</h2>
+        <span class="lbl">4 channels</span>
+      </div>
+      <p class="dsp in" style="font-size:clamp(1.8rem,5vw,3.75rem); max-width:18ch">
+        Open to full-time roles and contract work.
+      </p>
+      <div class="in" style="display:flex; gap:.75rem; flex-wrap:wrap; margin-top:2.5rem">
+        <a class="act" href={`mailto:${profile.email}`}>{profile.email}</a>
+        <a class="act act-ghost" href={profile.links.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="act act-ghost" href={profile.links.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <p class="lbl in" style="margin-top:3.5rem">{profile.location} · {profile.phone}</p>
+    </section>
+  </main>
+</PreviewLayout>

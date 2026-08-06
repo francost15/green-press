@@ -28,8 +28,12 @@ describe("Section", () => {
     expect(container.querySelector(".custom-class")).toBeInTheDocument();
   });
 
-  it("marks the header for scroll reveal", async () => {
-    const { container } = await renderAstro(Section, { id: "test", title: "T" });
-    expect(container.querySelector(".anim-enter")).toBeInTheDocument();
+  it("renders the marginal annotation beside the heading", async () => {
+    const { getByText } = await renderAstro(Section, {
+      id: "test",
+      title: "T",
+      meta: "5 entries",
+    });
+    expect(getByText("5 entries")).toBeInTheDocument();
   });
 });

@@ -2,7 +2,7 @@ export interface Project {
   id: string;
   /** URL segment for /projects/<slug>/ and /es/proyectos/<slug>/ */
   slug: string;
-  title: string;
+  title: { es: string; en: string };
   problem: { es: string; en: string };
   solution: { es: string; en: string };
   impact: { es: string; en: string };
@@ -16,7 +16,7 @@ export const projects: Project[] = [
   {
     id: "ai-dashboard-towel",
     slug: "ai-business-intelligence-dashboard",
-    title: "AI Business Intelligence Dashboard",
+    title: { es: "Dashboard de Inteligencia de Negocio con IA", en: "AI Business Intelligence Dashboard" },
     problem: {
       es: "La toma de decisiones gerenciales era lenta por la dependencia de analistas para cruzar datos de ventas y generar reportes estáticos.",
       en: "Managerial decision-making was slow due to reliance on analysts to cross-reference sales data and generate static reports.",
@@ -44,7 +44,7 @@ export const projects: Project[] = [
   {
     id: "cfdi-billing-ai",
     slug: "smart-cfdi-billing-system",
-    title: "Smart CFDI Billing System",
+    title: { es: "Sistema Inteligente de Facturación CFDI", en: "Smart CFDI Billing System" },
     problem: {
       es: "La facturación manual y el registro de ingresos consumía horas de trabajo administrativo, con un alto margen de error humano en la captura.",
       en: "Manual billing and income registration consumed hours of administrative work, with a high margin of human error in data entry.",
@@ -75,7 +75,7 @@ export const projects: Project[] = [
   {
     id: "rag-chatbot-uvp",
     slug: "rag-institutional-assistant",
-    title: "RAG Institutional Assistant",
+    title: { es: "Asistente Institucional RAG", en: "RAG Institutional Assistant" },
     problem: {
       es: "El equipo de atención escolar estaba saturado respondiendo las mismas dudas sobre trámites y normativas a miles de estudiantes diariamente.",
       en: "The school support team was overwhelmed answering the same questions about procedures and regulations to thousands of students daily.",
@@ -97,7 +97,7 @@ export const projects: Project[] = [
   {
     id: "textile-erp",
     slug: "textile-production-erp",
-    title: "Textile Production ERP",
+    title: { es: "ERP de Producción Textil", en: "Textile Production ERP" },
     problem: {
       es: "Falta de trazabilidad en tiempo real en la línea de producción textil, causando cuellos de botella no detectados e inventarios desfasados.",
       en: "Lack of real-time traceability on the textile production line, causing undetected bottlenecks and outdated inventories.",
@@ -118,7 +118,7 @@ export const projects: Project[] = [
   {
     id: "ltc-job-board-ai",
     slug: "ai-powered-job-matching-board",
-    title: "AI-Powered Job Matching Board",
+    title: { es: "Bolsa de Trabajo con IA", en: "AI-Powered Job Matching Board" },
     problem: {
       es: "El equipo de reclutamiento invertía cientos de horas revisando CVs no estructurados para encontrar el perfil adecuado para vacantes técnicas.",
       en: "The recruitment team spent hundreds of hours reviewing unstructured CVs to find the right profile for technical vacancies.",

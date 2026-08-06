@@ -1,6 +1,6 @@
 export const profile = {
   name: "Franco Sanchez",
-  title: "AI & Software Engineer",
+  title: { es: "Ingeniero de IA y Software", en: "AI & Software Engineer" },
   tagline: {
     es: "Transformo complejidad técnica en rentabilidad, reduciendo costos operativos hasta un 85%.",
     en: "Turning technical complexity into profitability, cutting operational costs by up to 85%.",

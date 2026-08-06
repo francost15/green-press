@@ -1,5 +1,13 @@
 ---
 import { profile } from "../data/profile";
+import { useTranslations, type Lang } from "../i18n";
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = "en" } = Astro.props;
+const t = useTranslations(lang);
 
 const links = [
   { label: "GitHub", href: profile.links.github },
@@ -10,39 +18,33 @@ const links = [
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="border-t border-border bg-bg">
-  <div class="mx-auto max-w-[1200px] px-6 py-12">
-    <div class="flex flex-col items-center justify-between gap-6 md:flex-row">
-      <div>
-        <span
-          class="font-[family-name:var(--color-font-display)] text-base font-black tracking-tight text-text-primary"
-        >
-          Franco Sanchez
-        </span>
-        <p
-          class="mt-1 font-mono text-[11px] font-medium tracking-[0.18em] text-text-tertiary uppercase"
-        >
-          AI &amp; Software Engineer — {currentYear}
+<footer class="hair-t py-12">
+  <div class="sheet">
+    <div class="cols">
+      <div class="c-meta">
+        <p class="t-meta">{t("Colofón", "Colophon")}</p>
+        <p class="m-0 mt-1 text-[15px] font-medium">
+          {profile.name} · {currentYear}
         </p>
       </div>
 
-      <div class="flex items-center gap-8">
-        {
-          links.map((link) => (
-            <a
-              href={link.href}
-              aria-label={link.label}
-              target={link.href.startsWith("http") ? "_blank" : undefined}
-              rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-              class="group flex flex-col items-center gap-1"
-            >
-              <span class="font-mono text-[11px] font-bold tracking-[0.18em] text-text-tertiary uppercase transition-colors group-hover:text-accent">
-                {link.label}
-              </span>
-              <div class="footer-link-underline" aria-hidden="true" />
-            </a>
-          ))
-        }
+      <div class="c-main flex flex-col gap-6 min-[900px]:flex-row min-[900px]:items-start min-[900px]:justify-between">
+        <ul class="flex flex-wrap items-center gap-x-6">
+          {
+            links.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  target={link.href.startsWith("http") ? "_blank" : undefined}
+                  rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  class="link flex min-h-[44px] items-center text-[15px] font-semibold"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </div>
   </div>

@@ -5,27 +5,26 @@ import { renderAstro } from "./render";
 describe("Hero", () => {
   it("renders the name in the top-level heading", async () => {
     const { container } = await renderAstro(Hero, { lang: "en" });
-    // The display treatment breaks the name across two lines, so the text
-    // nodes sit either side of a <br> rather than forming one string.
     const heading = container.querySelector("h1");
-    expect(heading?.textContent).toContain("Franco");
-    expect(heading?.textContent).toContain("Sanchez");
+    // One text node with a real space: extraction pipelines that read
+    // textContent must not see the single token "FrancoSanchez".
+    expect(heading?.textContent?.trim()).toBe("Franco Sanchez");
   });
 
-  it("renders the title", async () => {
+  it("annotates the margin with the role", async () => {
     const { getByText } = await renderAstro(Hero, { lang: "en" });
     expect(getByText("AI & Software Engineer")).toBeInTheDocument();
   });
 
   it("renders the English CTAs by default", async () => {
     const { getByText } = await renderAstro(Hero, { lang: "en" });
-    expect(getByText("View Projects")).toBeInTheDocument();
+    expect(getByText("See the record")).toBeInTheDocument();
     expect(getByText("Download CV")).toBeInTheDocument();
   });
 
   it("renders the Spanish CTAs for es", async () => {
     const { getByText } = await renderAstro(Hero, { lang: "es" });
-    expect(getByText("Ver Proyectos")).toBeInTheDocument();
+    expect(getByText("Ver el registro")).toBeInTheDocument();
     expect(getByText("Descargar CV")).toBeInTheDocument();
   });
 
@@ -34,8 +33,9 @@ describe("Hero", () => {
     expect(getByText("Download CV").closest("a")).toHaveAttribute("download");
   });
 
-  it("staggers six hero items", async () => {
-    const { container } = await renderAstro(Hero, { lang: "en" });
-    expect(container.querySelectorAll(".hero-item").length).toBeGreaterThanOrEqual(6);
+  it("counts the shipped systems from the data rather than hard-coding them", async () => {
+    const { getByText } = await renderAstro(Hero, { lang: "en" });
+    const { projects } = await import("../data/projects");
+    expect(getByText(new RegExp(`^${projects.length} systems`))).toBeInTheDocument();
   });
 });

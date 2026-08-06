@@ -2,10 +2,9 @@
 import BaseLayout from "./BaseLayout.astro";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
-import ScrollProgress from "../components/ScrollProgress.astro";
 import Icon from "../components/Icon.astro";
-import TechIcon from "../components/TechIcon.astro";
 import { imageSizes, smallVariant } from "../data/imageSizes";
+import { profile } from "../data/profile";
 import type { Project } from "../data/projects";
 import { SITE, localePath, useTranslations, type Lang } from "../i18n";
 
@@ -28,7 +27,9 @@ const altPath = `${lang === "es" ? "projects/" : "proyectos/"}${project.slug}/`;
 // "https://fsanchezt.comprojects/…".
 const canonicalUrl = `${SITE}${localePath(lang, path)}`;
 
+const title = t(project.title.es, project.title.en);
 const description = t(project.impact.es, project.impact.en);
+const contactHash = "#contacto";
 
 // One CreativeWork per page, bound to the shared Person node — the home page's ItemList
 // stays where it is and is not repeated here.
@@ -36,8 +37,8 @@ const schema = {
   "@context": "https://schema.org",
   "@type": "CreativeWork",
   "@id": `${canonicalUrl}#project`,
-  name: project.title,
-  headline: project.title,
+  name: title,
+  headline: title,
   description,
   url: canonicalUrl,
   inLanguage: lang,
@@ -55,113 +56,111 @@ const sections = [
 
 <BaseLayout
   lang={lang}
-  title={`${project.title} — Franco Sanchez`}
+  title={`${title} — Franco Sanchez`}
   description={description}
   path={path}
   altPath={altPath}
   schemas={[schema]}
 >
-  <div class="relative min-h-screen bg-bg">
-    <ScrollProgress />
-    <Navbar lang={lang} altPath={altPath} />
+  <a href="#project-title" class="skip-link">{t("Saltar al contenido", "Skip to content")}</a>
+  <Navbar lang={lang} altPath={altPath} />
 
-    <main class="mx-auto max-w-3xl px-6 pt-32 pb-24">
-      <a
-        href={localePath(lang)}
-        class="inline-flex items-center gap-2 font-mono text-[11px] font-bold tracking-[0.18em] text-text-tertiary uppercase transition-colors hover:text-accent"
-      >
-        <Icon name="CaretLeft" size={14} />
+  <main class="sheet layer pt-32 pb-24">
+      <a href={localePath(lang)} class="link inline-flex items-center gap-2 text-[15px] font-semibold">
+        <Icon name="CaretLeft" size={15} />
         {t("Volver al inicio", "Back to home")}
       </a>
 
-      <h1
-        class="mt-8 font-[family-name:var(--color-font-display)] text-4xl font-black leading-tight tracking-tighter text-text-primary md:text-5xl"
-      >
-        {project.title}
-      </h1>
+      <div class="cols mt-10">
+        {/* The margin annotates the entry: impact first, because it is the most
+            citable sentence on the page, then the stack. */}
+        <div class="c-meta order-2 min-[900px]:order-1">
+          <p class="t-meta">{t("Impacto", "Impact")}</p>
+          <p class="m-0 mt-1 max-w-[34ch] text-[15px] font-medium leading-snug">{description}</p>
 
-      <div class="mt-5 flex flex-wrap gap-1.5">
-        {
-          tags.map((tag) => (
-            <span class="tech-pill">
-              <TechIcon name={tag} variant="mono" class="h-3 w-3 opacity-60" />
-              {tag}
-            </span>
-          ))
-        }
-      </div>
+          <p class="t-meta mt-7">{t("Stack", "Stack")}</p>
+          <ul class="tags mt-2">
+            {tags.map((tag) => <li>{tag}</li>)}
+          </ul>
+        </div>
 
-      {/* Impact leads, because it is the most citable sentence on the page. */}
-      <div class="mt-8 rounded-xl border border-accent/20 bg-accent/5 px-5 py-4">
-        <p class="mb-1 section-label">{t("Impacto", "Impact")}</p>
-        <p class="text-base font-semibold leading-snug text-text-primary">{description}</p>
-      </div>
+        <div class="c-main order-1 min-[900px]:order-2">
+          <h1 id="project-title" class="t-head">{title}</h1>
 
-      {
-        sections.map((section) => (
-          <section class="mt-10">
-            <h2 class="mb-3 font-[family-name:var(--color-font-display)] text-2xl font-bold tracking-tight text-text-primary">
-              {section.title}
-            </h2>
-            <p class="text-base leading-relaxed text-text-secondary">{section.body}</p>
-          </section>
-        ))
-      }
+          {
+            sections.map((section) => (
+              <section class="mt-10">
+                <h2 class="t-sub">{section.title}</h2>
+                <p class="t-body mt-4">{section.body}</p>
+              </section>
+            ))
+          }
 
-      {
-        images.length > 0 && (
-          <section class="mt-12">
-            <h2 class="mb-5 font-[family-name:var(--color-font-display)] text-2xl font-bold tracking-tight text-text-primary">
-              {t("Capturas", "Screenshots")}
-            </h2>
-            {/* sizes: the column is max-w-3xl, so a phone never fetches the 1536px file. */}
-            <div class="flex flex-col gap-5">
-              {images.map((src, i) => (
-                <img
-                  src={src}
-                  srcset={`${smallVariant(src)} 768w, ${src} 1536w`}
-                  sizes="(max-width: 768px) 100vw, 768px"
-                  alt={`${project.title} — ${t("captura", "screenshot")} ${i + 1}`}
-                  width={imageSizes[src]?.width}
-                  height={imageSizes[src]?.height}
-                  loading={i === 0 ? "eager" : "lazy"}
-                  decoding="async"
-                  class="img-outlined h-auto w-full rounded-xl"
-                />
-              ))}
-            </div>
-          </section>
-        )
-      }
+          {
+            images.length > 0 && (
+              <section class="mt-14">
+                <h2 class="t-sub">{t("Capturas", "Screenshots")}</h2>
+                {/* The setting column measures 800px on the 1320 sheet, so
+                    desktop selects the 1536w candidate at 2x density. */}
+                <div class="mt-6 flex flex-col gap-6">
+                  {images.map((src, i) => (
+                    <img
+                      src={src}
+                      srcset={`${smallVariant(src)} 768w, ${src} 1536w`}
+                      sizes="(max-width: 900px) 100vw, 800px"
+                      alt={`${title} — ${t("captura", "screenshot")} ${i + 1}`}
+                      width={imageSizes[src]?.width}
+                      height={imageSizes[src]?.height}
+                      loading={i === 0 ? "eager" : "lazy"}
+                      decoding="async"
+                      class="img-reveal h-auto w-full border border-[var(--rule)]"
+                    />
+                  ))}
+                </div>
+              </section>
+            )
+          }
 
-      {
-        (project.github || project.link) && (
-          <div class="mt-12 flex items-center gap-5 border-t border-border pt-6">
-            {project.github && (
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 text-sm font-semibold text-text-secondary transition-colors hover:text-text-primary"
-              >
-                <Icon name="GithubLogo" size={18} /> GitHub
-              </a>
-            )}
-            {project.link && (
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 text-sm font-semibold text-text-secondary transition-colors hover:text-text-primary"
-              >
-                <Icon name="ArrowSquareOut" size={18} /> Live Demo
-              </a>
-            )}
+          {
+            (project.github || project.link) && (
+              <div class="hair-t mt-14 flex items-center gap-6 pt-6">
+                {project.github && (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="link inline-flex min-h-[44px] items-center gap-2 text-[15px] font-semibold"
+                  >
+                    <Icon name="GithubLogo" size={17} /> GitHub
+                  </a>
+                )}
+                {project.link && (
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="link inline-flex min-h-[44px] items-center gap-2 text-[15px] font-semibold"
+                  >
+                    <Icon name="ArrowSquareOut" size={17} /> {t("Demo en vivo", "Live demo")}
+                  </a>
+                )}
+              </div>
+            )
+          }
+          {/* A project page used to end here, with no way forward. */}
+          <div class="hair-t mt-16 flex flex-wrap items-center gap-3 pt-8">
+            <a href={profile.cvUrl} download class="act">
+              <Icon name="DownloadSimple" size={18} />
+              {t("Descargar CV", "Download CV")}
+            </a>
+            <a href={localePath(lang, contactHash)} class="act act-ghost">
+              {t("Escríbeme", "Get in touch")}
+              <Icon name="ArrowRight" size={18} />
+            </a>
           </div>
-        )
-      }
-    </main>
+        </div>
+      </div>
+  </main>
 
-    <Footer />
-  </div>
+  <Footer lang={lang} />
 </BaseLayout>

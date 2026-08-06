@@ -8,7 +8,7 @@ const cfdi = projects.find((p) => p.slug === "smart-cfdi-billing-system")!;
 describe("ProjectPage", () => {
   it("renders the project as the page heading", async () => {
     const { container } = await renderAstro(ProjectPage, { lang: "en", project: cfdi });
-    expect(container.querySelector("h1")?.textContent?.trim()).toBe(cfdi.title);
+    expect(container.querySelector("h1")?.textContent?.trim()).toBe(cfdi.title.en);
   });
 
   it("puts the detail prose in the document, not behind a hidden subtree", async () => {

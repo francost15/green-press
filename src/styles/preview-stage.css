@@ -1,0 +1,261 @@
+/* ════════════════════════════════════════════════════════════════════
+   C — STAGE
+   The quietest of the three. One idea per screen, enormous air, and a
+   contemporary serif carrying the voice. Snap is `proximity`, never
+   `mandatory` — a recruiter scanning fast must never be caught by the
+   page. The violet appears three times in the whole document.
+   Contrast on white: ink 17.4:1, mid 5.6:1, violet 7.1:1.
+   ════════════════════════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: "Sentient";
+  src: url("/fonts/sentient-var.woff2") format("woff2");
+  font-weight: 200 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Switzer";
+  src: url("/fonts/switzer-var.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  --paper: #fdfdfc;
+  --ink: #14141a;
+  --mid: #66666f;
+  --rule: #e7e7e4;
+  --violet: #6d28d9;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --pad: clamp(1.5rem, 6vw, 7rem);
+  --tl: view();
+}
+
+* { box-sizing: border-box; }
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+  scroll-padding-top: 0;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Switzer", system-ui, sans-serif;
+  font-size: 16.5px;
+  line-height: 1.55;
+}
+
+h1, h2, h3 { margin: 0; font-weight: 400; }
+p { margin: 0; text-wrap: pretty; }
+ul { margin: 0; padding: 0; list-style: none; }
+a { color: inherit; text-decoration: none; }
+
+/* ── Type ── */
+.ser {
+  font-family: "Sentient", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.022em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.lbl {
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mid);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.say { font-size: clamp(1.05rem, 1.5vw, 1.3rem); line-height: 1.55; color: var(--mid); max-width: 52ch; }
+
+/* ── A screen ── */
+.screen {
+  min-height: 100svh;
+  scroll-snap-align: start;
+  display: grid;
+  align-content: center;
+  padding: clamp(5rem, 12vh, 9rem) var(--pad);
+  border-bottom: 1px solid var(--rule);
+}
+
+.screen:last-of-type { border-bottom: 0; }
+
+/* Sections that hold a list need to breathe, not centre. */
+.screen.list { align-content: start; min-height: auto; padding-block: clamp(5rem, 12vw, 10rem); }
+
+/* ── Rail: the only persistent chrome ── */
+.rail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.35rem var(--pad);
+  font-size: 13px;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--paper) 82%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule);
+  pointer-events: none;
+}
+
+.rail a { pointer-events: auto; display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; justify-content: center; }
+.rail-r { display: flex; gap: 1.5rem; }
+@media (max-width: 680px) { .rail-r a:not(:last-child) { display: none; } }
+
+/* ── Opening ── */
+.open h1 { font-size: clamp(2.75rem, 7.5vw, 6.5rem); max-width: 16ch; }
+
+.open .say { margin-top: clamp(1.75rem, 3vw, 2.5rem); }
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 3rem;
+  margin-top: clamp(3rem, 7vw, 5.5rem);
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  max-width: 54rem;
+}
+
+/* ── Work ── */
+.work { border-top: 1px solid var(--rule); }
+
+.work li { border-bottom: 1px solid var(--rule); }
+
+.work a {
+  display: grid;
+  gap: 0.5rem 3rem;
+  padding-block: clamp(1.6rem, 3vw, 2.6rem);
+  position: relative;
+  transition: translate 240ms var(--ease);
+}
+
+@media (min-width: 860px) {
+  .work a { grid-template-columns: 3rem minmax(0, 1fr) minmax(0, 20rem) 2rem; align-items: baseline; }
+}
+
+.work h3 {
+  font-family: "Sentient", Georgia, serif;
+  font-size: clamp(1.35rem, 2.6vw, 2.1rem);
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+}
+
+.work .go { color: var(--violet); opacity: 0; translate: -8px 0; transition: opacity 150ms ease, translate 240ms var(--ease); }
+
+@media (hover: hover) {
+  .work a:hover { translate: 1.25rem 0; }
+  .work a:hover .go { opacity: 1; translate: 0 0; }
+}
+
+.work a:focus-visible { translate: 1.25rem 0; }
+.work a:focus-visible .go { opacity: 1; translate: 0 0; }
+@media (hover: none) { .work .go { opacity: 1; translate: 0 0; } }
+
+/* ── Plain rows ── */
+.row {
+  display: grid;
+  gap: 0.35rem 3rem;
+  padding-block: 1.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+@media (min-width: 860px) {
+  .row { grid-template-columns: 10rem minmax(0, 1fr) minmax(0, 24rem); align-items: baseline; }
+}
+
+.row h3 { font-size: 1.0625rem; font-weight: 600; letter-spacing: -0.012em; }
+.row p { color: var(--mid); }
+
+/* ── Controls ── */
+.act {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0 1.4rem;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 999px;
+  transition: background-color 200ms ease, border-color 200ms ease, scale 160ms var(--ease);
+}
+
+.act:active {
+  scale: 0.97;
+}
+
+.act-ghost { background: transparent; color: var(--ink); border-color: var(--rule); }
+
+@media (hover: hover) {
+  .act:hover { background: var(--violet); border-color: var(--violet); color: #fff; }
+}
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 4px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   MOTION
+   The opening line sets itself word by word. Everything else is
+   scroll-driven and native. Nothing waits on an observer.
+   ════════════════════════════════════════════════════════════ */
+
+.word { display: inline-block; overflow: hidden; vertical-align: bottom; }
+.word > span { display: inline-block; animation: word-in 1.05s var(--ease) both; }
+
+@keyframes word-in {
+  from { translate: 0 100%; }
+  to { translate: 0 0; }
+}
+
+@keyframes soft {
+  from { opacity: 0; translate: 0 14px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+.soft { animation: soft 1s var(--ease) both; }
+.s2 { animation-delay: 180ms; }
+.s3 { animation-delay: 320ms; }
+
+@supports (animation-timeline: view()) {
+  .in {
+    animation-name: soft;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: var(--tl);
+    animation-range: entry 6% cover 26%;
+  }
+
+  .work li, .row {
+    animation-name: soft;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: var(--tl);
+    animation-range: entry 2% cover 18%;
+  }
+}
+
+::selection { background: var(--violet); color: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-snap-type: none; scroll-behavior: auto; }
+  .word > span, .soft, .in, .work li, .row { animation-name: none; }
+  .work a, .work .go { transition: none; translate: none; }
+}

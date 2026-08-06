@@ -1,0 +1,168 @@
+---
+import PreviewLayout from "../../layouts/PreviewLayout.astro";
+import { profile } from "../../data/profile";
+import { projects } from "../../data/projects";
+import { experience } from "../../data/experience";
+import { education } from "../../data/education";
+import { competencies } from "../../data/competencies";
+import { formatPeriod } from "../../lib/dates";
+import "../../styles/preview-stage.css";
+
+// Split for the word-by-word set. Done at build time so the markup ships whole
+// and a text-extraction pass still reads one clean sentence.
+const opening = "Systems that reach the production floor, and stay there.";
+const words = opening.split(" ");
+---
+
+<PreviewLayout
+  title="Stage"
+  fonts={[
+    { family: "Sentient", file: "/fonts/sentient-var.woff2" },
+    { family: "Switzer", file: "/fonts/switzer-var.woff2" },
+  ]}
+>
+  <div class="rail">
+    <a href="#top">Franco Sanchez</a>
+    <span class="rail-r">
+      <a href="#work">Work</a>
+      <a href="#record">Record</a>
+      <a href={profile.cvUrl} download>CV</a>
+    </span>
+  </div>
+
+  <main id="top">
+    {/* ── One idea ─────────────────────────────────────────── */}
+    <section class="screen open">
+      <p class="lbl soft">AI &amp; Software Engineer</p>
+      <h1 class="ser" style="margin-top:1.5rem" aria-label={opening}>
+        {
+          words.map((w, i) => (
+            <>
+              <span class="word" aria-hidden="true">
+                <span style={`animation-delay:${120 + i * 55}ms`}>{w}</span>
+              </span>{" "}
+            </>
+          ))
+        }
+      </h1>
+      <p class="say soft s2">
+        I take AI systems from concept to the production floor and measure what they save.
+        Five of them are running in real companies right now.
+      </p>
+      <div class="soft s3" style="display:flex; gap:.75rem; flex-wrap:wrap; margin-top:2.5rem">
+        <a class="act" href={profile.cvUrl} download>Download CV</a>
+        <a class="act act-ghost" href="#work">See the work</a>
+      </div>
+
+      <dl class="meta-row soft s3">
+        <div>
+          <dt class="lbl">In production</dt>
+          <dd style="margin:.35rem 0 0">{projects.length} systems</dd>
+        </div>
+        <div>
+          <dt class="lbl">Since</dt>
+          <dd style="margin:.35rem 0 0">2020</dd>
+        </div>
+        <div>
+          <dt class="lbl">Based in</dt>
+          <dd style="margin:.35rem 0 0">{profile.location}</dd>
+        </div>
+        <div>
+          <dt class="lbl">Languages</dt>
+          <dd style="margin:.35rem 0 0">Español · English</dd>
+        </div>
+      </dl>
+    </section>
+
+    {/* ── Work ─────────────────────────────────────────────── */}
+    <section class="screen list" id="work">
+      <p class="lbl in">Work — {projects.length} entries</p>
+      <ul class="work" style="margin-top:2.5rem">
+        {
+          projects.map((p, i) => (
+            <li>
+              <a href={`/projects/${p.slug}/`}>
+                <span class="lbl">{String(i + 1).padStart(2, "0")}</span>
+                <h3>{p.title.en}</h3>
+                <p class="say" style="font-size:.975rem">{p.impact.en}</p>
+                <span class="go" aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    {/* ── Practice ─────────────────────────────────────────── */}
+    <section class="screen list" id="practice">
+      <p class="lbl in">Practice</p>
+      <div style="margin-top:2.5rem; border-top:1px solid var(--rule)">
+        {
+          competencies.map((c) => (
+            <div class="row">
+              <p class="lbl">{c.techs.slice(0, 2).join(" · ")}</p>
+              <div>
+                <h3>{c.title.en}</h3>
+                <p style="margin-top:.4rem">{c.description.en}</p>
+              </div>
+              <p style="font-size:.95rem">{c.techs.join(" · ")}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    {/* ── Record ───────────────────────────────────────────── */}
+    <section class="screen list" id="record">
+      <p class="lbl in">Record — {experience.length} posts</p>
+      <div style="margin-top:2.5rem; border-top:1px solid var(--rule)">
+        {
+          experience.map((e) => (
+            <div class="row">
+              <p class="lbl">{formatPeriod(e.period, "en")}</p>
+              <div>
+                <h3>{e.role.en}</h3>
+                <p style="margin-top:.3rem">{e.company}</p>
+              </div>
+              <p style="font-size:.95rem">{e.description.en}</p>
+            </div>
+          ))
+        }
+      </div>
+
+      <p class="lbl in" style="margin-top:4rem">Education</p>
+      <div style="margin-top:2.5rem; border-top:1px solid var(--rule)">
+        {
+          education.map((e) => (
+            <div class="row">
+              <p class="lbl">{formatPeriod(e.period, "en")}</p>
+              <div>
+                <h3>
+                  {e.degree.en}
+                  {e.status === "in-progress" && (
+                    <span style="color:var(--violet)"> · in progress</span>
+                  )}
+                </h3>
+                <p style="margin-top:.3rem">{e.institution}</p>
+              </div>
+              <p style="font-size:.95rem">{e.description?.en}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    {/* ── Close ────────────────────────────────────────────── */}
+    <section class="screen" id="contact">
+      <h2 class="ser in" style="font-size:clamp(2.25rem,6vw,5rem); max-width:14ch">
+        Open to full-time roles and contract work.
+      </h2>
+      <div class="in" style="display:flex; gap:.75rem; flex-wrap:wrap; margin-top:2.75rem">
+        <a class="act" href={`mailto:${profile.email}`}>{profile.email}</a>
+        <a class="act act-ghost" href={profile.links.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="act act-ghost" href={profile.links.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <p class="lbl in" style="margin-top:4rem">{profile.phone} · {profile.location}</p>
+    </section>
+  </main>
+</PreviewLayout>

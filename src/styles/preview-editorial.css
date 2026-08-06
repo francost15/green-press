@@ -1,0 +1,304 @@
+/* ════════════════════════════════════════════════════════════════════
+   A — EDITORIAL RULE
+   Swiss editorial minimalism. One grotesk across the whole page, ink on
+   white, and the violet spent exactly once per viewport. The grid is not
+   a helper — it is the material, drawn in hairlines you can see.
+   Contrast measured on white: ink 19.3:1, mid 5.1:1, violet 7.1:1.
+   ════════════════════════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: "General Sans";
+  src: url("/fonts/general-sans-var.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  --paper: #ffffff;
+  --ink: #0a0a0b;
+  --mid: #6b6b76;
+  --rule: #e6e6ea;
+  --violet: #6d28d9;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --gutter: clamp(1.25rem, 3vw, 3rem);
+  --tl: view();
+}
+
+* { box-sizing: border-box; }
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "General Sans", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -0.03em; text-wrap: balance; }
+p { margin: 0; text-wrap: pretty; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+a { color: inherit; }
+
+/* ── The measure. Twelve columns, and you can see them. ── */
+.sheet {
+  position: relative;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+.grid-lines {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.grid-lines span {
+  border-left: 1px solid var(--rule);
+  opacity: 0.55;
+}
+
+.grid-lines span:first-child { border-left: 0; }
+
+@media (max-width: 860px) {
+  .grid-lines span:nth-child(n + 5) { display: none; }
+  .grid-lines { grid-template-columns: repeat(4, 1fr); }
+}
+
+.layer { position: relative; z-index: 1; }
+
+/* ── Masthead ── */
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule);
+}
+
+.bar-in {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 62px;
+  font-size: 13px;
+  letter-spacing: 0.01em;
+}
+
+.bar a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; color: var(--mid); transition: color 150ms ease; }
+.bar a:hover { color: var(--ink); }
+.bar strong { font-weight: 600; color: var(--ink); }
+
+.bar-nav { display: flex; gap: 1.6rem; }
+@media (max-width: 700px) { .bar-nav { display: none; } }
+
+/* ── Type scale. Four steps, no more. ── */
+.t-display {
+  font-size: clamp(3.2rem, 9vw, 9rem);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  font-weight: 500;
+}
+
+.t-head {
+  font-size: clamp(1.75rem, 3.4vw, 3.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-weight: 500;
+}
+
+.t-sub {
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+
+.t-meta {
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mid);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.t-body { font-size: clamp(1rem, 1.1vw, 1.0625rem); color: var(--mid); max-width: 62ch; }
+
+/* ── The one violet per viewport ── */
+.accent { color: var(--violet); }
+
+/* ── Sections ── */
+.band { padding-block: clamp(4.5rem, 9vw, 9rem); border-top: 1px solid var(--rule); }
+.band:first-of-type { border-top: 0; }
+
+.cols {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--gutter);
+  row-gap: 1.5rem;
+}
+
+.c-meta { grid-column: 1 / -1; }
+.c-main { grid-column: 1 / -1; }
+
+@media (min-width: 861px) {
+  .c-meta { grid-column: 1 / 3; }
+  .c-main { grid-column: 4 / 12; }
+}
+
+/* ── Record rows ── */
+.row {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--gutter);
+  row-gap: 0.5rem;
+  padding-block: 2.25rem;
+  border-top: 1px solid var(--rule);
+  position: relative;
+  transition: background-color 150ms ease;
+}
+
+.row:last-child { border-bottom: 1px solid var(--rule); }
+
+.row-n { grid-column: 1 / -1; }
+.row-t { grid-column: 1 / -1; }
+.row-d { grid-column: 1 / -1; }
+
+@media (min-width: 861px) {
+  .row-n { grid-column: 1 / 3; }
+  .row-t { grid-column: 4 / 9; }
+  .row-d { grid-column: 9 / 13; }
+}
+
+.row a { text-decoration: none; }
+
+.row a::after { content: ""; position: absolute; inset: 0; }
+
+.row-t .t-sub { transition: translate 200ms var(--ease); }
+
+@media (hover: hover) {
+  .row:hover { background: #fafafa; }
+  .row:hover .t-sub { translate: 8px 0; }
+  .row:hover .row-mark { scale: 1 1; transition-duration: 420ms; }
+}
+
+.row:focus-within { background: #fafafa; }
+.row:focus-within .row-mark { scale: 1 1; transition-duration: 420ms; }
+
+/* A hairline that grows under the row it belongs to — the only motion the
+   record needs to say "this is a door". */
+.row-mark {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 1px;
+  width: 100%;
+  background: var(--violet);
+  scale: 0 1;
+  transform-origin: left;
+  transition: scale 180ms var(--ease);
+}
+
+.tags { display: flex; flex-wrap: wrap; gap: 0.35rem 0.9rem; }
+.tags li { font-size: 12.5px; color: var(--mid); }
+
+/* ── Controls ── */
+.act {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 46px;
+  padding: 0 1.35rem;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 200ms ease, color 200ms ease, scale 160ms var(--ease);
+}
+
+.act:active {
+  scale: 0.97;
+}
+
+.act-ghost { background: transparent; color: var(--ink); border-color: var(--rule); }
+
+@media (hover: hover) {
+  .act:hover { background: var(--violet); border-color: var(--violet); color: var(--paper); }
+}
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 3px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   MOTION
+   Type arrives from behind a mask, one line at a time — the page is
+   being set, not faded in. Scroll work is native view() timelines.
+   ════════════════════════════════════════════════════════════ */
+
+.mask { display: block; overflow: hidden; }
+.mask > * { display: block; }
+
+@keyframes lift {
+  from { translate: 0 105%; }
+  to { translate: 0 0; }
+}
+
+.mask > * { animation: lift 800ms var(--ease) both; }
+.d1 > * { animation-delay: 60ms; }
+.d2 > * { animation-delay: 120ms; }
+.d3 > * { animation-delay: 180ms; }
+.d4 > * { animation-delay: 240ms; }
+
+@supports (animation-timeline: view()) {
+  @keyframes fade-up {
+    from { opacity: 0; translate: 0 22px; }
+    to { opacity: 1; translate: 0 0; }
+  }
+
+  .in {
+    animation-name: fade-up;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: var(--tl);
+    animation-range: entry 8% cover 24%;
+  }
+
+  .row {
+    animation-name: fade-up;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: var(--tl);
+    animation-range: entry 2% cover 18%;
+  }
+}
+
+::selection { background: var(--violet); color: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mask > *, .in, .row { animation-name: none; }
+  .row-mark, .row-t .t-sub { transition: none; }
+  html { scroll-behavior: auto; }
+}

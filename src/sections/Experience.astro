@@ -14,54 +14,34 @@ const t = useTranslations(lang);
 
 <Section
   id="experiencia"
-  number="03"
   title={t("Experiencia", "Experience")}
+  meta={t(`${experience.length} puestos`, `${experience.length} posts`)}
   subtitle={t(
-    "Liderazgo técnico y ejecución estratégica en entornos de alto crecimiento",
-    "Technical leadership and strategic execution in high-growth environments",
+    "Dónde he trabajado y qué quedó funcionando cuando me fui.",
+    "Where I have worked, and what was still running when I left.",
   )}
 >
-  <div class="mx-auto max-w-3xl" data-reveal-group>
-    <div class="relative pl-8 md:pl-10">
-      {/* Vertical timeline line */}
-      <div class="timeline-line" aria-hidden="true"></div>
-
-      <div class="space-y-2">
-        {
-          experience.map((item, i) => (
-            <div
-              class={`stagger-item relative pb-10 ${i === experience.length - 1 ? "pb-0" : ""}`}
-            >
-              {/* Timeline dot */}
-              <div class="timeline-dot" style="top: 28px" aria-hidden="true" />
-
-              <div class="card p-6 md:p-8">
-                <div class="mb-4 flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
-                  <div>
-                    <h3 class="font-[family-name:var(--color-font-display)] text-xl font-black tracking-tight text-text-primary md:text-2xl">
-                      {t(item.role.es, item.role.en)}
-                    </h3>
-                    <p class="mt-1 text-sm font-semibold text-accent">{item.company}</p>
-                  </div>
-                  <span class="mt-1 shrink-0 font-mono text-[11px] font-bold tracking-[0.15em] text-text-tertiary uppercase sm:mt-0">
-                    {formatPeriod(item.period, lang)}
-                  </span>
-                </div>
-
-                <p class="mb-5 text-sm leading-relaxed text-text-secondary">
-                  {t(item.description.es, item.description.en)}
-                </p>
-
-                <div class="flex flex-wrap gap-1.5">
-                  {(lang === "es" ? item.tags.es : item.tags.en).map((tag) => (
-                    <span class="tech-pill">{tag}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </div>
+  <ol class="m-0 list-none p-0">
+    {
+      experience.map((item) => (
+        <li class="row">
+          <div class="row-n">
+            <p class="t-meta">{formatPeriod(item.period, lang)}</p>
+          </div>
+          <div class="row-t">
+            <h3 class="t-sub">{t(item.role.es, item.role.en)}</h3>
+            <p class="t-meta mt-2 normal-case tracking-normal">{item.company}</p>
+            <ul class="tags mt-4">
+              {(lang === "es" ? item.tags.es : item.tags.en).map((tag) => (
+                <li>{tag}</li>
+              ))}
+            </ul>
+          </div>
+          <div class="row-d">
+            <p class="t-body text-[0.95rem]">{t(item.description.es, item.description.en)}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
 </Section>

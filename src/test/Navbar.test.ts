@@ -22,10 +22,14 @@ describe("Navbar markup", () => {
 
   it("points the language switch at the other locale", async () => {
     const en = await renderAstro(Navbar, { lang: "en" });
-    expect(en.getByLabelText("Toggle language")).toHaveAttribute("href", "/es/");
+    for (const el of en.getAllByLabelText("Cambiar a Español")) {
+      expect(el).toHaveAttribute("href", "/es/");
+    }
 
     const es = await renderAstro(Navbar, { lang: "es" });
-    expect(es.getByLabelText("Toggle language")).toHaveAttribute("href", "/");
+    for (const el of es.getAllByLabelText("Switch to English")) {
+      expect(el).toHaveAttribute("href", "/");
+    }
   });
 
   it("starts with the mobile menu closed", async () => {
@@ -36,10 +40,16 @@ describe("Navbar markup", () => {
     expect(container.querySelector("[data-mobile-menu]")).toHaveAttribute("hidden");
   });
 
-  it("marks the mobile menu as a modal dialog", async () => {
+  it("exposes the mobile menu as a disclosure, not a modal", async () => {
+    // It does not cover the page and the rest of the document stays reachable,
+    // so aria-modal would tell a screen reader something untrue.
     const { container } = await renderAstro(Navbar, { lang: "en" });
     const menu = container.querySelector("[data-mobile-menu]");
-    expect(menu).toHaveAttribute("role", "dialog");
-    expect(menu).toHaveAttribute("aria-modal", "true");
+    expect(menu).not.toHaveAttribute("aria-modal");
+    expect(menu).not.toHaveAttribute("role", "dialog");
+    expect(container.querySelector("[data-menu-button]")).toHaveAttribute(
+      "aria-controls",
+      "mobile-menu",
+    );
   });
 });

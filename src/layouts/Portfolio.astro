@@ -2,7 +2,6 @@
 import BaseLayout from "./BaseLayout.astro";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
-import ScrollProgress from "../components/ScrollProgress.astro";
 import Hero from "../sections/Hero.astro";
 import Competencies from "../sections/Competencies.astro";
 import Projects from "../sections/Projects.astro";
@@ -20,23 +19,23 @@ const t = useTranslations(lang);
 ---
 
 <BaseLayout lang={lang}>
-  <div class="relative min-h-screen bg-bg">
-    <a
-      href="#inicio"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
-    >
-      {t("Saltar al contenido", "Skip to content")}
-    </a>
-    <ScrollProgress />
-    <Navbar lang={lang} />
-    <main>
-      <Hero lang={lang} />
-      <Competencies lang={lang} />
-      <Projects lang={lang} />
-      <Experience lang={lang} />
-      <Education lang={lang} />
-      <Contact lang={lang} />
-    </main>
-    <Footer />
+  <a href="#inicio" class="skip-link">{t("Saltar al contenido", "Skip to content")}</a>
+  <div class="grid-lines" aria-hidden="true">
+    {Array.from({ length: 12 }).map(() => <span />)}
   </div>
+  {/* Aurora: full-bleed violet light behind the first viewport. Page-level on
+      purpose — inside the sheet it clipped at 1320px and read as a centred
+      patch instead of a wash. */}
+  <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+  <Navbar lang={lang} />
+  <main class="sheet layer">
+    <Hero lang={lang} />
+    <Projects lang={lang} />
+    <Competencies lang={lang} />
+    <Experience lang={lang} />
+    <Education lang={lang} />
+    <Contact lang={lang} />
+  </main>
+  <Footer lang={lang} />
 </BaseLayout>
+

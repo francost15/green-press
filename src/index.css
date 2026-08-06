@@ -1,373 +1,658 @@
 @import "tailwindcss";
 
+/* ════════════════════════════════════════════════════════════════════
+   EDITORIAL RULE
+   Swiss editorial minimalism. One grotesk across the whole site, ink on
+   white, and the violet spent deliberately — once per viewport. The
+   twelve-column grid is not a helper: it is drawn in hairlines you can
+   see. Rows, rules, and a marginal meta column; never cards.
+
+   Colour roles set by measured contrast on white, not by taste:
+     ink     #0A0A0B  19.3:1 → body and display
+     mid     #6B6B76   5.1:1 → secondary text
+     violet  #6D28D9   7.1:1 → the accent and the focus ring
+   Red was removed from the system at the user's direction and may not
+   return, including as an error state.
+   ════════════════════════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: "General Sans";
+  src: url("/fonts/general-sans-var.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
-  --color-bg: #f8f8fd;
-  --color-bg-alt: #ffffff;
-  --color-bg-secondary: #f1f0fb;
-  --color-accent: #7c3aed;
-  --color-accent-hover: #6d28d9;
-  --color-text-primary: #0f0f1a;
-  --color-text-secondary: #505070;
-  --color-text-tertiary: #787898;
-  --color-border: #e2e2f0;
-  --color-font-sans: "Inter", system-ui, sans-serif;
-  --color-font-display: "Bricolage Grotesque", system-ui, sans-serif;
-  --color-font-mono: "JetBrains Mono", monospace;
+  /* Under --font-*, so `font-sans` actually resolves. The pre-redesign
+     build declared fonts under --color-*, where Tailwind silently ignored
+     them and fell back to its default stacks. */
+  --font-sans: "General Sans", system-ui, sans-serif;
+  --font-display: "General Sans", system-ui, sans-serif;
+
+  --color-paper: #ffffff;
+  --color-ink: #0a0a0b;
+  --color-mid: #6b6b76;
+  --color-violet: #6d28d9;
 }
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
-  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
-  --radius-card: 20px;
+  --paper: #ffffff;
+  --paper-dim: #fafafa;
+  --ink: #0a0a0b;
+  --mid: #6b6b76;
+  --rule: #e6e6ea;
+  --violet: #6d28d9;
 
-  /* Shadow-as-border (3-layer, light) — replaces solid border on cards */
-  --shadow-card:
-    0px 0px 0px 1px rgba(0, 0, 0, 0.06),
-    0px 1px 2px -1px rgba(0, 0, 0, 0.06),
-    0px 2px 4px 0px rgba(0, 0, 0, 0.04);
-  --shadow-card-hover:
-    0px 0px 0px 1px color-mix(in srgb, var(--color-accent) 55%, rgba(0,0,0,.1)),
-    0px 4px 20px -4px color-mix(in srgb, var(--color-accent) 22%, transparent);
-  --glow-accent: 0 0 40px -8px color-mix(in srgb, var(--color-accent) 35%, transparent);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --gutter: clamp(1.25rem, 3vw, 3rem);
 }
 
-[data-theme="dark"] {
-  --color-bg: #08081a;
-  --color-bg-alt: #0e0e22;
-  --color-bg-secondary: #14142c;
-  --color-accent: #8b5cf6;
-  --color-accent-hover: #a78bfa;
-  --color-text-primary: #f2f2ff;
-  --color-text-secondary: #9090b8;
-  --color-text-tertiary: #6a6a90;
-  --color-border: #1e1e38;
-  /* Single white ring for dark mode (layered depth isn't visible on dark) */
-  --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.08);
-  --shadow-card-hover:
-    0 0 0 1px color-mix(in srgb, var(--color-accent) 65%, rgba(255,255,255,.13)),
-    0 4px 20px -4px color-mix(in srgb, var(--color-accent) 28%, transparent);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --color-bg: #08081a;
-    --color-bg-alt: #0e0e22;
-    --color-bg-secondary: #14142c;
-    --color-accent: #8b5cf6;
-    --color-accent-hover: #a78bfa;
-    --color-text-primary: #f2f2ff;
-    --color-text-secondary: #9090b8;
-    --color-text-tertiary: #6a6a90;
-    --color-border: #1e1e38;
-    --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.08);
-    --shadow-card-hover:
-      0 0 0 1px color-mix(in srgb, var(--color-accent) 65%, rgba(255,255,255,.13)),
-      0 4px 20px -4px color-mix(in srgb, var(--color-accent) 28%, transparent);
+/* These MUST stay layered. An unlayered `p { margin: 0 }` outranks every
+   Tailwind utility, which silently collapsed the hero's margins to zero. */
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+    /* Clears the fixed masthead so an in-page anchor does not park its
+       target underneath the bar. */
+    scroll-padding-top: 6rem;
   }
+
+  body {
+    margin: 0;
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  h1, h2, h3, h4 { text-wrap: balance; margin: 0; font-weight: 600; letter-spacing: -0.03em; }
+  p { text-wrap: pretty; margin: 0; }
+
+  /* Thin, tinted, present. Removing the scrollbar removes the reader's sense
+     of position; the progress bar is an addition, not a replacement. */
+  html { scrollbar-width: thin; scrollbar-color: #cfc6e8 transparent; overflow-x: clip; }
+  ::-webkit-scrollbar { width: 9px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #cfc6e8; border-radius: 5px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--violet); }
+}
+
+/* ════════════════════════════════════════════════════════════
+   THE SHEET
+   A 1320px measure with its twelve columns drawn on the page.
+   The grid is fixed, pointer-inert, and costs one paint.
+   ════════════════════════════════════════════════════════════ */
+
+.sheet {
+  position: relative;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+.grid-lines {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  /* Same gap as .cols and .row, or the drawn grid and the layout grid are two
+     different grids — measured 0→44px divergence before this was matched. */
+  column-gap: var(--gutter);
+}
+
+.grid-lines span {
+  border-left: 1px solid var(--rule);
+  opacity: 0.55;
+}
+
+.grid-lines span:first-child { border-left: 0; }
+
+@media (max-width: 899px) {
+  .grid-lines { grid-template-columns: repeat(4, 1fr); }
+  .grid-lines span:nth-child(n + 5) { display: none; }
+}
+
+.layer { position: relative; z-index: 1; }
+
+/* ════════════════════════════════════════════════════════════
+   AURORA
+   Violet light drifting behind the masthead. One blur on the parent,
+   three gradient lobes on their own clocks. The opacity is a contrast
+   budget, not a taste setting: the lobes are LIGHT violets, their
+   cores sit right of the reading column, and the sweep is re-measured
+   whenever these values change.
+   ════════════════════════════════════════════════════════════ */
+
+.aurora {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(560px, 105vh, 980px);
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Same-hue zero-alpha stops on purpose: `transparent` interpolates through
+   grey and dirties the falloff — that was the ugly version. */
+.aurora span {
+  position: absolute;
+  display: block;
+  will-change: transform;
+}
+
+.aurora span:nth-child(1) {
+  top: -30%;
+  right: -12%;
+  width: 68vw;
+  height: 85%;
+  background: radial-gradient(ellipse 58% 55% at 68% 32%,
+    rgb(139 92 246 / 0.2), rgb(139 92 246 / 0) 70%);
+  animation: aurora-breathe 26s var(--ease) infinite alternate;
+}
+
+.aurora span:nth-child(2) {
+  top: -8%;
+  right: -4%;
+  width: 42vw;
+  height: 58%;
+  background: radial-gradient(ellipse 52% 50% at 60% 38%,
+    rgb(196 181 253 / 0.32), rgb(196 181 253 / 0) 68%);
+  animation: aurora-breathe 20s var(--ease) infinite alternate-reverse;
+}
+
+.aurora span:nth-child(3) {
+  bottom: -20%;
+  left: -8%;
+  width: 34vw;
+  height: 45%;
+  background: radial-gradient(ellipse 55% 50% at 40% 60%,
+    rgb(221 214 254 / 0.28), rgb(221 214 254 / 0) 70%);
+  animation: aurora-breathe 32s var(--ease) infinite alternate;
+}
+
+@keyframes aurora-breathe {
+  to { transform: translate3d(-2.5vw, 2vw, 0) scale(1.08); }
+}
+
+/* ── Reading progress: scroll-driven, zero JS. Invisible without support. ── */
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 60;
+  background: var(--violet);
+  transform-origin: left;
+  scale: 0 1;
+  pointer-events: none;
+}
+
+/* ── Social rail: fixed right, vertically centred, desktop only ── */
+.social-rail {
+  position: fixed;
+  right: 1.1rem;
+  top: 50%;
+  translate: 0 -50%;
+  z-index: 40;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.5rem 0.25rem;
+  background: var(--ink);
+  border-radius: 999px;
+  box-shadow: 0 10px 28px -14px rgb(10 10 11 / 0.45);
+}
+
+.social-rail a {
+  display: flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: var(--paper);
+  transition: color 150ms ease, background-color 150ms ease, translate 200ms var(--ease);
+}
+
+/* #C4B5FD on ink is 11.9:1 — the hover stays legible on the dark capsule. */
+.social-rail a:hover {
+  color: #c4b5fd;
+  translate: -2px 0;
+}
+
+.social-rail a:active { translate: 0 0; }
+
+@media (min-width: 1200px) {
+  .social-rail { display: flex; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   TYPE — four steps, no more
+   ════════════════════════════════════════════════════════════ */
+
+.t-display {
+  font-size: clamp(3.2rem, 9vw, 9rem);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  font-weight: 500;
+}
+
+.t-head {
+  font-size: clamp(1.75rem, 3.4vw, 3.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-weight: 500;
+}
+
+.t-sub {
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  font-weight: 500;
 }
 
 @layer components {
-  /* ── Buttons ── */
-  .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-accent px-8 py-3.5 text-sm font-semibold text-white cursor-pointer;
-    transition-property: transform, background-color, box-shadow;
-    transition-duration: 160ms;
-    transition-timing-function: var(--ease-out);
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .btn-primary:hover {
-      @apply bg-accent-hover;
-      transform: scale(1.02);
-      box-shadow: var(--glow-accent);
-    }
-  }
-  .btn-primary:active { transform: scale(0.96); }
-
-  .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-border bg-bg-alt px-8 py-3.5 text-sm font-medium text-text-secondary cursor-pointer;
-    transition-property: transform, border-color, color, background-color;
-    transition-duration: 160ms;
-    transition-timing-function: var(--ease-out);
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .btn-secondary:hover {
-      @apply border-accent text-text-primary bg-bg-secondary;
-    }
-  }
-  .btn-secondary:active { transform: scale(0.96); }
-
-  /* ── Card — shadow-only border (no solid border) ── */
-  .card {
-    @apply rounded-[20px] bg-bg-alt;
-    box-shadow: var(--shadow-card);
-    transition-property: box-shadow;
-    transition-duration: 200ms;
-    transition-timing-function: ease-out;
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .card:hover { box-shadow: var(--shadow-card-hover); }
-  }
-
-  /* ── Section label ── */
-  .section-label {
-    @apply font-mono text-[11px] font-bold tracking-[0.3em] text-accent uppercase;
-  }
-
-  /* ── Tech pill ── */
-  .tech-pill {
-    @apply inline-flex items-center gap-1.5 rounded-lg border border-border bg-bg-secondary px-2.5 py-1 text-[11px] font-mono font-medium text-text-tertiary;
-  }
-
-  /* ── Image with subtle outline ── */
-  .img-outlined {
-    outline: 1px solid rgba(0, 0, 0, 0.10);
-    outline-offset: -1px;
+  .t-meta {
+    font-size: 12px;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mid);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
   }
 }
 
-/* Image outline flips in dark mode */
-[data-theme="dark"] .img-outlined {
-  outline-color: rgba(255, 255, 255, 0.10);
+.t-body {
+  font-size: clamp(1rem, 1.1vw, 1.0625rem);
+  color: var(--mid);
+  max-width: 62ch;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .img-outlined {
-    outline-color: rgba(255, 255, 255, 0.10);
+.accent { color: var(--violet); }
+
+/* ════════════════════════════════════════════════════════════
+   STRUCTURE — bands, columns, rules
+   The layout breakpoint is 900px everywhere. Order utilities that
+   pair with these grids must use `min-[900px]:`, never `md:` (768px):
+   mixing them inverted the hero across the 768–899 band once already.
+   ════════════════════════════════════════════════════════════ */
+
+.band { padding-block: clamp(4.5rem, 9vw, 8.5rem); border-top: 1px solid var(--rule); }
+.band:first-of-type { border-top: 0; }
+
+.cols {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--gutter);
+  row-gap: 1.5rem;
+}
+
+.c-meta { grid-column: 1 / -1; }
+.c-main { grid-column: 1 / -1; }
+
+@media (min-width: 900px) {
+  .c-meta { grid-column: 1 / 3; }
+  .c-main { grid-column: 4 / 12; }
+}
+
+.hair-t { border-top: 1px solid var(--rule); }
+.hair-b { border-bottom: 1px solid var(--rule); }
+
+/* ════════════════════════════════════════════════════════════
+   COLOUR FIELDS
+   Full-bleed bands that own their whole region. Because every class
+   reads tokens, a field is a token override: text, rules, hovers and
+   the accent all re-resolve inside it. The margin/padding pair breaks
+   out of the 1320px sheet to the viewport edge while content stays
+   on the sheet's columns.
+   ════════════════════════════════════════════════════════════ */
+
+.band-ink,
+.band-violet {
+  margin-inline: calc((100% - 100vw) / 2);
+  padding-inline: calc((100vw - 100%) / 2);
+  border-top: 0;
+}
+
+.band-ink {
+  background: #0a0a0b;
+  color: var(--ink);
+  --ink: #f4f4f5;
+  --mid: #a1a1aa;
+  --rule: rgb(255 255 255 / 0.16);
+  --paper-dim: rgb(255 255 255 / 0.06);
+  --violet: #a78bfa; /* 7.2:1 on this ground */
+}
+
+.band-violet {
+  background: #5b21b6;
+  color: var(--ink);
+  --ink: #ffffff;
+  --mid: #ddd6fe; /* 6.4:1 on this ground */
+  --rule: rgb(255 255 255 / 0.24);
+  --paper-dim: rgb(255 255 255 / 0.08);
+  --violet: #ffffff; /* accent and focus invert to paper */
+}
+
+/* Controls on the violet field: inputs stay white paper, so their internals
+   must NOT inherit the light-text overrides. */
+.band-violet .act {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #4c1d95;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .band-violet .act:hover {
+    background: #0a0a0b;
+    border-color: #0a0a0b;
+    color: #ffffff;
   }
 }
 
-/* ── Root — font smoothing lives here, not on body ── */
-html {
-  scroll-behavior: smooth;
-  /* macOS text renders heavier by default; antialiasing makes it crisper */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.band-violet .field {
+  color: #0a0a0b;
+  border-color: rgb(255 255 255 / 0.6);
 }
 
-/* ── Global text wrapping ── */
-h1, h2, h3, h4, h5, h6 {
-  text-wrap: balance;
+.band-violet .field::placeholder { color: #6b6b76; }
+
+.band-violet .field:focus {
+  border-color: #0a0a0b;
+  box-shadow: inset 0 0 0 1px #0a0a0b;
 }
 
-p {
-  text-wrap: pretty;
+.band-violet .field[aria-invalid="true"] {
+  border-color: #0a0a0b;
+  background: #ede9fe;
 }
 
-body {
-  margin: 0;
-  background-color: var(--color-bg);
-  color: var(--color-text-primary);
-  font-family: var(--color-font-sans);
+/* ── Record rows: number | setting | annotation ── */
+.row {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--gutter);
+  row-gap: 0.5rem;
+  padding-block: 2.25rem;
+  border-top: 1px solid var(--rule);
+  position: relative;
+  transition: background-color 150ms ease;
 }
 
-/* ── Scroll progress ── */
-.scroll-progress {
-  height: 2px;
-  transform: scaleX(0);
-  background-color: var(--color-accent);
-  box-shadow: 0 0 10px 1px color-mix(in srgb, var(--color-accent) 50%, transparent);
-  animation: scroll-progress-fill linear both;
-  animation-timeline: scroll();
-}
-@keyframes scroll-progress-fill { to { transform: scaleX(1); } }
+.row:last-child { border-bottom: 1px solid var(--rule); }
 
-::selection { background-color: var(--color-accent); color: white; }
+.row-n { grid-column: 1 / -1; }
+.row-t { grid-column: 1 / -1; }
+.row-d { grid-column: 1 / -1; }
 
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: var(--color-bg); }
-::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--color-text-tertiary); }
-
-/* ── Hero: per-element stagger (split-and-stagger pattern) ── */
-.hero-item {
-  opacity: 0;
-  transform: translateY(12px);
-  filter: blur(4px);
-  animation: hero-item-enter 0.55s var(--ease-out) both;
-  will-change: transform, opacity, filter;
-}
-.hero-item:nth-child(1) { animation-delay: 0.08s; }
-.hero-item:nth-child(2) { animation-delay: 0.18s; }
-.hero-item:nth-child(3) { animation-delay: 0.27s; }
-.hero-item:nth-child(4) { animation-delay: 0.36s; }
-.hero-item:nth-child(5) { animation-delay: 0.45s; }
-.hero-item:nth-child(6) { animation-delay: 0.54s; }
-
-@keyframes hero-item-enter {
-  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+@media (min-width: 900px) {
+  .row-n { grid-column: 1 / 3; }
+  .row-t { grid-column: 4 / 9; }
+  .row-d { grid-column: 9 / 13; }
 }
 
-/* ── Status ping animation ── */
-@keyframes status-ping {
-  0% { transform: scale(1); opacity: 0.5; }
-  70% { transform: scale(2.4); opacity: 0; }
-  100% { transform: scale(2.4); opacity: 0; }
-}
+.row-link { text-decoration: none; color: inherit; }
+.row-link::after { content: ""; position: absolute; inset: 0; }
 
-/* ── Section enter ── */
-.anim-enter {
-  opacity: 0;
-  transform: translateY(16px);
-  filter: blur(4px);
-  transition-property: opacity, transform, filter;
-  transition-duration: 420ms;
-  transition-timing-function: var(--ease-out);
-  will-change: transform, opacity;
-}
-.anim-enter.is-visible { opacity: 1; transform: translateY(0); filter: blur(0); }
+.row-t .t-sub { transition: translate 200ms var(--ease); }
 
-/* ── Stagger items — blur added for richer enter ── */
-.stagger-item {
-  opacity: 0;
-  transform: translateY(14px);
-  filter: blur(4px);
-  transition-property: opacity, transform, filter;
-  transition-duration: 370ms;
-  transition-timing-function: var(--ease-out);
-  will-change: transform, opacity;
-}
-.stagger-item.is-visible { opacity: 1; transform: translateY(0); filter: blur(0); }
-.stagger-item:nth-child(1) { transition-delay: 0ms; }
-.stagger-item:nth-child(2) { transition-delay: 65ms; }
-.stagger-item:nth-child(3) { transition-delay: 130ms; }
-.stagger-item:nth-child(4) { transition-delay: 195ms; }
-.stagger-item:nth-child(5) { transition-delay: 260ms; }
-.stagger-item:nth-child(6) { transition-delay: 325ms; }
-.stagger-item:nth-child(7) { transition-delay: 390ms; }
-.stagger-item:nth-child(8) { transition-delay: 455ms; }
-
-/* Reveal is driven by an IntersectionObserver adding .is-visible. If scripting is
-   unavailable, everything below the hero would stay at opacity 0 — so opt out of the
-   entrance state entirely rather than leaving a blank page. */
-@media (scripting: none) {
-  .anim-enter,
-  .stagger-item,
-  .hero-item {
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-    animation: none !important;
-  }
-}
-
-/* ── Timeline ── */
-.timeline-line {
-  position: absolute;
-  left: 11px;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: linear-gradient(to bottom, transparent, var(--color-border) 5%, var(--color-border) 95%, transparent);
-}
-.timeline-dot {
+/* The underline draws in deliberately and retracts fast. */
+.row-mark {
   position: absolute;
   left: 0;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  border: 2px solid var(--color-accent);
-  background-color: var(--color-bg);
-  display: flex;
+  bottom: -1px;
+  height: 1px;
+  width: 100%;
+  background: var(--violet);
+  scale: 0 1;
+  transform-origin: left;
+  transition: scale 180ms var(--ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .row:hover { background: var(--paper-dim); }
+  .row:hover .row-t .t-sub { translate: 8px 0; }
+  .row:hover .row-mark { scale: 1 1; transition-duration: 420ms; }
+}
+
+.row:focus-within { background: var(--paper-dim); }
+.row:focus-within .row-mark { scale: 1 1; transition-duration: 420ms; }
+
+/* ── Tags: bare type, no chips ── */
+@layer components {
+  .tags { display: flex; flex-wrap: wrap; gap: 0.35rem 0.9rem; margin: 0; padding: 0; list-style: none; }
+  .tags li { font-size: 12.5px; color: var(--mid); }
+}
+
+/* ════════════════════════════════════════════════════════════
+   CONTROLS
+   ════════════════════════════════════════════════════════════ */
+
+.act {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-.timeline-dot::after {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: var(--color-accent);
-}
-
-/* ── Modal ── */
-.modal-backdrop {
-  transition-property: opacity;
-  transition-duration: 200ms;
-  transition-timing-function: var(--ease-out);
-  @starting-style { opacity: 0; }
-}
-.modal-content {
-  transition-property: opacity, transform;
-  transition-duration: 220ms;
-  transition-timing-function: var(--ease-out);
-  @starting-style { opacity: 0; transform: scale(0.95) translateY(8px); }
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0 1.35rem;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 200ms ease, color 200ms ease,
+              border-color 200ms ease, scale 160ms var(--ease);
 }
 
-/* ── Mobile menu ── */
-.mobile-menu-animate {
-  transition-property: opacity, transform;
-  transition-duration: 200ms;
-  transition-timing-function: var(--ease-out);
-  @starting-style { opacity: 0; transform: translateY(-6px); }
+/* #8F8F98 is 3.5:1 on white — the boundary itself passes SC 1.4.11. */
+.act-ghost { background: transparent; color: var(--ink); border-color: #8f8f98; }
+
+@media (hover: hover) and (pointer: fine) {
+  .act:hover { background: var(--violet); border-color: var(--violet); color: var(--paper); }
 }
 
-/* ── Carousel crossfade ── */
-.carousel-img {
-  transition-property: opacity;
-  transition-duration: 150ms;
-  transition-timing-function: ease;
-  @starting-style { opacity: 0; }
+.act:active { scale: 0.97; }
+
+.act:disabled {
+  cursor: not-allowed;
+  background: transparent;
+  color: var(--mid);
+  border-color: var(--rule);
+  scale: 1;
 }
 
-/* ── Glow layer ── */
-.glow-layer {
-  transition-property: opacity;
-  transition-duration: 400ms;
-  transition-timing-function: ease;
+/* ── Focus: the accent, offset, on every surface ── */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 3px;
 }
 
-/* ── Footer link underline ── */
-.footer-link-underline {
-  height: 1px;
-  width: 0;
-  background-color: var(--color-accent);
-  transition-property: width;
-  transition-duration: 250ms;
-  transition-timing-function: var(--ease-out);
+/* ── Skip link: off-canvas, not 1x1, a real target once focused ── */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 1rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 15px;
+  translate: 0 -140%;
+  transition: translate 160ms var(--ease);
 }
-.group:hover .footer-link-underline { width: 100%; }
 
-/* ── Hero dot grid ── */
-.dot-grid-bg {
-  background-image: radial-gradient(circle, var(--color-border) 1px, transparent 1px);
-  background-size: 28px 28px;
+.skip-link:focus-visible { translate: 0 0; }
+
+/* ── Links in running text ── */
+.link {
+  color: var(--violet);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-thickness 150ms ease;
+}
+
+.link:hover { text-decoration-thickness: 2px; }
+
+/* ── Fields ── */
+.field {
+  width: 100%;
+  padding: 0.8rem 0.9rem;
+  min-height: 48px;
+  background: var(--paper);
+  border: 1px solid var(--mid);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  transition: border-color 180ms ease, box-shadow 200ms ease;
+}
+
+.field::placeholder { color: var(--mid); }
+
+.field:focus {
+  border-color: var(--violet);
+  box-shadow: inset 0 0 0 1px var(--violet);
+}
+
+/* Error is never colour alone: the border doubles, the field takes a tint,
+   and a named message with an icon sits beneath it. */
+.field[aria-invalid="true"] {
+  border-width: 2px;
+  border-color: var(--ink);
+  background: var(--paper-dim);
+}
+
+.field-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin-top: 0.45rem;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* ════════════════════════════════════════════════════════════
+   MOTION
+   Type arrives from behind a mask, line by line — the page is being
+   set, not faded in. Scroll work is native view() timelines: linear
+   is correct there because the easing IS the scroll position.
+   ════════════════════════════════════════════════════════════ */
+
+.mask { display: block; overflow: hidden; }
+.mask > * { display: block; }
+
+@keyframes lift {
+  from { translate: 0 105%; }
+  to { translate: 0 0; }
+}
+
+.mask > * { animation: lift 800ms var(--ease) both; }
+.d1 > * { animation-delay: 60ms; }
+.d2 > * { animation-delay: 120ms; }
+.d3 > * { animation-delay: 180ms; }
+.d4 > * { animation-delay: 240ms; }
+
+@supports (animation-timeline: view()) {
+  /* The timeline routes through a custom property on purpose. Lightning CSS
+     folds `animation-*` longhands into the `animation` shorthand, and the
+     shorthand RESETS animation-timeline — the merged declaration is invalid
+     and Chrome drops the whole animation. A var() cannot be folded. */
+  :root { --tl: view(); }
+
+  @keyframes fade-up {
+    from { opacity: 0; translate: 0 22px; }
+    to { opacity: 1; translate: 0 0; }
+  }
+
+  .in {
+    animation-name: fade-up;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: var(--tl);
+    animation-range: entry 8% cover 24%;
+  }
+
+  .row {
+    animation-name: fade-up;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: var(--tl);
+    animation-range: entry 2% cover 18%;
+  }
+
+  /* The progress bar grows with the document scroll itself. */
+  :root { --tl-scroll: scroll(); }
+
+  @keyframes progress-grow {
+    from { scale: 0 1; }
+    to { scale: 1 1; }
+  }
+
+  .progress {
+    animation-name: progress-grow;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: var(--tl-scroll);
+  }
+
+  /* Project screenshots unveil as they enter the viewport. */
+  @keyframes unveil {
+    from { clip-path: inset(0 0 18% 0); opacity: 0.3; }
+    to { clip-path: inset(0 0 0 0); opacity: 1; }
+  }
+
+  .img-reveal {
+    animation-name: unveil;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: var(--tl);
+    animation-range: entry 5% cover 32%;
+  }
+}
+
+::selection { background: var(--violet); color: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* The page stops moving; it does not stop responding. Controls keep
+     their state feedback. */
+  .mask > *, .in, .row, .img-reveal { animation-name: none; }
+  .aurora span { animation: none; }
+  .row-mark, .row-t .t-sub { transition: none; }
+  .social-rail a { transition: color 150ms ease; }
+  html { scroll-behavior: auto; }
+  /* The progress bar stays: it maps position, it does not decorate. */
 }
 
 @media print {
+  .grid-lines, .skip-link, .aurora, .progress, .social-rail { display: none !important; }
   *, *::before, *::after {
-    background: white !important; color: black !important;
-    box-shadow: none !important; text-shadow: none !important;
-    border-color: #ddd !important;
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
   }
-  body { font-size: 11pt; line-height: 1.4; }
-  nav, footer, .scroll-progress, .no-print, button[aria-label] { display: none !important; }
-  section { page-break-inside: avoid; padding: 1rem 0 !important; }
-  h1, h2, h3 { page-break-after: avoid; }
-  a { text-decoration: underline !important; }
-  a[href]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #666 !important; }
-  a[href^="#"]::after, a[href^="javascript"]::after { content: ""; }
-  .print-only { display: block !important; }
-}
-.print-only { display: none; }
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-  /* Show everything up front rather than tying visibility to a scroll observer. */
-  .hero-item,
-  .anim-enter,
-  .stagger-item {
-    animation: none;
-    opacity: 1;
-    transform: none;
-    filter: none;
-  }
-  .scroll-progress { animation: none; transform: scaleX(1); }
+  nav, footer, .no-print { display: none !important; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 9pt; }
+  a[href^="#"]::after { content: ""; }
 }
