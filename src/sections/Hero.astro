@@ -11,18 +11,25 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
-/* Counted from the record rather than typed, so the margin can never claim a
-   number the data does not support. */
+/* Both numbers are counted from the record, but they count different records, so they
+   are rendered as two separate facts. Welding them into "5 systems · since 2020" read
+   as five systems running since 2020: `since` is the *employment* start (WimxTelecom,
+   2020-09) while every project here dates to Feb 2024 or later. Keep them apart. */
 const shipped = projects.length;
-const since = experience[experience.length - 1].period.start.slice(0, 4);
+const engineeringSince = experience[experience.length - 1].period.start.slice(0, 4);
 
+/* Four facts. Languages dropped: the URL already is the language. Availability
+   lives in Contact, not in the first viewport. */
 const annotations = [
   { label: t("Perfil", "Role"), value: t(profile.title.es, profile.title.en) },
-  { label: t("Base", "Based in"), value: profile.location },
-  { label: t("Idiomas", "Languages"), value: "Español · English" },
+  { label: t("Base", "Based in"), value: t(profile.location.es, profile.location.en) },
   {
     label: t("En producción", "In production"),
-    value: t(`${shipped} sistemas · desde ${since}`, `${shipped} systems · since ${since}`),
+    value: t(`${shipped} sistemas`, `${shipped} systems`),
+  },
+  {
+    label: t("Ingeniería desde", "Engineering since"),
+    value: engineeringSince,
   },
 ];
 ---
@@ -30,12 +37,14 @@ const annotations = [
 <section id="inicio" class="band">
   <div class="cols">
     {/* The margin carries the facts a recruiter checks first. */}
-    <dl class="c-meta order-2 m-0 flex flex-col gap-5 min-[900px]:order-1 min-[900px]:pt-3">
+    <dl class="c-meta order-2 m-0 flex flex-col gap-4 min-[900px]:order-1 min-[900px]:pt-2">
       {
         annotations.map((a) => (
           <div>
             <dt class="t-meta">{a.label}</dt>
-            <dd class="m-0 mt-1 text-[15px] font-medium">{a.value}</dd>
+            <dd class="mask m-0 mt-1 text-[15px] font-medium">
+              <span data-hero-fact>{a.value}</span>
+            </dd>
           </div>
         ))
       }
@@ -43,34 +52,26 @@ const annotations = [
 
     <div class="c-main order-1 min-[900px]:order-2">
       <h1 class="t-display">
-        <span class="mask d1"><span>Franco</span></span>{" "}
-        <span class="mask d2"><span class="accent">Sanchez</span></span>
+        <span class="mask d1"><span data-hero-name>Franco</span></span>{" "}
+        <span class="mask d2"><span class="accent" data-hero-name>Sanchez</span></span>
       </h1>
+      <p class="t-meta mask d3 mt-3">
+        <span data-hero-line>{profile.legalName}</span>
+      </p>
 
-      <p class="t-sub mask d3 mt-8 max-w-[30ch]">
-        <span>
+      <p class="t-sub mask d4 mt-6 max-w-[36ch]">
+        <span data-hero-line>
           {
             t(
-              "Sistemas que llegan al piso de producción, y se quedan.",
-              "Systems that reach the production floor, and stay there.",
+              "Cinco sistemas de IA en producción: planta, CFDI, universidad, reclutamiento.",
+              "Five AI systems in production: plant floor, CFDI, university, recruitment.",
             )
           }
         </span>
       </p>
 
-      <p class="t-body mask d4 mt-6">
-        <span>
-          {
-            t(
-              "Llevo sistemas de IA desde la idea hasta la operación real, y mido lo que ahorran: planta textil, facturación fiscal, trámites universitarios, reclutamiento. Cinco sistemas en producción, no demos.",
-              "I take AI systems from concept to real operations, and measure what they save: textile plants, fiscal invoicing, university procedures, recruitment. Five systems in production, not demos.",
-            )
-          }
-        </span>
-      </p>
-
-      <div class="mask d4 mt-10">
-        <span class="flex flex-wrap items-center gap-3">
+      <div class="mask d5 mt-8">
+        <span class="flex flex-wrap items-center gap-3" data-hero-line>
           <a href={profile.cvUrl} download class="act">
             {t("Descargar CV", "Download CV")}
           </a>
@@ -79,15 +80,12 @@ const annotations = [
           </a>
         </span>
       </div>
-
-      <p class="t-meta mt-10 normal-case tracking-normal">
-        {
-          t(
-            "Disponible para puestos de tiempo completo y proyectos por contrato.",
-            "Available for full-time positions and contract projects.",
-          )
-        }
-      </p>
     </div>
   </div>
 </section>
+
+<script>
+  import { initHero } from "../scripts/hero";
+
+  initHero();
+</script>

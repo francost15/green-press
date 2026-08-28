@@ -65,9 +65,9 @@ institutional support. Domain fluency in that context is part of the position.
   build-time sitemap. Project detail lives at its own URL, never in a modal.
 - **JavaScript is permitted for animation** as of 2026-08-05, at Franco's direction (GSAP
   was explicitly allowed). The constraint that remains: no UI framework, and no `client:*`
-  directive, which would reintroduce a component runtime. The current build still ships
-  **zero external JavaScript** — all motion is native CSS (masked entrances, scroll-driven
-  timelines, the aurora). Reach for a library only when CSS genuinely cannot do the job.
+  directive, which would reintroduce a component runtime. The hero entrance uses GSAP
+  (`src/scripts/hero.ts`: line lift, whole words). Scroll
+  work stays native CSS. Reach for a library only when CSS genuinely cannot do the job.
 - **All content in `src/data/` must be bilingual** (`{ es, en }`) and all dates ISO. A
   monolingual string leaks onto the wrong locale.
 - **`SITE` in `src/i18n.ts` is the single source of the origin** — canonicals, hreflang,

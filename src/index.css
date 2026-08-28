@@ -252,6 +252,11 @@
   font-weight: 500;
 }
 
+#inicio .t-display {
+  font-size: clamp(3rem, 7.4vw, 7.25rem);
+  line-height: 0.98;
+}
+
 .t-head {
   font-size: clamp(1.75rem, 3.4vw, 3.25rem);
   line-height: 1.02;
@@ -296,6 +301,16 @@
 .band { padding-block: clamp(4.5rem, 9vw, 8.5rem); border-top: 1px solid var(--rule); }
 .band:first-of-type { border-top: 0; }
 
+/* First viewport: cap top padding so the masthead does not float. */
+#inicio.band {
+  padding-top: clamp(3.25rem, 5vw, 6rem);
+  padding-bottom: clamp(3rem, 6vw, 5.5rem);
+}
+
+#inicio .t-display .mask {
+  padding-bottom: 0.08em;
+}
+
 .cols {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -331,6 +346,7 @@
 }
 
 .band-ink {
+  position: relative;
   background: #0a0a0b;
   color: var(--ink);
   --ink: #f4f4f5;
@@ -338,6 +354,24 @@
   --rule: rgb(255 255 255 / 0.16);
   --paper-dim: rgb(255 255 255 / 0.06);
   --violet: #a78bfa; /* 7.2:1 on this ground */
+}
+
+/* Consecutive ink fields read as one plate. The violet hairline still
+   chapters them. */
+.band-ink + .band-ink {
+  padding-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+.band-ink::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  background: var(--violet);
+  transform-origin: left;
+  scale: 0 1;
+  pointer-events: none;
 }
 
 .band-violet {
@@ -564,7 +598,7 @@
 .mask > * { display: block; }
 
 @keyframes lift {
-  from { translate: 0 105%; }
+  from { translate: 0 108%; }
   to { translate: 0 0; }
 }
 
@@ -573,6 +607,18 @@
 .d2 > * { animation-delay: 120ms; }
 .d3 > * { animation-delay: 180ms; }
 .d4 > * { animation-delay: 240ms; }
+.d5 > * { animation-delay: 300ms; }
+
+#inicio[data-hero-motion="gsap"] .mask > * {
+  animation: none;
+  translate: none;
+}
+
+/* Meta facts set after the name, 60ms apart — same clock as the masthead. */
+#inicio .c-meta > div:nth-child(1) .mask > * { animation-delay: 360ms; }
+#inicio .c-meta > div:nth-child(2) .mask > * { animation-delay: 420ms; }
+#inicio .c-meta > div:nth-child(3) .mask > * { animation-delay: 480ms; }
+#inicio .c-meta > div:nth-child(4) .mask > * { animation-delay: 540ms; }
 
 @supports (animation-timeline: view()) {
   /* The timeline routes through a custom property on purpose. Lightning CSS
@@ -581,8 +627,10 @@
      and Chrome drops the whole animation. A var() cannot be folded. */
   :root { --tl: view(); }
 
+  /* Type being set: the line is already there, the crop opens. Opacity never
+     starts at 0 — nothing in this world appears from nothing. */
   @keyframes fade-up {
-    from { opacity: 0; translate: 0 22px; }
+    from { opacity: 0.35; translate: 0 12px; }
     to { opacity: 1; translate: 0 0; }
   }
 
@@ -591,7 +639,7 @@
     animation-timing-function: linear;
     animation-fill-mode: both;
     animation-timeline: var(--tl);
-    animation-range: entry 8% cover 24%;
+    animation-range: entry 6% cover 22%;
   }
 
   .row {
@@ -599,7 +647,25 @@
     animation-timing-function: linear;
     animation-fill-mode: both;
     animation-timeline: var(--tl);
-    animation-range: entry 2% cover 18%;
+    animation-range: entry 4% cover 20%;
+  }
+
+  .row:nth-child(2) { animation-range: entry 7% cover 22%; }
+  .row:nth-child(3) { animation-range: entry 10% cover 24%; }
+  .row:nth-child(4) { animation-range: entry 12% cover 26%; }
+  .row:nth-child(5) { animation-range: entry 14% cover 28%; }
+
+  .band-ink::before {
+    animation-name: rule-draw;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: var(--tl);
+    animation-range: entry 0% cover 18%;
+  }
+
+  @keyframes rule-draw {
+    from { scale: 0 1; }
+    to { scale: 1 1; }
   }
 
   /* The progress bar grows with the document scroll itself. */
@@ -617,9 +683,9 @@
     animation-timeline: var(--tl-scroll);
   }
 
-  /* Project screenshots unveil as they enter the viewport. */
+  /* Screenshots unveil like a plate being exposed, not a fade. */
   @keyframes unveil {
-    from { clip-path: inset(0 0 18% 0); opacity: 0.3; }
+    from { clip-path: inset(0 0 14% 0); opacity: 0.45; }
     to { clip-path: inset(0 0 0 0); opacity: 1; }
   }
 
@@ -637,7 +703,8 @@
 @media (prefers-reduced-motion: reduce) {
   /* The page stops moving; it does not stop responding. Controls keep
      their state feedback. */
-  .mask > *, .in, .row, .img-reveal { animation-name: none; }
+  .mask > *, .in, .row, .img-reveal, .band-ink::before { animation-name: none; }
+  .band-ink::before { scale: 1 1; }
   .aurora span { animation: none; }
   .row-mark, .row-t .t-sub { transition: none; }
   .social-rail a { transition: color 150ms ease; }

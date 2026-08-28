@@ -5,7 +5,10 @@ import Footer from "../components/Footer.astro";
 import Icon from "../components/Icon.astro";
 import { imageSizes, smallVariant } from "../data/imageSizes";
 import { profile } from "../data/profile";
-import type { Project } from "../data/projects";
+import { relatedProjects, type Project } from "../data/projects";
+import { breadcrumbSchema, projectWorkSchema } from "../data/structuredData";
+import { formatPeriod } from "../lib/dates";
+import { periodPublished } from "../lib/iso";
 import { SITE, localePath, useTranslations, type Lang } from "../i18n";
 
 interface Props {
@@ -18,49 +21,29 @@ const t = useTranslations(lang);
 
 const tags = lang === "es" ? project.tags.es : project.tags.en;
 const images = project.images ?? [];
-
+const alts = (lang === "es" ? project.imageAlts?.es : project.imageAlts?.en) ?? [];
+const related = relatedProjects(project);
 const indexPath = lang === "es" ? "proyectos/" : "projects/";
 const path = `${indexPath}${project.slug}/`;
 const altPath = `${lang === "es" ? "projects/" : "proyectos/"}${project.slug}/`;
-
-// localePath supplies the leading slash; `${SITE}${path}` would concatenate into
-// "https://fsanchezt.comprojects/…".
 const canonicalUrl = `${SITE}${localePath(lang, path)}`;
-
 const title = t(project.title.es, project.title.en);
 const description = t(project.impact.es, project.impact.en);
+const body = t(project.body.es, project.body.en);
 const contactHash = "#contacto";
-
-// One CreativeWork per page, bound to the shared Person node — the home page's ItemList
-// stays where it is and is not repeated here.
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "CreativeWork",
-  "@id": `${canonicalUrl}#project`,
-  name: title,
-  headline: title,
-  description,
-  url: canonicalUrl,
-  inLanguage: lang,
-  creator: { "@id": `${SITE}/#person` },
-  author: { "@id": `${SITE}/#person` },
-  keywords: tags.join(", "),
-  ...(images.length > 0 ? { image: images.map((src) => `${SITE}${src}`) } : {}),
-};
-
-const sections = [
-  { title: t("Problema", "The problem"), body: t(project.problem.es, project.problem.en) },
-  { title: t("Solución", "The solution"), body: t(project.solution.es, project.solution.en) },
-];
+const relatedIndex = lang === "es" ? "proyectos/" : "projects/";
 ---
 
 <BaseLayout
   lang={lang}
-  title={`${title} — Franco Sanchez`}
+  title={`${title} - Franco Sanchez`}
   description={description}
   path={path}
   altPath={altPath}
-  schemas={[schema]}
+  schemas={[
+    projectWorkSchema(lang, project, canonicalUrl),
+    breadcrumbSchema(lang, project, canonicalUrl),
+  ]}
 >
   <a href="#project-title" class="skip-link">{t("Saltar al contenido", "Skip to content")}</a>
   <Navbar lang={lang} altPath={altPath} />
@@ -72,11 +55,22 @@ const sections = [
       </a>
 
       <div class="cols mt-10">
-        {/* The margin annotates the entry: impact first, because it is the most
-            citable sentence on the page, then the stack. */}
         <div class="c-meta order-2 min-[900px]:order-1">
           <p class="t-meta">{t("Impacto", "Impact")}</p>
-          <p class="m-0 mt-1 max-w-[34ch] text-[15px] font-medium leading-snug">{description}</p>
+          <p data-speakable-impact class="m-0 mt-1 max-w-[34ch] text-[15px] font-medium leading-snug">
+            {description}
+          </p>
+
+          <p class="t-meta mt-7">{t("Periodo", "Period")}</p>
+          <p class="m-0 mt-1 text-[15px] font-medium">
+            <time datetime={periodPublished(project.period)}>{formatPeriod(project.period, lang)}</time>
+          </p>
+
+          <p class="t-meta mt-7">{t("Cliente", "Client")}</p>
+          <p class="m-0 mt-1 text-[15px] font-medium">{t(project.client.es, project.client.en)}</p>
+
+          <p class="t-meta mt-7">{t("Rol", "Role")}</p>
+          <p class="m-0 mt-1 text-[15px] font-medium">{t(project.role.es, project.role.en)}</p>
 
           <p class="t-meta mt-7">{t("Stack", "Stack")}</p>
           <ul class="tags mt-2">
@@ -87,28 +81,47 @@ const sections = [
         <div class="c-main order-1 min-[900px]:order-2">
           <h1 id="project-title" class="t-head">{title}</h1>
 
-          {
-            sections.map((section) => (
-              <section class="mt-10">
-                <h2 class="t-sub">{section.title}</h2>
-                <p class="t-body mt-4">{section.body}</p>
-              </section>
-            ))
-          }
+          <section class="mt-10">
+            <h2 class="t-sub">{t("Problema", "The problem")}</h2>
+            <p class="t-body mt-4">{t(project.problem.es, project.problem.en)}</p>
+          </section>
+
+          <section class="mt-10">
+            <h2 class="t-sub">{t("Solución", "The solution")}</h2>
+            <p class="t-body mt-4">{t(project.solution.es, project.solution.en)}</p>
+          </section>
+
+          <section class="mt-10">
+            <h2 class="t-sub">{t("Arquitectura", "Architecture")}</h2>
+            <p class="t-body mt-4">{t(project.architecture.es, project.architecture.en)}</p>
+          </section>
+
+          <section class="mt-10">
+            <h2 class="t-sub">{t("Cómo se midió", "How it was measured")}</h2>
+            <p class="t-body mt-4">{t(project.measurement.es, project.measurement.en)}</p>
+          </section>
+
+          <section class="mt-10">
+            <h2 data-speakable-faq class="t-sub">{t(project.faq.q.es, project.faq.q.en)}</h2>
+            <p class="t-body mt-4">{t(project.faq.a.es, project.faq.a.en)}</p>
+          </section>
+
+          <section class="mt-10">
+            <h2 class="t-sub">{t("El trabajo", "The work")}</h2>
+            {body.split("\n\n").map((para) => <p class="t-body mt-4">{para}</p>)}
+          </section>
 
           {
             images.length > 0 && (
               <section class="mt-14">
                 <h2 class="t-sub">{t("Capturas", "Screenshots")}</h2>
-                {/* The setting column measures 800px on the 1320 sheet, so
-                    desktop selects the 1536w candidate at 2x density. */}
                 <div class="mt-6 flex flex-col gap-6">
                   {images.map((src, i) => (
                     <img
                       src={src}
                       srcset={`${smallVariant(src)} 768w, ${src} 1536w`}
                       sizes="(max-width: 900px) 100vw, 800px"
-                      alt={`${title} — ${t("captura", "screenshot")} ${i + 1}`}
+                      alt={alts[i] ?? `${title} ${t("captura", "screenshot")} ${i + 1}`}
                       width={imageSizes[src]?.width}
                       height={imageSizes[src]?.height}
                       loading={i === 0 ? "eager" : "lazy"}
@@ -117,6 +130,26 @@ const sections = [
                     />
                   ))}
                 </div>
+              </section>
+            )
+          }
+
+          {
+            related.length > 0 && (
+              <section class="mt-14">
+                <h2 class="t-sub">{t("En este registro", "Also in this record")}</h2>
+                <ul class="mt-4 flex flex-col gap-3 p-0">
+                  {related.map((item) => (
+                    <li>
+                      <a
+                        href={localePath(lang, `${relatedIndex}${item.slug}/`)}
+                        class="link text-[15px] font-semibold"
+                      >
+                        {t(item.title.es, item.title.en)}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </section>
             )
           }
@@ -147,10 +180,8 @@ const sections = [
               </div>
             )
           }
-          {/* A project page used to end here, with no way forward. */}
           <div class="hair-t mt-16 flex flex-wrap items-center gap-3 pt-8">
-            <a href={profile.cvUrl} download class="act">
-              <Icon name="DownloadSimple" size={18} />
+            <a href={profile.cvUrl} download class="link text-[15px] font-semibold">
               {t("Descargar CV", "Download CV")}
             </a>
             <a href={localePath(lang, contactHash)} class="act act-ghost">

@@ -1,0 +1,24 @@
+---
+import { profile } from "../data/profile";
+import { useTranslations, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="acerca" class="band band-ink">
+  <div class="cols in">
+    <p class="t-meta c-meta order-2 min-[900px]:order-1 min-[900px]:pt-2">
+      {t("Nombre legal", "Legal name")}
+    </p>
+    <div class="c-main order-1 min-[900px]:order-2">
+      <h2 class="t-head">{profile.legalName}</h2>
+      <p class="t-body mt-5 max-w-[62ch]">{t(profile.bio.es, profile.bio.en)}</p>
+      <p class="t-meta mt-4">{t(profile.emailDomainNote.es, profile.emailDomainNote.en)}</p>
+    </div>
+  </div>
+</section>

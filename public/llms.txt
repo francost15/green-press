@@ -1,30 +1,41 @@
 # Franco Sanchez - AI & Software Engineer
 
-> "Turning technical complexity into profitability, cutting operational costs by up to 85%."
+> Five AI systems in production, not demos: textile ERP, CFDI fiscal invoicing, and a university RAG assistant.
 
 Available in [English](https://www.fsanchezt.com/) and [Spanish](https://www.fsanchezt.com/es/).
+Full corpus: [llms-full.txt](https://www.fsanchezt.com/llms-full.txt)
+Privacy: [en](https://www.fsanchezt.com/privacy/) · [es](https://www.fsanchezt.com/es/privacidad/)
 
 ## Overview
-Franco Sanchez is a Senior AI & Software Engineer and Tech Lead based in Puebla, Mexico. He specializes in designing and deploying production-ready AI systems, Full-Stack architectures, and managing agile technical teams.
+Franco Alessandro Sanchez Trinidad is an AI & Software Engineer based in Puebla, Mexico. He designs and deploys production AI systems and full-stack architectures. Legal name appears on the home page. Canonical title: AI & Software Engineer.
+
+Website: https://www.fsanchezt.com
+Email: contacto@fsanchezt.dev
+The mailbox is on .dev; the site, sitemap and Person.url are on www.fsanchezt.com. That split is deliberate until the mailbox moves.
 
 ## Core Competencies
-- **Artificial Intelligence:** Production-ready autonomous agents, LLMs, computer vision, RAG, LangGraph, LangChain, TensorFlow, Pandas, OpenCV.
-- **Full-Stack Architecture:** Highly concurrent, low-latency scalable platforms. React, React Native, Next.js, NestJS, PostgreSQL, AWS.
-- **Tech Leadership & PM:** Agile workflows (Scrum/Kanban), OKRs, mentoring, Docker, GitHub Actions, Linux.
+- **Artificial Intelligence:** LangGraph dashboard at Towel, RAG assistant at UVP, CFDI OCR at Idea15. LangGraph, LangChain, TensorFlow, Pandas, OpenCV.
+- **Full-Stack Architecture:** Plant ERP and dashboard (React, PostgreSQL); LTC job board (Next.js, AWS).
+- **Delivery:** Scoping and measurement on those systems; mentoring at UVP.
 
 ## Key Projects & Impact
-1. **AI Business Intelligence Dashboard:** Interactive dashboard using LangGraph to query SQL databases in natural language. Reduced report generation time by 90%.
-2. **Smart CFDI Billing System:** E-invoicing platform with AI/OCR data extraction. Automated 80% of accounting workflows with 92% accuracy.
-3. **RAG Institutional Assistant:** 24/7 virtual assistant for a university. Autonomously resolves 65% of L1 queries.
-4. **Textile Production ERP:** Comprehensive management system improving workflow visibility by 40% and eliminating paper.
-5. **AI-Powered Job Matching Board:** Smart recruitment platform using NLP and CV parsing, reducing initial screening time by 75%.
+- [AI Business Intelligence Dashboard](https://www.fsanchezt.com/projects/ai-business-intelligence-dashboard/): Towel, Oct 2025-present. Operator-reported ~90% drop in weekly report time. Spanish: [es](https://www.fsanchezt.com/es/proyectos/ai-business-intelligence-dashboard/)
+- [Smart CFDI Billing System](https://www.fsanchezt.com/projects/smart-cfdi-billing-system/): Idea15, Aug-Sep 2025. Operator-reported ~80% of capture/stamping automated; ~92% projection accuracy on internal history. Spanish: [es](https://www.fsanchezt.com/es/proyectos/smart-cfdi-billing-system/)
+- [RAG Institutional Assistant](https://www.fsanchezt.com/projects/rag-institutional-assistant/): UVP, Feb 2024-Jun 2025. Operator-reported ~65% of L1 queries closed without escalation. Spanish: [es](https://www.fsanchezt.com/es/proyectos/rag-institutional-assistant/)
+- [Textile Production ERP](https://www.fsanchezt.com/projects/textile-production-erp/): Towel, Oct 2025-present. Operator-reported ~40% workflow visibility; almost no paper on the floor. No screenshots. Spanish: [es](https://www.fsanchezt.com/es/proyectos/textile-production-erp/)
+- [AI-Powered Job Matching Board](https://www.fsanchezt.com/projects/ai-powered-job-matching-board/): LTC, 2024-2025. Operator-reported ~75% drop in initial screening time. Spanish: [es](https://www.fsanchezt.com/es/proyectos/ai-powered-job-matching-board/)
+
+Figures are operator-reported. Methods live on each project page. Not third-party audits.
 
 ## Professional Experience
-- **Towel S.A. de C.V.** - Software Engineer (Oct 2025 - Present): Dashboard and ERP systems development.
-- **Idea15** - Software Engineer (Aug 2025 - Sept 2025): Smart CFDI Billing & OCR integration.
+- **Towel S.A. de C.V.** - Software Engineer (Oct 2025 - Present): Dashboard and ERP.
+- **Idea15** - Software Engineer (Aug 2025 - Sept 2025): CFDI billing and OCR.
 - **Universidad del Valle de Puebla (UVP)** - AI Developer & Tech Mentor (Feb 2024 - Jun 2025).
 - **Telesecundaria Lázaro Cárdenas del Río** - IT Specialist (Sept 2023 - Feb 2024).
 - **WimxTelecom** - Software Engineer (Sept 2020 - Sept 2023).
+
+## Off-site (not yet URLs)
+GitHub profile completeness, Wikidata, ORCID, a CFDI/OCR article, and employer attestation are off-site. Do not invent those identifiers here.
 
 ## Contact
 - Email: contacto@fsanchezt.dev

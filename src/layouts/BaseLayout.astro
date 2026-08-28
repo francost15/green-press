@@ -1,6 +1,6 @@
 ---
 import SocialRail from "../components/SocialRail.astro";
-import { personSchema, projectsSchema } from "../data/structuredData";
+import { personSchema, profilePageSchema, projectsSchema, websiteSchema } from "../data/structuredData";
 import { SITE, localePath, type Lang } from "../i18n";
 import "../index.css";
 
@@ -24,25 +24,29 @@ const {
   description: descriptionOverride,
   path = "",
   altPath,
-  schemas = [personSchema, projectsSchema],
+  schemas = [websiteSchema(), profilePageSchema(lang), personSchema(lang), projectsSchema(lang)],
 } = Astro.props;
 
 const copy = {
+  /* Description and social copy must only name outcomes a project page can source.
+     These used to claim "cutting operational costs by up to 85%", a figure no
+     project's `impact` field supports. Job title stays byte-identical to
+     `profile.title` and to `personSchema.jobTitle` — three surfaces, one string. */
   en: {
-    title: "Franco Sanchez — AI & Software Engineer",
+    title: "Franco Sanchez - AI & Software Engineer",
     description:
-      "Franco Sanchez — AI Engineer and Software Architect. I turn technical complexity into profitability, cutting operational costs by up to 85%.",
+      "Franco Sanchez, AI & Software Engineer in Puebla, Mexico. Five AI systems in production: a textile ERP, CFDI fiscal invoicing, a university RAG assistant, BI dashboards, and job matching.",
     social:
-      "Turning technical complexity into profitability, cutting operational costs by up to 85%.",
+      "Five AI systems in production, not demos: textile ERP, CFDI invoicing, university RAG assistant.",
     ogLocale: "en_US",
     altLocale: "es_ES",
   },
   es: {
-    title: "Franco Sanchez — Ingeniero de IA y Software",
+    title: "Franco Sanchez - Ingeniero de IA y Software",
     description:
-      "Franco Sanchez — Ingeniero de IA y Arquitecto de Software. Transformo complejidad técnica en rentabilidad, reduciendo costos operativos hasta un 85%.",
+      "Franco Sanchez, Ingeniero de IA y Software en Puebla, México. Cinco sistemas de IA en producción: ERP textil, facturación CFDI, asistente RAG universitario, dashboards de BI y matching de talento.",
     social:
-      "Transformo complejidad técnica en rentabilidad, reduciendo costos operativos hasta un 85%.",
+      "Cinco sistemas de IA en producción, no demos: ERP textil, facturación CFDI, asistente RAG universitario.",
     ogLocale: "es_ES",
     altLocale: "en_US",
   },
@@ -72,10 +76,8 @@ const ogImage = `${SITE}/og-image.png`;
 
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta
-      name="keywords"
-      content="AI Engineer, Machine Learning, Full-Stack Architecture, React, Python, RAG, LangChain, CTO, Tech Lead"
-    />
+    {/* No `keywords` meta: search engines ignore it, LLM extractors do read it, and it
+        claimed CTO and Tech Lead — titles that appear nowhere else on this site. */}
     <meta name="author" content="Franco Sanchez" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonical} />
@@ -91,7 +93,7 @@ const ogImage = `${SITE}/og-image.png`;
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Franco Sanchez — AI & Software Engineer" />
+    <meta property="og:image:alt" content="Franco Sanchez - AI & Software Engineer" />
     <meta property="og:locale" content={copy.ogLocale} />
     <meta property="og:locale:alternate" content={copy.altLocale} />
     <meta property="og:site_name" content="Franco Sanchez" />
@@ -133,9 +135,9 @@ const ogImage = `${SITE}/og-image.png`;
         layout grid's gap: they are the same grid or neither is worth drawing.
       STORY: A recruiter reads name, role and record above the fold, in either
         language, and takes the CV. A client reads the same rows and writes.
-      FIRST VIEWPORT: Meta column left with role, base, languages, systems shipped.
-        The name at display scale right — "Sanchez" carries the viewport's one violet —
-        with the working claim beneath and the CV as the filled action.
+      FIRST VIEWPORT: Meta column left with role, base, systems shipped, engineering
+        since. The name at display scale right; "Sanchez" carries the viewport's one
+        violet. One claim beneath, CV as the filled action.
       FORM: Editorial Rule, fused with the name-first masthead at the user's explicit
         direction after comparing three built previews. Roll set aside: user-pinned.
       FINISH: unreviewed and undocumented is unfinished; this build ends with the finish

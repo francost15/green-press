@@ -70,14 +70,13 @@ const labels = {
   title={t("Contacto", "Contact")}
   meta={t("4 canales", "4 channels")}
   subtitle={t(
-    "¿Una vacante o un proyecto? Escríbeme, o llévate el CV.",
-    "An open role or a project? Write to me, or take the CV.",
+    "¿Una vacante o un proyecto? Escríbeme. El CV está en el hero y también como enlace de texto aquí.",
+    "An open role or a project? Write to me. The CV is in the hero, and as a text link here.",
   )}
 >
   <div class="cols hair-t pt-10">
-    {/* The margin carries the direct channels; the form is the setting. */}
     <div class="c-meta">
-      <a href={profile.cvUrl} download class="act mb-8 w-full">
+      <a href={profile.cvUrl} download class="link mb-8 inline-flex min-h-[44px] items-center text-[15px] font-semibold">
         {t("Descargar CV", "Download CV")}
       </a>
 
@@ -186,6 +185,16 @@ const labels = {
             triggers it — not a toast pinned to a corner of the viewport. */}
         <p data-form-status role="status" aria-live="polite" class="text-[15px] font-semibold"></p>
       </div>
+      <p class="t-meta mt-6 max-w-[48ch]">
+        {t(
+          "Al enviar, aceptas el aviso de privacidad. El mensaje viaja a Formspree y me llega al correo de contacto.",
+          "By sending, you accept the privacy notice. The message goes through Formspree and reaches my contact mailbox.",
+        )}{" "}
+        <a href={lang === "es" ? "/es/privacidad/" : "/privacy/"} class="link">
+          {t("Aviso de privacidad", "Privacy notice")}
+        </a>
+        .
+      </p>
     </form>
   </div>
 </Section>

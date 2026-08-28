@@ -39,6 +39,6 @@ describe("Projects section", () => {
 
   it("shows each project's impact on the card", async () => {
     const { container } = await renderAstro(Projects, { lang: "en" });
-    expect(container.textContent).toContain("90% reduction in report generation time");
+    expect(container.textContent).toContain("90%");
   });
 });

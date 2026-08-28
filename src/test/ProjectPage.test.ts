@@ -61,4 +61,17 @@ describe("ProjectPage", () => {
       expect(img).toHaveAttribute("sizes");
     }
   });
+
+  it("gives every screenshot a descriptive alt", async () => {
+    const { container } = await renderAstro(ProjectPage, { lang: "en", project: cfdi });
+    const images = [...container.querySelectorAll("main img")];
+    expect(images[0]).toHaveAttribute("alt", cfdi.imageAlts!.en[0]);
+  });
+
+  it("links related work on the same locale", async () => {
+    const { container } = await renderAstro(ProjectPage, { lang: "en", project: cfdi });
+    expect(
+      container.querySelector('a[href="/projects/ai-business-intelligence-dashboard/"]'),
+    ).toBeTruthy();
+  });
 });

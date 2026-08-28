@@ -18,11 +18,11 @@ const indexSegment = lang === "es" ? "proyectos/" : "projects/";
 
 <Section
   id="proyectos"
-  title={t("Proyectos", "Projects")}
+  title={t("¿Qué sistemas pagué con trabajo real?", "What systems did someone pay to keep running?")}
   meta={t(`${projects.length} entradas`, `${projects.length} entries`)}
   subtitle={t(
-    "Cinco sistemas en producción. Cada uno resolvió un problema que alguien estaba pagando.",
-    "Five systems in production. Each one solved a problem somebody was paying for.",
+    "Cinco sistemas en producción: ERP y dashboard en Towel, CFDI en Idea15, RAG en la UVP, matching de CVs para LTC. Cada página nombra cliente, fechas y cómo se midió el impacto. No son demos.",
+    "Five systems in production: ERP and dashboard at Towel, CFDI at Idea15, RAG at UVP, CV matching for LTC. Each page names the client, the dates, and how impact was measured. Not demos.",
   )}
 >
   <ul class="m-0 list-none p-0">
@@ -51,7 +51,9 @@ const indexSegment = lang === "es" ? "proyectos/" : "projects/";
             </div>
             <div class="row-d">
               <p class="t-meta">{t("Impacto", "Impact")}</p>
-              <p class="t-body mt-1 text-[0.95rem]">{t(project.impact.es, project.impact.en)}</p>
+            <p class="t-body mt-1 text-[0.95rem]" data-speakable-impact>
+              {t(project.impact.es, project.impact.en)}
+            </p>
             </div>
             <span class="row-mark" aria-hidden="true" />
           </li>

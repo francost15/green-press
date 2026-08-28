@@ -26,11 +26,12 @@ describe("canonical host", () => {
   });
 
   it("builds schema ids from SITE, with no missing separator", () => {
-    const json = JSON.stringify([personSchema, projectsSchema]);
+    const json = JSON.stringify([personSchema("en"), projectsSchema("en")]);
     for (const url of selfUrls(json)) {
       expect(url.startsWith(SITE)).toBe(true);
       // `${SITE}${path}` without a leading slash produced "fsanchezt.comprojects/…".
       expect(url.slice(SITE.length)).toMatch(/^(\/|#|$)/);
     }
+    expect(json).toContain(`${SITE}/#work-ai-business-intelligence-dashboard`);
   });
 });

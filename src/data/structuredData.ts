@@ -1,174 +1,210 @@
-import { SITE } from "../i18n";
+import { education } from "./education";
+import { profile } from "./profile";
+import { projects } from "./projects";
+import { SITE, type Lang } from "../i18n";
+import { periodPublished } from "../lib/iso";
 
-export const personSchema = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "@id": `${SITE}/#person`,
-  name: "Franco Sanchez",
-  alternateName: "Franco Alessandro Sanchez Trinidad",
-  jobTitle: "AI & Software Engineer",
-  url: SITE,
-  image: {
-    "@type": "ImageObject",
-    url: `${SITE}/og-image.png`,
-    description: "Franco Sanchez — AI & Software Engineer",
-  },
-  // Keep this consistent with the Experience section on the page: 5+ years of software
-  // engineering, AI work from 2024. Claiming 5+ years of production AI contradicts the
-  // rendered timeline, which is a structured-data quality violation.
-  description:
-    "AI & Software Engineer based in Puebla, Mexico. 5+ years in software engineering, building production AI systems since 2024. Specializes in LangChain, LangGraph, RAG pipelines, and full-stack architecture. Delivered systems cutting operational costs by up to 85% and financial projections with accuracy above 92%.",
-  email: "contacto@fsanchezt.dev",
-  telephone: "+52-220-157-0694",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Puebla",
-    addressCountry: "MX",
-  },
-  nationality: { "@type": "Country", name: "Mexico" },
-  alumniOf: [
-    {
-      "@type": "CollegeOrUniversity",
-      name: "Universidad del Valle de Puebla",
-      alternateName: "UVP",
-    },
-    { "@type": "CollegeOrUniversity", name: "Universidad Anáhuac Puebla" },
-    {
-      "@type": "CollegeOrUniversity",
-      name: "UNIR México — Universidad Internacional de La Rioja",
-    },
-  ],
-  worksFor: {
-    "@type": "Organization",
-    name: "Towel S.A. de C.V.",
-    address: { "@type": "PostalAddress", addressLocality: "Puebla", addressCountry: "MX" },
-  },
-  hasOccupation: {
-    "@type": "Occupation",
-    name: "AI & Software Engineer",
-    occupationLocation: { "@type": "City", name: "Puebla" },
-    skills:
-      "LangChain, LangGraph, RAG, TensorFlow, React, NestJS, AWS, PostgreSQL, Python, Computer Vision, OCR, NLP",
-  },
-  knowsAbout: [
-    "Artificial Intelligence",
-    "Machine Learning",
-    "Full-Stack Development",
-    "Computer Vision",
-    "Retrieval-Augmented Generation",
-    "LangChain",
-    "LangGraph",
-    "Large Language Models",
-    "Natural Language Processing",
-    "TensorFlow",
-    "AWS Cloud Architecture",
-    "PostgreSQL",
-    "React",
-    "NestJS",
-    "Software Architecture",
-  ],
-  knowsLanguage: [
-    { "@type": "Language", name: "Spanish", alternateName: "es" },
-    { "@type": "Language", name: "English", alternateName: "en" },
-  ],
-  sameAs: [
-    "https://github.com/francost15",
-    "https://www.linkedin.com/in/franco-alessandro-sanchez-trinidad-2320742a3/",
-  ],
-};
+export function workId(slug: string): string {
+  return `${SITE}/#work-${slug}`;
+}
 
-export const projectsSchema = {
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "@id": `${SITE}/#projects`,
-  name: "Portfolio Projects — Franco Sanchez",
-  description: "AI and software engineering projects with measurable business outcomes.",
-  numberOfItems: 5,
-  itemListOrder: "https://schema.org/ItemListOrderAscending",
-  // No `author` here: it requires CreativeWork or Rating, and ItemList is an Intangible.
-  // The per-item creator/author refs carry the link back to the Person node instead.
-  itemListElement: [
-    {
+const EMPLOYER_ID = `${SITE}/#employer`;
+
+export function websiteSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${SITE}/#website`,
+    url: SITE,
+    name: "Franco Sanchez",
+    inLanguage: ["en", "es"],
+    publisher: { "@id": `${SITE}/#person` },
+  };
+}
+
+export function profilePageSchema(lang: Lang) {
+  const url = lang === "es" ? `${SITE}/es/` : `${SITE}/`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "@id": `${url}#profile`,
+    url,
+    inLanguage: lang,
+    mainEntity: { "@id": `${SITE}/#person` },
+    isPartOf: { "@id": `${SITE}/#website` },
+  };
+}
+
+export function personSchema(lang: Lang) {
+  const jobTitle = lang === "es" ? profile.title.es : profile.title.en;
+  const description = lang === "es" ? profile.bio.es : profile.bio.en;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${SITE}/#person`,
+    name: profile.name,
+    alternateName: profile.legalName,
+    jobTitle,
+    url: SITE,
+    inLanguage: lang,
+    image: {
+      "@type": "ImageObject",
+      url: `${SITE}/og-image.png`,
+      description: `${profile.name} - ${profile.title.en}`,
+    },
+    description,
+    email: profile.email,
+    telephone: "+52-220-157-0694",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Puebla",
+      addressCountry: "MX",
+    },
+    nationality: { "@type": "Country", name: "Mexico" },
+    alumniOf: [
+      {
+        "@type": "CollegeOrUniversity",
+        name: "Universidad del Valle de Puebla",
+        alternateName: "UVP",
+      },
+      { "@type": "CollegeOrUniversity", name: "Universidad Anáhuac Puebla" },
+      {
+        "@type": "CollegeOrUniversity",
+        name: "UNIR México - Universidad Internacional de La Rioja",
+      },
+    ],
+    hasCredential: education.map((item) => ({
+      "@type": "EducationalOccupationalCredential",
+      name: lang === "es" ? item.degree.es : item.degree.en,
+      credentialCategory: item.status === "in-progress" ? "degree in progress" : "degree",
+      recognizedBy: { "@type": "CollegeOrUniversity", name: item.institution },
+    })),
+    worksFor: {
+      "@type": "Organization",
+      "@id": EMPLOYER_ID,
+      name: "Towel S.A. de C.V.",
+      address: { "@type": "PostalAddress", addressLocality: "Puebla", addressCountry: "MX" },
+    },
+    hasOccupation: {
+      "@type": "Occupation",
+      name: jobTitle,
+      occupationLocation: { "@type": "City", name: "Puebla" },
+      skills:
+        "LangChain, LangGraph, RAG, TensorFlow, React, NestJS, AWS, PostgreSQL, Python, Computer Vision, OCR, NLP",
+    },
+    knowsAbout: [
+      "Artificial Intelligence",
+      "Machine Learning",
+      "Full-Stack Development",
+      "Computer Vision",
+      "Retrieval-Augmented Generation",
+      "LangChain",
+      "LangGraph",
+      "Large Language Models",
+      "Natural Language Processing",
+      "TensorFlow",
+      "AWS Cloud Architecture",
+      "PostgreSQL",
+      "React",
+      "NestJS",
+      "Software Architecture",
+    ],
+    knowsLanguage: [
+      { "@type": "Language", name: "Spanish", alternateName: "es" },
+      { "@type": "Language", name: "English", alternateName: "en" },
+    ],
+    sameAs: [profile.links.github, profile.links.linkedin],
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["[data-speakable-impact]", "#acerca .t-body"],
+    },
+  };
+}
+
+export function projectsSchema(lang: Lang) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "@id": `${SITE}/#projects`,
+    name: lang === "es" ? "Proyectos de portafolio - Franco Sanchez" : "Portfolio Projects - Franco Sanchez",
+    description:
+      lang === "es"
+        ? "Sistemas de IA e ingeniería de software en producción, con cliente, fechas y método de medición."
+        : "Production AI and software-engineering systems, with client, dates, and measurement method.",
+    inLanguage: lang,
+    numberOfItems: projects.length,
+    itemListOrder: "https://schema.org/ItemListOrderAscending",
+    itemListElement: projects.map((project, index) => ({
       "@type": "ListItem",
-      position: 1,
+      position: index + 1,
       item: {
-        // CreativeWork, not SoftwareApplication: these are private client systems with no
-        // download and no public instance, so the properties Google requires for the
-        // Software App rich result could only be supplied by fabricating them.
         "@type": "CreativeWork",
-        "@id": `${SITE}/#project-ai-dashboard`,
-        name: "AI Business Intelligence Dashboard",
-        description:
-          "LangGraph agent querying SQL databases via natural language, generating dynamic charts, and predicting sales. Reduced report generation time by 90%.",
+        "@id": workId(project.slug),
+        name: lang === "es" ? project.title.es : project.title.en,
+        description: lang === "es" ? project.impact.es : project.impact.en,
+        url: `${SITE}${lang === "es" ? "/es/proyectos/" : "/projects/"}${project.slug}/`,
+        inLanguage: lang,
+        datePublished: periodPublished(project.period),
+        dateModified: project.updated,
         creator: { "@id": `${SITE}/#person` },
         author: { "@id": `${SITE}/#person` },
-        genre: "Business Intelligence Software",
-        keywords:
-          "AI dashboard, LangGraph, business intelligence, natural language SQL, LLMs, React, Python",
+        keywords: (lang === "es" ? project.tags.es : project.tags.en).join(", "),
       },
+    })),
+  };
+}
+
+export function projectWorkSchema(
+  lang: Lang,
+  project: (typeof projects)[number],
+  canonicalUrl: string,
+) {
+  const title = lang === "es" ? project.title.es : project.title.en;
+  const tags = lang === "es" ? project.tags.es : project.tags.en;
+  const images = project.images ?? [];
+  return {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "@id": workId(project.slug),
+    name: title,
+    headline: title,
+    description: lang === "es" ? project.impact.es : project.impact.en,
+    url: canonicalUrl,
+    inLanguage: lang,
+    datePublished: periodPublished(project.period),
+    dateModified: project.updated,
+    mainEntityOfPage: canonicalUrl,
+    creator: { "@id": `${SITE}/#person` },
+    author: { "@id": `${SITE}/#person` },
+    keywords: tags.join(", "),
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["[data-speakable-impact]", "[data-speakable-faq]"],
     },
-    {
-      "@type": "ListItem",
-      position: 2,
-      item: {
-        "@type": "CreativeWork",
-        "@id": `${SITE}/#project-cfdi`,
-        name: "Smart CFDI Billing System",
-        description:
-          "Electronic billing platform with OCR data extraction and predictive income modeling. Automated 80% of accounting workflows with 92% projection accuracy.",
-        creator: { "@id": `${SITE}/#person` },
-        author: { "@id": `${SITE}/#person` },
-        genre: "Financial Software",
-        keywords:
-          "CFDI billing, OCR, electronic invoicing, Mexico fintech, predictive models, Node.js, Python",
+    ...(images.length > 0 ? { image: images.map((src) => `${SITE}${src}`) } : {}),
+  };
+}
+
+export function breadcrumbSchema(lang: Lang, project: (typeof projects)[number], canonicalUrl: string) {
+  const home = lang === "es" ? `${SITE}/es/` : `${SITE}/`;
+  const homeName = lang === "es" ? "Inicio" : "Home";
+  const title = lang === "es" ? project.title.es : project.title.en;
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: homeName,
+        item: home,
       },
-    },
-    {
-      "@type": "ListItem",
-      position: 3,
-      item: {
-        "@type": "CreativeWork",
-        "@id": `${SITE}/#project-rag-assistant`,
-        name: "RAG Institutional Assistant",
-        description:
-          "24/7 virtual assistant using Retrieval-Augmented Generation connected to university knowledge bases. Autonomously resolved 65% of level-1 support queries.",
-        creator: { "@id": `${SITE}/#person` },
-        author: { "@id": `${SITE}/#person` },
-        genre: "Educational Software",
-        keywords:
-          "RAG chatbot, LangChain, vector database, university assistant, AI automation, Python",
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: title,
+        item: canonicalUrl,
       },
-    },
-    {
-      "@type": "ListItem",
-      position: 4,
-      item: {
-        "@type": "CreativeWork",
-        "@id": `${SITE}/#project-textile-erp`,
-        name: "Textile Production ERP",
-        description:
-          "ERP system for real-time textile production traceability and shop floor control. Improved workflow visibility by 40% and eliminated paper use on the plant floor.",
-        creator: { "@id": `${SITE}/#person` },
-        author: { "@id": `${SITE}/#person` },
-        genre: "Enterprise Resource Planning Software",
-        keywords:
-          "ERP, textile industry, production management, real-time tracking, PostgreSQL, React",
-      },
-    },
-    {
-      "@type": "ListItem",
-      position: 5,
-      item: {
-        "@type": "CreativeWork",
-        "@id": `${SITE}/#project-job-board`,
-        name: "AI-Powered Job Matching Board",
-        description:
-          "Job board using NLP to parse CVs and automatically match candidates to technical vacancies. Reduced initial screening time by 75%.",
-        creator: { "@id": `${SITE}/#person` },
-        author: { "@id": `${SITE}/#person` },
-        genre: "Recruitment Software",
-        keywords: "job matching, AI recruitment, NLP, CV parsing, AWS, Next.js, Python",
-      },
-    },
-  ],
-};
+    ],
+  };
+}

@@ -8,24 +8,24 @@ export const competencies: Competency[] = [
   {
     title: { es: "Inteligencia Artificial", en: "Artificial Intelligence" },
     description: {
-      es: "Desarrollo de sistemas de IA que resuelven problemas de negocio reales. Especializado en agentes autónomos, LLMs y visión por computadora listos para producción.",
-      en: "Development of AI systems that solve real business problems. Specialized in production-ready autonomous agents, LLMs, and computer vision.",
+      es: "Agentes LangGraph y RAG en producción: el dashboard de Towel, el asistente de la UVP, OCR de CFDI en Idea15. No un notebook.",
+      en: "LangGraph and RAG agents in production: Towel's dashboard, UVP's assistant, CFDI OCR at Idea15. Not a notebook.",
     },
     techs: ["LangGraph", "LangChain", "TensorFlow", "Pandas", "OpenCV"],
   },
   {
     title: { es: "Arquitectura Full-Stack", en: "Full-Stack Architecture" },
     description: {
-      es: "Construcción de plataformas escalables de principio a fin. Diseño arquitecturas en la nube que soportan alta concurrencia con latencia mínima.",
-      en: "End-to-end construction of scalable platforms. I design cloud architectures that handle high concurrency with minimal latency.",
+      es: "React y PostgreSQL de extremo a extremo en el ERP de planta y el dashboard de Towel; Next.js y AWS en la bolsa de LTC.",
+      en: "End-to-end React and PostgreSQL on Towel's plant ERP and dashboard; Next.js and AWS on LTC's job board.",
     },
     techs: ["React", "Next.js", "NestJS", "PostgreSQL", "AWS"],
   },
   {
     title: { es: "Liderazgo Técnico & PM", en: "Tech Leadership & PM" },
     description: {
-      es: "Alineación entre tecnología y objetivos de negocio. Defino roadmaps, optimizo flujos ágiles y guío equipos hacia el cumplimiento de OKRs.",
-      en: "Aligning technology with business goals. I define roadmaps, optimize agile workflows, and guide teams toward OKRs.",
+      es: "En la UVP mentoreé al tiempo que entregaba el asistente. En planta y en Idea15 el trabajo fue scoping, entrega y la medición que está en cada página de proyecto.",
+      en: "At UVP I mentored while shipping the assistant. On the plant floor and at Idea15 the work was scoping, delivery, and the measurement on each project page.",
     },
     techs: ["Scrum & Kanban", "Jira", "Product Strategy", "OKRs", "Mentoring"],
   },

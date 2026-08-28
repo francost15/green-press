@@ -11,9 +11,9 @@ Recorded from the built world on 2026-08-05, not from intention. Where this file
 twelve-column grid drawn in hairlines, a marginal meta column, and content set in rows —
 never cards. One grotesk across the whole site. The ornament *is* the grid.
 
-Chosen by the user from three fully built previews (`/preview/editorial/`, `/preview/`,
-`/preview/stage/`, all kept, all `noindex`), then fused with a name-first masthead at
-their explicit direction. User-pinned: the concept-seed roll was set aside.
+Chosen by the user from three fully built previews (removed from the repo after
+the direction was pinned), then fused with a name-first masthead at their
+explicit direction. User-pinned: the concept-seed roll was set aside.
 
 The contract lives as an HTML comment at the top of `<body>` in
 `src/layouts/BaseLayout.astro` and survives the production build — grep
@@ -31,8 +31,9 @@ Roles assigned from **measured contrast on white**, before use:
 | `--rule` | `#E6E6EA` | — | hairlines and the drawn grid |
 | `--paper-dim` | `#FAFAFA` | — | row hover, invalid-field tint |
 
-**Colour fields (user-pinned 2026-08-05):** two full-bleed bands pace the sheet — ink
-`#0A0A0B` on Competencies, deep violet `#5B21B6` on Contact. A field is a token override:
+**Colour fields (user-pinned 2026-08-27):** ink `#0A0A0B` on About, Competencies,
+Experience and Education; deep violet `#5B21B6` on Contact. Paper holds Hero and
+Projects. Consecutive ink fields share one plate. A field is a token override:
 `--ink/--mid/--rule/--paper-dim/--violet` re-resolve inside it, so every class works
 unchanged; only the violet band's white inputs carry literal overrides so their internals
 never inherit light-on-light. The bleed pair (`margin-inline`/`padding-inline` calc) breaks
@@ -99,8 +100,11 @@ that components combine with Tailwind utilities (`.t-meta`, `.tags`) lives in
 
 Calibrated by frequency, not by taste (the Emil Kowalski pass):
 
-- **Hero entrance** (once per visit): lines lift from behind masks, 800ms strong ease-out,
-  60ms stagger (`.mask`, `.d1–.d4`). Markup ships whole — extraction reads clean text.
+- **Hero entrance** (once per visit): GSAP line-lift in `src/scripts/hero.ts` — whole
+  words (`yPercent` behind `.mask`), name then body then facts, `power3.out`. No letter
+  split (it kills General Sans kerning at display size). CSS `.mask` lift remains the
+  no-JS fallback. Hero display is capped at `7.25rem` so the two-line name, subtext and
+  CTAs fit the first viewport; top padding on `#inicio` maxes at `6rem`.
 - **Scroll reveals**: native `animation-timeline: view()`, linear on purpose (the easing
   IS the scroll position), opt-in inside `@supports` so extraction and old browsers see
   fully visible content. The timeline routes through `var(--tl)` because Lightning CSS
@@ -125,10 +129,9 @@ Calibrated by frequency, not by taste (the Emil Kowalski pass):
 
 ## Budget
 
-15 routes (12 production + 3 noindex previews) · **0 bytes of external JavaScript** ·
-one CSS bundle · 38 KB production font. The only scripts are inlined: `navbar.ts`
-(scroll spy, disclosure menu, language-switch hash preservation) and the Contact
-validator. Aurora, reading progress, reveals and unveils are all CSS.
+12 production HTML routes plus generated sitemap and llms-full.txt · GSAP inlined by Astro
+for the hero only · one CSS bundle · 38 KB production font. Scripts: `navbar.ts`,
+`hero.ts`, Contact validator. Aurora, reading progress, reveals and unveils stay CSS.
 
 ## Verified
 

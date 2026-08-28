@@ -3,6 +3,7 @@ import BaseLayout from "./BaseLayout.astro";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
 import Hero from "../sections/Hero.astro";
+import About from "../sections/About.astro";
 import Competencies from "../sections/Competencies.astro";
 import Projects from "../sections/Projects.astro";
 import Experience from "../sections/Experience.astro";
@@ -30,6 +31,7 @@ const t = useTranslations(lang);
   <Navbar lang={lang} />
   <main class="sheet layer">
     <Hero lang={lang} />
+    <About lang={lang} />
     <Projects lang={lang} />
     <Competencies lang={lang} />
     <Experience lang={lang} />

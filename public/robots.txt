@@ -2,3 +2,7 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.fsanchezt.com/sitemap.xml
+
+# Full-text dump for language-model crawlers
+# https://www.fsanchezt.com/llms-full.txt
+

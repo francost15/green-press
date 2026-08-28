@@ -1,0 +1,69 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import { websiteSchema } from "../data/structuredData";
+import { localePath, useTranslations, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const path = lang === "es" ? "privacidad/" : "privacy/";
+const altPath = lang === "es" ? "privacy/" : "privacidad/";
+---
+
+<BaseLayout
+  lang={lang}
+  title={t("Aviso de privacidad - Franco Sanchez", "Privacy notice - Franco Sanchez")}
+  description={t(
+    "Cómo se tratan nombre, correo y mensaje enviados por el formulario de contacto de fsanchezt.com.",
+    "How name, email, and message from the fsanchezt.com contact form are handled.",
+  )}
+  path={path}
+  altPath={altPath}
+  schemas={[websiteSchema()]}
+>
+  <a href="#aviso" class="skip-link">{t("Saltar al contenido", "Skip to content")}</a>
+  <Navbar lang={lang} altPath={altPath} />
+  <main class="sheet layer pt-32 pb-24">
+    <div class="cols">
+      <p class="t-meta c-meta">{t("LFPDPPP", "Privacy")}</p>
+      <article class="c-main" id="aviso">
+        <h1 class="t-head">{t("Aviso de privacidad", "Privacy notice")}</h1>
+        <p class="t-body mt-6">
+          {t(
+            "Responsable: Franco Alessandro Sanchez Trinidad, Puebla, México. Contacto: contacto@fsanchezt.dev. Sitio: https://www.fsanchezt.com.",
+            "Controller: Franco Alessandro Sanchez Trinidad, Puebla, Mexico. Contact: contacto@fsanchezt.dev. Site: https://www.fsanchezt.com.",
+          )}
+        </p>
+        <p class="t-body mt-4">
+          {t(
+            "El formulario de contacto recaba nombre, correo y mensaje para responder a una vacante o un encargo. No se usa para publicidad. El envío viaja por Formspree (formspree.io) y llega a ese correo. Formspree es un encargado fuera de México; al enviar aceptas esa transferencia.",
+            "The contact form collects name, email, and message so I can reply to a role or an engagement. It is not used for advertising. Submissions go through Formspree (formspree.io) and arrive at that mailbox. Formspree is a processor outside Mexico; sending the form means you accept that transfer.",
+          )}
+        </p>
+        <p class="t-body mt-4">
+          {t(
+            "Conservo los mensajes el tiempo necesario para responder y, si hay un encargo, el tiempo de esa relación. Puedes pedir acceso, rectificación, cancelación u oposición escribiendo al mismo correo. No hay cookies de analítica ni anuncios en este sitio.",
+            "I keep messages as long as needed to reply and, if there is an engagement, for that relationship. You can request access, correction, deletion, or objection by writing to the same address. This site has no analytics or advertising cookies.",
+          )}
+        </p>
+        <p class="t-body mt-4">
+          {t(
+            "Este aviso cubre solo el formulario de este dominio. El CV en PDF no envía datos tuyos. Última actualización: 27 de agosto de 2026.",
+            "This notice covers only the form on this domain. The PDF CV does not send your data. Last updated: 27 August 2026.",
+          )}
+        </p>
+        <p class="mt-10">
+          <a href={localePath(lang)} class="link text-[15px] font-semibold">
+            {t("Volver al inicio", "Back to home")}
+          </a>
+        </p>
+      </article>
+    </div>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
