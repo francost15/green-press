@@ -72,7 +72,7 @@ const ogImage = `${SITE}/og-image.png`;
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#f3eee4" />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -104,8 +104,9 @@ const ogImage = `${SITE}/og-image.png`;
     <meta name="twitter:description" content={social} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Fonts — one self-hosted variable face, 38KB, no third-party origin. -->
+    <!-- Fonts — self-hosted only, no third-party origin. -->
     <link rel="preload" href="/fonts/general-sans-var.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/silkscreen-400.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Structured data — readable by AI crawlers without JavaScript -->
     {
@@ -119,27 +120,19 @@ const ogImage = `${SITE}/og-image.png`;
   </head>
   <body>
     <!--
-      DIRECTION CONTRACT — user-pinned (chosen from three built previews)
-      THESIS: Swiss editorial minimalism. The page is a ruled sheet: a visible
-        twelve-column grid, marginal meta, and rows — never cards. Refuses the
-        dark-canvas-plus-accent portfolio this site used to be, and decoration of
-        every kind: the ornament is the grid itself.
-      OWN-WORLD: White paper, ink #0A0A0B, mid #6B6B76, hairlines #E6E6EA, violet
-        #6D28D9 as the working accent. General Sans variable at four sizes only. Type
-        enters from behind a mask, line by line; scroll reveals are native view()
-        timelines; buttons confirm the press at scale(0.97). User-pinned evolutions,
-        2026-08-05, supersede the original once-per-viewport violet budget: a full-bleed
-        aurora wash behind the first viewport, a 2px scroll-progress hairline, an ink
-        capsule social rail, and two full-bleed colour fields pacing the sheet — ink
-        (Competencies) and deep violet #5B21B6 (Contact). The drawn grid shares the
-        layout grid's gap: they are the same grid or neither is worth drawing.
-      STORY: A recruiter reads name, role and record above the fold, in either
-        language, and takes the CV. A client reads the same rows and writes.
-      FIRST VIEWPORT: Meta column left with role, base, systems shipped, engineering
-        since. The name at display scale right; "Sanchez" carries the viewport's one
-        violet. One claim beneath, CV as the filled action.
-      FORM: Editorial Rule, fused with the name-first masthead at the user's explicit
-        direction after comparing three built previews. Roll set aside: user-pinned.
+      DIRECTION CONTRACT — user-pinned Mundo nuevo (2026-09-06)
+      THESIS: The site is a workshop notebook: pixel name stamp, taped production
+        screenshots, clay folder tabs. Refuses the Swiss CV-as-ruled-sheet and the
+        dark-tech three-card portfolio.
+      OWN-WORLD: Lined paper #F3EEE4, ink #171412, violet #6D28D9, marker #E2C44D,
+        clay navy/blue/orange. Silkscreen on the name, General Sans everywhere else.
+        Tape, folder tabs, cropped real captures. No dark mode, no red.
+      STORY: A recruiter sees name, current role at Towel, and the work as objects,
+        then takes the CV or opens a system.
+      FIRST VIEWPORT: Pixel Franco Sanchez in a drawn box, annotation pills (role,
+        Puebla, Towel, five systems), one claim, CV plus see-the-record, polaroids.
+      FORM: User-pinned scrapbook/clay/pixel, fused with hand-drawn zine + clay glaze
+        grammar. Seed 0dfc4e81 assigned 4 set aside.
       FINISH: unreviewed and undocumented is unfinished; this build ends with the finish
         review, the verdict, and DESIGN.md
     -->

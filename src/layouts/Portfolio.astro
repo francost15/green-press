@@ -21,18 +21,11 @@ const t = useTranslations(lang);
 
 <BaseLayout lang={lang}>
   <a href="#inicio" class="skip-link">{t("Saltar al contenido", "Skip to content")}</a>
-  <div class="grid-lines" aria-hidden="true">
-    {Array.from({ length: 12 }).map(() => <span />)}
-  </div>
-  {/* Aurora: full-bleed violet light behind the first viewport. Page-level on
-      purpose — inside the sheet it clipped at 1320px and read as a centred
-      patch instead of a wash. */}
-  <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
   <Navbar lang={lang} />
   <main class="sheet layer">
     <Hero lang={lang} />
-    <About lang={lang} />
     <Projects lang={lang} />
+    <About lang={lang} />
     <Competencies lang={lang} />
     <Experience lang={lang} />
     <Education lang={lang} />
@@ -41,3 +34,8 @@ const t = useTranslations(lang);
   <Footer lang={lang} />
 </BaseLayout>
 
+<script>
+  import { initAtelier } from "../scripts/atelier";
+
+  initAtelier();
+</script>

@@ -1,6 +1,7 @@
 ---
 import Section from "../components/Section.astro";
 import { projects } from "../data/projects";
+import { smallVariant } from "../data/imageSizes";
 import { localePath, useTranslations, type Lang } from "../i18n";
 
 interface Props {
@@ -10,10 +11,9 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
-// Each project has its own route. The detail used to live in a hidden modal on this page,
-// which put ~70% of the page's words inside a [hidden] subtree — the exact thing AI
-// extraction pipelines discard before indexing.
 const indexSegment = lang === "es" ? "proyectos/" : "projects/";
+
+const clay = ["panel-navy", "panel-marker", "panel-violet", "panel-orange", "panel-blue"] as const;
 ---
 
 <Section
@@ -25,40 +25,51 @@ const indexSegment = lang === "es" ? "proyectos/" : "projects/";
     "Five systems in production: ERP and dashboard at Towel, CFDI at Idea15, RAG at UVP, CV matching for LTC. Each page names the client, the dates, and how impact was measured. Not demos.",
   )}
 >
-  <ul class="m-0 list-none p-0">
+  <ul class="project-panels m-0 list-none p-0" data-project-index>
     {
       projects.map((project, i) => {
         const href = localePath(lang, `${indexSegment}${project.slug}/`);
         const tags = lang === "es" ? project.tags.es : project.tags.en;
+        const cover = project.images?.[0];
+        const alt = (lang === "es" ? project.imageAlts?.es[0] : project.imageAlts?.en[0]) ??
+          t(project.title.es, project.title.en);
         return (
-          <li class="row">
-            <div class="row-n">
-              <p class="t-meta">{String(i + 1).padStart(2, "0")}</p>
-            </div>
-            <div class="row-t">
-              <h3 class="t-sub">
-                {/* Stretched link: the whole row is clickable, but only the title is a
-                    link in the accessibility tree, so screen readers get one target. */}
-                <a href={href} class="row-link">
-                  {t(project.title.es, project.title.en)}
-                </a>
-              </h3>
-              <ul class="tags mt-3">
-                {tags.slice(0, 5).map((tag) => (
-                  <li>{tag}</li>
-                ))}
-              </ul>
-            </div>
-            <div class="row-d">
-              <p class="t-meta">{t("Impacto", "Impact")}</p>
-            <p class="t-body mt-1 text-[0.95rem]" data-speakable-impact>
-              {t(project.impact.es, project.impact.en)}
-            </p>
-            </div>
-            <span class="row-mark" aria-hidden="true" />
+          <li class={`panel ${clay[i] ?? "panel-navy"}`} data-panel>
+            <a href={href} class="row-link">
+              <span class="panel-tab">{String(i + 1).padStart(2, "0")}</span>
+              {
+                cover ? (
+                  <img
+                    src={cover}
+                    srcset={`${smallVariant(cover)} 768w, ${cover} 1536w`}
+                    sizes="(min-width: 900px) 28vw, 100vw"
+                    alt={alt}
+                    width="768"
+                    height="386"
+                    loading={i === 0 ? "eager" : "lazy"}
+                    decoding="async"
+                  />
+                ) : (
+                  <span class="panel-void" aria-hidden="true"></span>
+                )
+              }
+              <div class="panel-copy">
+                <h3 class="t-sub">{t(project.title.es, project.title.en)}</h3>
+                <ul class="tags mt-3">
+                  {tags.slice(0, 5).map((tag) => (
+                    <li>{tag}</li>
+                  ))}
+                </ul>
+                <p class="t-meta mt-4">{t("Impacto", "Impact")}</p>
+                <p class="mt-1 text-[0.95rem]" data-speakable-impact>
+                  {t(project.impact.es, project.impact.en)}
+                </p>
+              </div>
+            </a>
           </li>
         );
       })
     }
   </ul>
 </Section>
+

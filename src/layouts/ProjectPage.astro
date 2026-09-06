@@ -117,7 +117,9 @@ const relatedIndex = lang === "es" ? "proyectos/" : "projects/";
                 <h2 class="t-sub">{t("Capturas", "Screenshots")}</h2>
                 <div class="mt-6 flex flex-col gap-6">
                   {images.map((src, i) => (
-                    <img
+                    <figure class="shot">
+                      <span class="tape" aria-hidden="true"></span>
+                      <img
                       src={src}
                       srcset={`${smallVariant(src)} 768w, ${src} 1536w`}
                       sizes="(max-width: 900px) 100vw, 800px"
@@ -126,8 +128,9 @@ const relatedIndex = lang === "es" ? "proyectos/" : "projects/";
                       height={imageSizes[src]?.height}
                       loading={i === 0 ? "eager" : "lazy"}
                       decoding="async"
-                      class="img-reveal h-auto w-full border border-[var(--rule)]"
+                      class="img-reveal"
                     />
+                    </figure>
                   ))}
                 </div>
               </section>

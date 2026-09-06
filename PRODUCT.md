@@ -65,9 +65,10 @@ institutional support. Domain fluency in that context is part of the position.
   build-time sitemap. Project detail lives at its own URL, never in a modal.
 - **JavaScript is permitted for animation** as of 2026-08-05, at Franco's direction (GSAP
   was explicitly allowed). The constraint that remains: no UI framework, and no `client:*`
-  directive, which would reintroduce a component runtime. The hero entrance uses GSAP
-  (`src/scripts/hero.ts`: line lift, whole words). Scroll
-  work stays native CSS. Reach for a library only when CSS genuinely cannot do the job.
+  directive, which would reintroduce a component runtime. GSAP lives in `src/scripts/`
+  (hero line-lift, name-box draw, project-panel accordion). Reach for a library only
+  when CSS genuinely cannot do the job. Content must stay extractable: never hide copy
+  behind `opacity: 0` or `[hidden]` as a crawl strategy.
 - **All content in `src/data/` must be bilingual** (`{ es, en }`) and all dates ISO. A
   monolingual string leaks onto the wrong locale.
 - **`SITE` in `src/i18n.ts` is the single source of the origin** — canonicals, hreflang,
@@ -89,11 +90,12 @@ but sits below the actions at lower weight.
 
 - Name: **Franco Sanchez**. Title: **AI & Software Engineer**.
 - Voice: direct, outcome-first, numeric. First person. No hedging, no marketing inflation.
-- Palette pinned by Franco: **white and neon violet.** Confirmed again 2026-08-05 against a
-  dark neon reference — white ground won, neon violet is the light. The pre-redesign site was
-  violet on near-black, so this carries the existing brand recognition into light.
-- Franco asked for "a more designer feel with better animation" on 2026-08-05. Motion is
-  part of the brand now, not decoration.
+- Visual world as of 2026-09-06 (user-pinned **Mundo nuevo**): a workshop notebook.
+  Lined paper, pixel name stamp, taped production screenshots, clay folder tabs.
+  Violet `#6D28D9` remains the working accent. Marker yellow and clay blues/oranges
+  are material, not a second brand. The Swiss editorial sheet is retired.
+- Franco asked for "a more designer feel with better animation" on 2026-08-05, then
+  for presence and GSAP, then for this world. Motion is part of the brand now.
 - Bilingual parity is an identity commitment, not a feature.
 - `Towel S.A. de C.V.` is a normal employer and stays in both the visible experience section
   and the JSON-LD `worksFor`. Confirmed 2026-08-02 — do not re-raise.

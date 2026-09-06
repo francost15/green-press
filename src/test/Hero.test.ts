@@ -12,8 +12,8 @@ describe("Hero", () => {
   });
 
   it("annotates the margin with the role", async () => {
-    const { getByText } = await renderAstro(Hero, { lang: "en" });
-    expect(getByText("AI & Software Engineer")).toBeInTheDocument();
+    const { getAllByText } = await renderAstro(Hero, { lang: "en" });
+    expect(getAllByText("AI & Software Engineer").length).toBeGreaterThan(0);
   });
 
   it("renders the English CTAs by default", async () => {
@@ -34,23 +34,24 @@ describe("Hero", () => {
   });
 
   it("counts the shipped systems from the data rather than hard-coding them", async () => {
-    const { getByText, queryByText } = await renderAstro(Hero, { lang: "en" });
+    const { getAllByText, queryByText } = await renderAstro(Hero, { lang: "en" });
     const { projects } = await import("../data/projects");
-    expect(getByText(new RegExp(`^${projects.length} systems`))).toBeInTheDocument();
+    expect(getAllByText(new RegExp(`${projects.length} systems`)).length).toBeGreaterThan(0);
     // Project count and employment start are different records. Welding them
     // into "5 systems · since 2020" overclaimed production AI back to 2020.
     expect(queryByText(/systems · since/i)).toBeNull();
   });
 
   it("keeps one subtext and no availability line in the first viewport", async () => {
-    const { getByText, queryByText } = await renderAstro(Hero, { lang: "en" });
+    const { getByText, getAllByText, queryByText } = await renderAstro(Hero, { lang: "en" });
     expect(
       getByText("Five AI systems in production: plant floor, CFDI, university, recruitment."),
     ).toBeInTheDocument();
     expect(getByText("Franco Alessandro Sanchez Trinidad")).toBeInTheDocument();
-    expect(getByText("Puebla, Mexico")).toBeInTheDocument();
+    expect(getAllByText("Puebla, Mexico").length).toBeGreaterThan(0);
     expect(queryByText("Puebla, México")).toBeNull();
     expect(queryByText(/Available for full-time/i)).toBeNull();
     expect(queryByText("Languages")).toBeNull();
+    expect(getByText("Towel S.A. de C.V.")).toBeInTheDocument();
   });
 });

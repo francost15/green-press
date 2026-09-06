@@ -41,4 +41,11 @@ describe("Projects section", () => {
     const { container } = await renderAstro(Projects, { lang: "en" });
     expect(container.textContent).toContain("90%");
   });
+
+  it("keeps every panel extractable, with no hidden project copy", async () => {
+    const { container } = await renderAstro(Projects, { lang: "en" });
+    expect(container.querySelectorAll("[data-panel]")).toHaveLength(projects.length);
+    expect(container.querySelector("[data-project-index] [hidden]")).toBeNull();
+    expect(container.querySelector("img")).toBeTruthy();
+  });
 });

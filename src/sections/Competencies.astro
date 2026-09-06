@@ -11,8 +11,6 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-{/* Three cuts of one practice, as ruled rows with the stack in the margin —
-    a listing, not three identical boxes. */}
 <Section
   id="competencias"
   class="band-ink"
@@ -20,18 +18,13 @@ const t = useTranslations(lang);
   meta={t("3 cortes", "3 cuts")}
   subtitle={t("Lo que me contratarías para resolver", "What you'd hire me to solve")}
 >
-  <ul class="m-0 list-none p-0">
+  <ul class="wavy-list">
     {
       competencies.map((comp) => (
-        <li class="row">
-          {/* The margin carries the fact once: the complete stack. */}
-          <div class="row-n">
-            <p class="t-meta">{comp.techs.join(" · ")}</p>
-          </div>
-          <div class="row-t" style="grid-column-end: 13;">
-            <h3 class="t-sub">{t(comp.title.es, comp.title.en)}</h3>
-            <p class="t-body mt-3">{t(comp.description.es, comp.description.en)}</p>
-          </div>
+        <li class="wavy-tag">
+          <p class="t-meta">{comp.techs.join(" · ")}</p>
+          <h3 class="t-sub">{t(comp.title.es, comp.title.en)}</h3>
+          <p class="t-body mt-2">{t(comp.description.es, comp.description.en)}</p>
         </li>
       ))
     }

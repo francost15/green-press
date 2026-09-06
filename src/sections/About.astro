@@ -1,5 +1,6 @@
 ---
 import { profile } from "../data/profile";
+import { smallVariant } from "../data/imageSizes";
 import { useTranslations, type Lang } from "../i18n";
 
 interface Props {
@@ -10,7 +11,7 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<section id="acerca" class="band band-ink">
+<section id="acerca" class="band">
   <div class="cols in">
     <p class="t-meta c-meta order-2 min-[900px]:order-1 min-[900px]:pt-2">
       {t("Nombre legal", "Legal name")}
@@ -19,6 +20,24 @@ const t = useTranslations(lang);
       <h2 class="t-head">{profile.legalName}</h2>
       <p class="t-body mt-5 max-w-[62ch]">{t(profile.bio.es, profile.bio.en)}</p>
       <p class="t-meta mt-4">{t(profile.emailDomainNote.es, profile.emailDomainNote.en)}</p>
+
+      <figure class="polaroid mt-10 max-w-[280px]" data-polaroid>
+        <span class="tape" aria-hidden="true"></span>
+        <img
+          src="/projects/ai-dashboard-2.webp"
+          srcset={`${smallVariant("/projects/ai-dashboard-2.webp")} 768w, /projects/ai-dashboard-2.webp 1536w`}
+          sizes="280px"
+          alt={t(
+            "Vista de métricas de producción cruzadas con ventas en Towel",
+            "Production metrics crossed with sales at Towel",
+          )}
+          width="768"
+          height="386"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>Towel S.A. de C.V.</figcaption>
+      </figure>
     </div>
   </div>
 </section>

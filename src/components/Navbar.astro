@@ -52,12 +52,18 @@ const menuCloseLabel = lang === "es" ? "Cerrar menú" : "Close menu";
     </a>
 
     {/* Desktop nav. Same 900px cut as .cols, not Tailwind md (768). */}
-    <div class="hidden items-center gap-6 min-[900px]:flex">
+    <div class="hidden items-center gap-2 min-[900px]:flex">
+      <a
+        href={anchor("#inicio")}
+        class="nav-pill nav-pill-home flex min-h-[44px] items-center px-3 text-[12px] font-bold uppercase"
+      >
+        {lang === "es" ? "Inicio" : "Home"}
+      </a>
       {
         navLinks.map((link) => (
           <a
             href={anchor(link.href)}
-            class="nav-link relative flex min-h-[44px] items-center text-[13px]"
+            class="nav-link nav-pill relative flex min-h-[44px] items-center px-3 text-[12px] font-bold uppercase"
           >
             {label(link)}
           </a>
@@ -149,7 +155,7 @@ const menuCloseLabel = lang === "es" ? "Cerrar menú" : "Close menu";
 
 <style>
   .site-nav {
-    background-color: color-mix(in srgb, var(--paper) 88%, transparent);
+    background-color: color-mix(in srgb, var(--paper) 82%, transparent);
     backdrop-filter: blur(10px);
   }
 
@@ -158,42 +164,50 @@ const menuCloseLabel = lang === "es" ? "Cerrar menú" : "Close menu";
   }
 
   .nav-brand {
-    font-weight: 600;
-    letter-spacing: -0.02em;
+    font-family: "Silkscreen", var(--font-sans);
+    font-weight: 400;
+    letter-spacing: 0.04em;
     color: var(--ink);
     text-decoration: none;
-    font-size: 14px;
+    font-size: 13px;
+  }
+
+  .nav-pill {
+    border: 1px solid transparent;
+    border-radius: 999px;
+    text-decoration: none;
+  }
+
+  .nav-pill-home {
+    background: var(--marker);
+    color: var(--ink);
+    text-decoration: none;
   }
 
   .nav-link,
   .lang-switch {
     color: var(--mid);
     text-decoration: none;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    transition: color 150ms ease;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    transition: color 150ms ease, background-color 150ms ease;
   }
 
   @media (hover: hover) and (pointer: fine) {
     .nav-link:hover,
     .lang-switch:hover {
       color: var(--ink);
+      background: var(--paper-dim);
     }
   }
 
-  /* The section in view is marked the way a specimen marks the live setting. */
   .nav-link[aria-current="page"] {
     color: var(--ink);
-    font-weight: 600;
+    background: #ddd6fe;
   }
 
   .site-nav > div .nav-link[aria-current="page"]::after {
-    content: "";
-    position: absolute;
-    inset-inline: 0;
-    bottom: 8px;
-    height: 2px;
-    background-color: var(--violet);
+    display: none;
   }
 </style>
 

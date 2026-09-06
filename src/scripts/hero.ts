@@ -26,6 +26,11 @@ export function initHero(root: ParentNode = document): HeroMotionHandle {
 
   gsap.set(movers, { willChange: "transform", yPercent: 110 });
 
+  const box = hero.querySelector<SVGGeometryElement>("[data-name-box]");
+  if (box) {
+    gsap.set(box, { strokeDasharray: 100, strokeDashoffset: 100 });
+  }
+
   const tl = gsap.timeline({
     defaults: { ease: "power3.out" },
     onComplete: () => {
@@ -36,7 +41,11 @@ export function initHero(root: ParentNode = document): HeroMotionHandle {
     },
   });
 
-  tl.to(names, { yPercent: 0, duration: 0.82, stagger: 0.09 })
+  if (box) {
+    tl.to(box, { strokeDashoffset: 0, duration: 0.9, ease: "power2.out" }, 0);
+  }
+
+  tl.to(names, { yPercent: 0, duration: 0.82, stagger: 0.09 }, 0.08)
     .to(lines, { yPercent: 0, duration: 0.68, stagger: 0.08 }, "-=0.52")
     .to(facts, { yPercent: 0, duration: 0.52, stagger: 0.05 }, "-=0.5");
 
