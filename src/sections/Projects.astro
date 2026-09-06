@@ -34,7 +34,7 @@ const clay = ["panel-navy", "panel-marker", "panel-violet", "panel-orange", "pan
         const alt = (lang === "es" ? project.imageAlts?.es[0] : project.imageAlts?.en[0]) ??
           t(project.title.es, project.title.en);
         return (
-          <li class={`panel ${clay[i] ?? "panel-navy"}`} data-panel>
+          <li class={`panel ${clay[i] ?? "panel-navy"}${i === 0 ? " is-open" : ""}`} data-panel>
             <a href={href} class="row-link">
               <span class="panel-tab">{String(i + 1).padStart(2, "0")}</span>
               {

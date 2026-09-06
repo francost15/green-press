@@ -155,12 +155,7 @@ const menuCloseLabel = lang === "es" ? "Cerrar menú" : "Close menu";
 
 <style>
   .site-nav {
-    background-color: color-mix(in srgb, var(--paper) 82%, transparent);
-    backdrop-filter: blur(10px);
-  }
-
-  @supports not (backdrop-filter: blur(1px)) {
-    .site-nav { background-color: var(--paper); }
+    background-color: var(--paper);
   }
 
   .nav-brand {

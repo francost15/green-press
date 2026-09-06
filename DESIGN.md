@@ -1,146 +1,90 @@
+---
+name: Franco Sanchez
+description: Workshop-notebook portfolio for an AI and software engineer.
+colors:
+  paper: "#F3EEE4"
+  ink: "#171412"
+  mid: "#5C564E"
+  violet: "#6D28D9"
+  marker: "#E2C44D"
+  clay-navy: "#1C2740"
+  clay-blue: "#3D6FBF"
+  clay-orange: "#D4743A"
+  tape: "rgb(164 206 222 / 0.62)"
+typography:
+  display:
+    fontFamily: "Silkscreen, General Sans, system-ui, sans-serif"
+    fontSize: "clamp(2.4rem, 6.6vw, 5.6rem)"
+    fontWeight: 400
+    lineHeight: "1.05"
+    letterSpacing: "0.02em"
+  body:
+    fontFamily: "General Sans, system-ui, sans-serif"
+    fontSize: "16px"
+    fontWeight: 400
+    lineHeight: "1.5"
+    letterSpacing: "normal"
+  meta:
+    fontFamily: "General Sans, system-ui, sans-serif"
+    fontSize: "12px"
+    fontWeight: 500
+    lineHeight: "1.4"
+    letterSpacing: "0.08em"
+rounded:
+  sm: "8px"
+  md: "12px"
+  pill: "999px"
+spacing:
+  sm: "8px"
+  md: "16px"
+  gutter: "clamp(1.25rem, 3vw, 3rem)"
+components:
+  button-primary:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.paper}"
+    rounded: "{rounded.pill}"
+    padding: "0 1.35rem"
+    height: "48px"
+  button-ghost:
+    backgroundColor: "transparent"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.pill}"
+    padding: "0 1.35rem"
+    height: "48px"
+---
+
 # Design
 
-<!-- impeccable:design-schema 1 -->
+Recorded from the built world on 2026-09-06.
 
-Recorded from the built world on 2026-08-05, not from intention. Where this file and
-`src/index.css` disagree, the CSS is right and this file is stale.
+## Overview
 
-## World
+A workshop notebook. Lined paper, a pixel name stamp, taped production screenshots, and clay folder tabs. Violet is the working accent. Marker yellow and clay tones are material. One light appearance. No dark mode. No red.
 
-**Editorial Rule.** Swiss editorial minimalism: the page is a ruled sheet. A visible
-twelve-column grid drawn in hairlines, a marginal meta column, and content set in rows —
-never cards. One grotesk across the whole site. The ornament *is* the grid.
+## Colors
 
-Chosen by the user from three fully built previews (removed from the repo after
-the direction was pinned), then fused with a name-first masthead at their
-explicit direction. User-pinned: the concept-seed roll was set aside.
+Paper `#F3EEE4` is the sheet. Ink `#171412` is text and filled buttons. Mid `#5C564E` is secondary copy. Violet `#6D28D9` is the stamp, focus ring, and Sanchez. Marker `#E2C44D` is Home, sticky contact, and one project folder. Clay navy, blue, and orange color the remaining folders.
 
-The contract lives as an HTML comment at the top of `<body>` in
-`src/layouts/BaseLayout.astro` and survives the production build — grep
-`DIRECTION CONTRACT — user-pinned` to audit any route against it.
+## Typography
 
-## Colour
+Silkscreen stamps the name only. General Sans does everything else, four steps: display, head, sub, meta. Body caps at 62ch.
 
-Roles assigned from **measured contrast on white**, before use:
+## Layout
 
-| Token | Value | On white | Role |
-|---|---|---|---|
-| `--ink` | `#0A0A0B` | 19.3:1 | body and display |
-| `--mid` | `#6B6B76` | 5.1:1 | secondary text, tags, meta |
-| `--violet` | `#6D28D9` | 7.1:1 | the accent — spent deliberately, about once per viewport — and the focus ring |
-| `--rule` | `#E6E6EA` | — | hairlines and the drawn grid |
-| `--paper-dim` | `#FAFAFA` | — | row hover, invalid-field tint |
+1320px sheet. 900px breakpoint. Hero, Projects, About, Competencies, Experience, Education, Contact. Projects are five clay panels, not record rows. Competencies are wavy tags. Experience and education stay as rows on paper.
 
-**Colour fields (user-pinned 2026-08-27):** ink `#0A0A0B` on About, Competencies,
-Experience and Education; deep violet `#5B21B6` on Contact. Paper holds Hero and
-Projects. Consecutive ink fields share one plate. A field is a token override:
-`--ink/--mid/--rule/--paper-dim/--violet` re-resolve inside it, so every class works
-unchanged; only the violet band's white inputs carry literal overrides so their internals
-never inherit light-on-light. The bleed pair (`margin-inline`/`padding-inline` calc) breaks
-the 1320px sheet to the viewport edge; `overflow-x: clip` on `html` absorbs the
-scrollbar-width excess. This supersedes the original once-per-viewport violet budget.
+## Elevation & Depth
 
-**Red is not in this system** and may not return, including as an error state. Errors
-signal with a doubled ink border, a field tint, an icon, and a named recovery message.
+Polaroids and shots sit on paper with a short tinted shadow and a strip of tape. Panels use a deeper clay shadow. No glass. No neon glow.
 
-**One appearance.** No dark mode, no toggle, no `prefers-color-scheme` branch.
-Reintroducing theming is a product decision, not a styling one.
+## Shapes
 
-## Type
+Pills for nav, CTAs, and annotation. Folder panels 10px/22px. Fields 12px. Wavy clip on competency tags.
 
-One self-hosted variable face: **General Sans** (100–900), 38 KB, no third-party origin.
-Declared under `--font-*` — never `--color-*`, where Tailwind silently ignores it (the
-pre-redesign build shipped system fonts for months because of exactly that).
+## Components
 
-Four steps, no more:
+`.act` is the filled pill. `.act-ghost` is the outline. `.anno` is a fact chip. `.panel` is a project folder. `.polaroid` and `.shot` are taped captures. Errors double the ink border and tint the field.
 
-| Class | Size | Weight | Tracking |
-|---|---|---|---|
-| `.t-display` | `clamp(3.2rem, 9vw, 9rem)` | 500 | `-0.045em` |
-| `.t-head` | `clamp(1.75rem, 3.4vw, 3.25rem)` | 500 | `-0.035em` |
-| `.t-sub` | `clamp(1.05rem, 1.5vw, 1.35rem)` | 500 | `-0.02em` |
-| `.t-meta` | 12px uppercase, `0.08em`, tabular | 500 | — |
+## Do's and Don'ts
 
-Body is 16px/1.5; `.t-body` caps at 62ch in `--mid`.
-
-## Structure
-
-- `.sheet` — the 1320px measure. `.grid-lines` draws its twelve columns as fixed,
-  pointer-inert hairlines (four below 900px). **It shares `.cols`' `column-gap`** — the
-  drawn grid and the layout grid are the same grid, measured to the pixel, or neither is
-  worth drawing. Navbar and footer sit on the sheet too; no second container width exists.
-- `.cols` / `.c-meta` / `.c-main` — the marginal-meta grid (columns 1–2 / 4–11).
-- `.row` / `.row-n` / `.row-t` / `.row-d` — record rows: number or period | setting |
-  annotation (columns 1–2 / 4–8 / 9–12). `.row-mark` is the violet hairline that draws
-  under a linked row.
-- `.band` — a section; hairline top rule, generous block padding.
-- `.social-rail` — ink capsule, fixed right, vertically centred, ≥1200px only. Rendered
-  AFTER the page slot so the skip link stays the first focusable element on every route.
-
-**The layout breakpoint is 900px everywhere.** Order utilities that pair with these grids
-must use `min-[900px]:`, never Tailwind's `md:` (768px) — mixing them once inverted the
-hero across the 768–899 band and turned the meta column into a banned eyebrow.
-
-**Cascade rule (this bit twice):** element resets live in `@layer base`; any custom class
-that components combine with Tailwind utilities (`.t-meta`, `.tags`) lives in
-`@layer components`. An unlayered class silently beats every utility.
-
-## Controls
-
-- `.act` / `.act-ghost` — 48px min height, squared, ink-filled or hairline-ghosted; hover
-  turns violet, `:active` confirms the press at `scale(0.97)` in 160ms.
-- `.field` — 48px min height. Invalid: 2px ink border + tint + icon + message naming the
-  problem and the recovery, per field, bilingual; focus moves to the first invalid field.
-- `.row-link` — stretched link: the whole row is clickable, one target in the
-  accessibility tree, underline drawn by `.row-mark` rather than text decoration.
-- Focus is `2px solid var(--violet)` at 3px offset. `.skip-link` is off-canvas, a real
-  target once focused; both layouts share it.
-
-## Motion
-
-Calibrated by frequency, not by taste (the Emil Kowalski pass):
-
-- **Hero entrance** (once per visit): GSAP line-lift in `src/scripts/hero.ts` — whole
-  words (`yPercent` behind `.mask`), name then body then facts, `power3.out`. No letter
-  split (it kills General Sans kerning at display size). CSS `.mask` lift remains the
-  no-JS fallback. Hero display is capped at `7.25rem` so the two-line name, subtext and
-  CTAs fit the first viewport; top padding on `#inicio` maxes at `6rem`.
-- **Scroll reveals**: native `animation-timeline: view()`, linear on purpose (the easing
-  IS the scroll position), opt-in inside `@supports` so extraction and old browsers see
-  fully visible content. The timeline routes through `var(--tl)` because Lightning CSS
-  folds `animation-*` longhands into the shorthand, which resets `animation-timeline` and
-  makes Chrome drop the declaration whole. Do not "simplify" it back.
-- **Hovers** (seen tens of times): 150–200ms plain `ease` for colour, 200ms strong
-  ease-out for movement. The `.row-mark` underline is asymmetric — draws in at 420ms,
-  retracts at 180ms.
-- **Press**: every `.act` scales to 0.97 in 160ms.
-- **Aurora** (`.aurora`, hero only): three light-violet gradient lobes (#C4B5FD/#A78BFA/#DDD6FE)
-  under one 80px blur, drifting on 18–28s clocks. Decorative, pointer-inert, no script.
-  Its opacity is a contrast budget: cores sit right of the reading column and the worst
-  case (violet display over the densest lavender) measures 3.9:1 against the 3:1 large-text
-  floor. Re-measure the sweep before touching these values.
-- **Reading progress** (`.progress`): 2px violet bar on `animation-timeline: scroll()`,
-  zero JS, invisible in browsers without support. It complements the scrollbar — the
-  scrollbar is thinned and tinted, never removed: position affordance and drag stay.
-- **Image unveil** (`.img-reveal`): project screenshots clip-path-reveal on their own
-  view() timeline.
-- `prefers-reduced-motion`: the page stops moving without stopping responding — no global
-  duration kill; state feedback survives.
-
-## Budget
-
-12 production HTML routes plus generated sitemap and llms-full.txt · GSAP inlined by Astro
-for the hero only · one CSS bundle · 38 KB production font. Scripts: `navbar.ts`,
-`hero.ts`, Contact validator. Aurora, reading progress, reveals and unveils stay CSS.
-
-## Verified
-
-Measured on the built output at 1440, 816 and 390px, both locales: **zero WCAG AA
-contrast failures**, no horizontal overflow, no target under 24×24, name-first order
-below 900px, detector at 0 anti-patterns, 56/56 tests.
-
-Standing measurement traps, so they are not rediscovered: `serve -s` rewrites every route
-to the root `index.html` (verify locales against `dist/es/` or a non-rewriting server);
-a contrast script must parse `color(srgb …)` and composite alpha down the ancestor stack;
-`visibilityState` is `hidden` during automated JS calls, which freezes
-`IntersectionObserver`-driven state.
+Do keep copy in the DOM at full opacity. Do honor `prefers-reduced-motion`. Do not hide project detail. Do not introduce dark mode, red, or a UI framework. Do not animate content in from `opacity: 0`.

@@ -110,28 +110,28 @@ const polaroids = [
           </a>
         </span>
       </div>
-    </div>
-  </div>
 
-  <div class="polaroid-row">
-    {
-      polaroids.map((shot) => (
-        <figure class="polaroid" data-polaroid>
-          <span class="tape" aria-hidden="true"></span>
-          <img
-            src={shot.src}
-            srcset={`${smallVariant(shot.src)} 768w, ${shot.src} 1536w`}
-            sizes="220px"
-            alt={shot.alt}
-            width="768"
-            height="386"
-            loading="eager"
-            decoding="async"
-          />
-          <figcaption>{shot.caption}</figcaption>
-        </figure>
-      ))
-    }
+      <div class="polaroid-row">
+        {
+          polaroids.map((shot) => (
+            <figure class="polaroid" data-polaroid>
+              <span class="tape" aria-hidden="true"></span>
+              <img
+                src={shot.src}
+                srcset={`${smallVariant(shot.src)} 768w, ${shot.src} 1536w`}
+                sizes="(min-width: 900px) 220px, 160px"
+                alt={shot.alt}
+                width="768"
+                height="386"
+                loading="eager"
+                decoding="async"
+              />
+              <figcaption>{shot.caption}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
   </div>
 </section>
 

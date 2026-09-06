@@ -511,14 +511,21 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.35rem 0.7rem;
+  padding: 0.28rem 0.55rem;
   border-radius: 999px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--ink);
   box-shadow: 0 6px 16px -10px rgb(23 20 18 / 0.45);
+}
+
+@media (min-width: 900px) {
+  .anno {
+    padding: 0.35rem 0.7rem;
+    font-size: 12px;
+  }
 }
 
 .anno-violet { background: #ddd6fe; }
@@ -527,13 +534,15 @@
 .anno-clay { background: #f0c9b0; }
 
 .polaroid-row {
-  display: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
 }
 
 @media (min-width: 900px) {
   .polaroid-row {
-    display: flex;
-    justify-content: center;
     gap: clamp(1rem, 4vw, 3rem);
     margin-top: 2.5rem;
   }
@@ -541,11 +550,18 @@
 
 .polaroid {
   position: relative;
-  width: min(220px, 28vw);
-  padding: 0.7rem 0.7rem 1.6rem;
+  width: min(160px, 42vw);
+  padding: 0.55rem 0.55rem 1.25rem;
   background: #fffcf5;
   box-shadow: 0 14px 30px -16px rgb(23 20 18 / 0.45);
   rotate: -3deg;
+}
+
+@media (min-width: 900px) {
+  .polaroid {
+    width: min(220px, 28vw);
+    padding: 0.7rem 0.7rem 1.6rem;
+  }
 }
 
 .polaroid:nth-child(2) { rotate: 4deg; margin-top: 1.5rem; }
@@ -554,9 +570,13 @@
 .polaroid img {
   display: block;
   width: 100%;
-  height: 9.5rem;
+  height: 6.5rem;
   object-fit: cover;
   background: var(--paper-dim);
+}
+
+@media (min-width: 900px) {
+  .polaroid img { height: 9.5rem; }
 }
 
 .polaroid figcaption {
@@ -576,6 +596,7 @@
   background: var(--tape);
   rotate: -2deg;
   pointer-events: none;
+  clip-path: polygon(4% 18%, 18% 0, 47% 10%, 72% 0, 96% 22%, 100% 68%, 86% 100%, 52% 88%, 22% 100%, 0 64%);
 }
 
 .project-panels {
@@ -613,7 +634,7 @@
   .panel.is-open,
   .panel:hover,
   .panel:focus-visible {
-    flex: 2.35 1 0;
+    flex: 3.2 1 0;
   }
 }
 
@@ -626,14 +647,15 @@
 .panel-tab {
   position: absolute;
   top: 0;
-  left: 1rem;
-  padding: 0.35rem 0.7rem;
+  left: 0.85rem;
+  padding: 0.4rem 0.85rem 0.45rem;
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-weight: 700;
-  background: rgb(255 255 255 / 0.18);
-  border-radius: 0 0 8px 8px;
+  background: rgb(255 255 255 / 0.22);
+  border-radius: 0 0 14px 14px;
+  clip-path: polygon(8% 0, 92% 0, 100% 100%, 0 100%);
 }
 
 .panel-marker .panel-tab { background: rgb(23 20 18 / 0.12); }
@@ -646,7 +668,7 @@
   height: 100%;
   object-fit: cover;
   object-position: left center;
-  opacity: 0.55;
+  opacity: 0.92;
 }
 
 .panel-void {
@@ -666,7 +688,7 @@
   position: relative;
   z-index: 1;
   padding: 1.4rem 1.2rem 1.3rem;
-  background: linear-gradient(to top, rgb(12 10 9 / 0.72), transparent 70%);
+  background: linear-gradient(to top, rgb(12 10 9 / 0.42), transparent 58%);
 }
 
 .panel-marker .panel-copy {
@@ -749,25 +771,12 @@
   }
 
   .in {
-    animation-name: fade-up;
-    animation-timing-function: linear;
-    animation-fill-mode: both;
-    animation-timeline: var(--tl);
-    animation-range: entry 6% cover 22%;
+    animation: none;
   }
 
   .row {
-    animation-name: fade-up;
-    animation-timing-function: linear;
-    animation-fill-mode: both;
-    animation-timeline: var(--tl);
-    animation-range: entry 4% cover 20%;
+    animation: none;
   }
-
-  .row:nth-child(2) { animation-range: entry 7% cover 22%; }
-  .row:nth-child(3) { animation-range: entry 10% cover 24%; }
-  .row:nth-child(4) { animation-range: entry 12% cover 26%; }
-  .row:nth-child(5) { animation-range: entry 14% cover 28%; }
 
   .band-ink::before {
     animation-name: rule-draw;
@@ -813,7 +822,7 @@
 ::selection { background: var(--violet); color: #fff; }
 
 @media (prefers-reduced-motion: reduce) {
-  .mask > *, .in, .row, .img-reveal, .band-ink::before { animation-name: none; }
+  .mask > *, .img-reveal, .band-ink::before { animation-name: none; }
   .band-ink::before { scale: 1 1; }
   .row-mark, .row-t .t-sub, .panel { transition: none; }
   .social-rail a { transition: color 150ms ease; }

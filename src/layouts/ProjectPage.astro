@@ -81,6 +81,25 @@ const relatedIndex = lang === "es" ? "proyectos/" : "projects/";
         <div class="c-main order-1 min-[900px]:order-2">
           <h1 id="project-title" class="t-head">{title}</h1>
 
+          {
+            images[0] && (
+              <figure class="shot mt-8">
+                <span class="tape" aria-hidden="true"></span>
+                <img
+                  src={images[0]}
+                  srcset={`${smallVariant(images[0])} 768w, ${images[0]} 1536w`}
+                  sizes="(max-width: 900px) 100vw, 800px"
+                  alt={alts[0] ?? `${title} ${t("captura", "screenshot")} 1`}
+                  width={imageSizes[images[0]]?.width}
+                  height={imageSizes[images[0]]?.height}
+                  loading="eager"
+                  decoding="async"
+                  class="img-reveal"
+                />
+              </figure>
+            )
+          }
+
           <section class="mt-10">
             <h2 class="t-sub">{t("Problema", "The problem")}</h2>
             <p class="t-body mt-4">{t(project.problem.es, project.problem.en)}</p>
@@ -112,21 +131,21 @@ const relatedIndex = lang === "es" ? "proyectos/" : "projects/";
           </section>
 
           {
-            images.length > 0 && (
+            images.length > 1 && (
               <section class="mt-14">
                 <h2 class="t-sub">{t("Capturas", "Screenshots")}</h2>
                 <div class="mt-6 flex flex-col gap-6">
-                  {images.map((src, i) => (
+                  {images.slice(1).map((src, i) => (
                     <figure class="shot">
                       <span class="tape" aria-hidden="true"></span>
                       <img
                       src={src}
                       srcset={`${smallVariant(src)} 768w, ${src} 1536w`}
                       sizes="(max-width: 900px) 100vw, 800px"
-                      alt={alts[i] ?? `${title} ${t("captura", "screenshot")} ${i + 1}`}
+                      alt={alts[i + 1] ?? `${title} ${t("captura", "screenshot")} ${i + 2}`}
                       width={imageSizes[src]?.width}
                       height={imageSizes[src]?.height}
-                      loading={i === 0 ? "eager" : "lazy"}
+                      loading="lazy"
                       decoding="async"
                       class="img-reveal"
                     />
