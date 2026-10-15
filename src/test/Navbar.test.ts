@@ -11,25 +11,20 @@ describe("Navbar markup", () => {
   it("renders the nav links in the active language", async () => {
     const en = await renderAstro(Navbar, { lang: "en" });
     expect(en.getAllByText("Projects").length).toBeGreaterThan(0);
-    expect(en.getAllByText("Experience").length).toBeGreaterThan(0);
+    expect(en.getAllByText("Solutions").length).toBeGreaterThan(0);
+    expect(en.getAllByText("Credentials").length).toBeGreaterThan(0);
     expect(en.getAllByText("Contact").length).toBeGreaterThan(0);
 
     const es = await renderAstro(Navbar, { lang: "es" });
     expect(es.getAllByText("Proyectos").length).toBeGreaterThan(0);
-    expect(es.getAllByText("Experiencia").length).toBeGreaterThan(0);
+    expect(es.getAllByText("Soluciones").length).toBeGreaterThan(0);
+    expect(es.getAllByText("Respaldo").length).toBeGreaterThan(0);
     expect(es.getAllByText("Contacto").length).toBeGreaterThan(0);
   });
 
-  it("points the language switch at the other locale", async () => {
-    const en = await renderAstro(Navbar, { lang: "en" });
-    for (const el of en.getAllByLabelText("Cambiar a Español")) {
-      expect(el).toHaveAttribute("href", "/es/");
-    }
-
+  it("does not render a language switch", async () => {
     const es = await renderAstro(Navbar, { lang: "es" });
-    for (const el of es.getAllByLabelText("Switch to English")) {
-      expect(el).toHaveAttribute("href", "/");
-    }
+    expect(es.container.querySelector("[data-lang-switch]")).toBeNull();
   });
 
   it("starts with the mobile menu closed", async () => {

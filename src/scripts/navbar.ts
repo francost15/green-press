@@ -65,6 +65,8 @@ export function initNavbar(doc: Document = document) {
     if (!menu || !menuButton) return;
     menu.hidden = !open;
     menuButton.setAttribute("aria-expanded", String(open));
+    doc.documentElement.classList.toggle("nav-open", open);
+    syncThumb();
     const label = menuButton.dataset[open ? "labelClose" : "labelOpen"];
     if (label) menuButton.setAttribute("aria-label", label);
     if (iconOpen) iconOpen.hidden = open;
@@ -89,6 +91,29 @@ export function initNavbar(doc: Document = document) {
 
   menuButton?.addEventListener("keydown", onEscape);
   menu?.addEventListener("keydown", onEscape);
+
+  const thumb = doc.querySelector<HTMLElement>("[data-thumb-cta]");
+  let heroVisible = false;
+
+  const syncThumb = () => {
+    const menuOpen = doc.documentElement.classList.contains("nav-open");
+    const show = !menuOpen && !heroVisible;
+    doc.documentElement.classList.toggle("show-thumb", show);
+  };
+
+  const inicio = doc.getElementById("inicio");
+  if (thumb && inicio && typeof IntersectionObserver !== "undefined") {
+    const heroWatch = new IntersectionObserver(
+      ([entry]) => {
+        heroVisible = entry.isIntersecting && entry.intersectionRatio > 0.35;
+        syncThumb();
+      },
+      { threshold: [0, 0.35, 0.6] },
+    );
+    heroWatch.observe(inicio);
+  }
+
+  syncThumb();
 
   /* ── Keep the reader on the same section when switching language ──
      Without this a bilingual reader switching locale from #contacto lands at the

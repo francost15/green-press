@@ -29,10 +29,11 @@ const links = [
       <a
         href={href}
         aria-label={label}
+        data-label={label}
         target={external ? "_blank" : undefined}
         rel={external ? "noopener noreferrer" : undefined}
       >
-        <Icon name={icon} size={18} />
+        <Icon name={icon} size={22} />
       </a>
     ))
   }

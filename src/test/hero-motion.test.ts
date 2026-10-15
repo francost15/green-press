@@ -22,8 +22,8 @@ describe("hero motion", () => {
 
     expect(hero.dataset.heroMotion).toBe("gsap");
     expect(hero.querySelector(".hero-ch")).toBeNull();
-    expect(hero.querySelector("h1")?.textContent?.replace(/\s+/g, " ").trim()).toBe(
-      "Franco Sanchez",
+    expect(hero.querySelector("h1")?.textContent).toContain(
+      "your business.",
     );
 
     handle.kill();
@@ -46,6 +46,8 @@ describe("hero motion", () => {
     initHero(document);
 
     expect(hero.dataset.heroMotion).toBeUndefined();
-    expect(hero.querySelector("h1")?.textContent?.trim()).toBe("Franco Sanchez");
+    expect(hero.querySelector("h1")?.textContent).toContain(
+      "your business.",
+    );
   });
 });

@@ -15,33 +15,37 @@ const t = useTranslations(lang);
 <Section
   id="experiencia"
   class="band-ink"
-  title={t("Experiencia", "Experience")}
-  meta={t(`${experience.length} puestos`, `${experience.length} posts`)}
+  title={t("Experiencia en Producción", "Production Experience")}
   subtitle={t(
-    "Dónde he trabajado y qué quedó funcionando cuando me fui.",
-    "Where I have worked, and what was still running when I left.",
+    "Dónde he trabajado y qué sistemas quedaron operando en vivo.",
+    "Where I have worked, and what systems stayed running live.",
   )}
 >
-  <ol class="m-0 list-none p-0">
+  <ol class="exp-bento m-0 list-none p-0">
     {
-      experience.map((item) => (
-        <li class="row">
-          <div class="row-n">
-            <p class="t-meta">{formatPeriod(item.period, lang)}</p>
-          </div>
-          <div class="row-t">
-            <h3 class="t-sub">{t(item.role.es, item.role.en)}</h3>
-            <p class="t-meta mt-2 normal-case tracking-normal">{item.company}</p>
+      experience.map((item, idx) => (
+          <li class={`exp-card ${idx === 0 ? "exp-card-featured" : ""}`}>
+            <div class="exp-card-top">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="exp-period-pill tabular">
+                  <span>{formatPeriod(item.period, lang)}</span>
+                </span>
+                <span class="exp-company-pill">{item.company}</span>
+              </div>
+              <span class="exp-index tabular">0{idx + 1}</span>
+            </div>
+
+            <div class="exp-card-body">
+              <h3 class="t-sub">{t(item.role.es, item.role.en)}</h3>
+              <p class="exp-desc mt-2.5">{t(item.description.es, item.description.en)}</p>
+            </div>
+
             <ul class="tags mt-4">
               {(lang === "es" ? item.tags.es : item.tags.en).map((tag) => (
                 <li>{tag}</li>
               ))}
             </ul>
-          </div>
-          <div class="row-d">
-            <p class="t-body text-[0.95rem]">{t(item.description.es, item.description.en)}</p>
-          </div>
-        </li>
+          </li>
       ))
     }
   </ol>

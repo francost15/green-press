@@ -1,13 +1,10 @@
 ---
 import { profile } from "../data/profile";
-import { useTranslations, type Lang } from "../i18n";
+import type { Lang } from "../i18n";
 
 interface Props {
   lang?: Lang;
 }
-
-const { lang = "en" } = Astro.props;
-const t = useTranslations(lang);
 
 const links = [
   { label: "GitHub", href: profile.links.github },
@@ -18,34 +15,27 @@ const links = [
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="hair-t py-12">
-  <div class="sheet">
-    <div class="cols">
-      <div class="c-meta">
-        <p class="t-meta">{t("Colofón", "Colophon")}</p>
-        <p class="m-0 mt-1 text-[15px] font-medium">
-          {profile.name} · {currentYear}
-        </p>
-      </div>
-
-      <div class="c-main flex flex-col gap-6 min-[900px]:flex-row min-[900px]:items-start min-[900px]:justify-between">
-        <ul class="flex flex-wrap items-center gap-x-6">
-          {
-            links.map((link) => (
-              <li>
-                <a
-                  href={link.href}
-                  target={link.href.startsWith("http") ? "_blank" : undefined}
-                  rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  class="link flex min-h-[44px] items-center text-[15px] font-semibold"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
+<footer class="site-footer">
+  <div class="sheet footer-inner">
+    <div class="footer-id">
+      <p class="footer-name">{profile.legalName}</p>
+      <p class="footer-year tabular">{currentYear}</p>
     </div>
+    <ul class="footer-links">
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              target={link.href.startsWith("http") ? "_blank" : undefined}
+              rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+              class="footer-link"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </footer>

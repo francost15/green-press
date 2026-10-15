@@ -32,29 +32,75 @@ const altPath = lang === "es" ? "privacy/" : "privacidad/";
     <div class="cols">
       <p class="t-meta c-meta">{t("LFPDPPP", "Privacy")}</p>
       <article class="c-main" id="aviso">
-        <h1 class="t-head">{t("Aviso de privacidad", "Privacy notice")}</h1>
+        <h1 class="t-head" id="aviso">{t("Aviso de privacidad", "Privacy notice")}</h1>
         <p class="t-body mt-6">
           {t(
-            "Responsable: Franco Alessandro Sanchez Trinidad, Puebla, México. Contacto: contacto@fsanchezt.dev. Sitio: https://www.fsanchezt.com.",
-            "Controller: Franco Alessandro Sanchez Trinidad, Puebla, Mexico. Contact: contacto@fsanchezt.dev. Site: https://www.fsanchezt.com.",
+            "Aviso simplificado para el formulario de fsanchezt.com, conforme a la LFPDPPP.",
+            "Short notice for the fsanchezt.com contact form, under Mexico's LFPDPPP.",
           )}
         </p>
-        <p class="t-body mt-4">
+
+        <h2 class="t-sub mt-10">{t("Responsable", "Controller")}</h2>
+        <p class="t-body mt-3">
           {t(
-            "El formulario de contacto recaba nombre, correo y mensaje para responder a una vacante o un encargo. No se usa para publicidad. El envío viaja por Formspree (formspree.io) y llega a ese correo. Formspree es un encargado fuera de México; al enviar aceptas esa transferencia.",
-            "The contact form collects name, email, and message so I can reply to a role or an engagement. It is not used for advertising. Submissions go through Formspree (formspree.io) and arrive at that mailbox. Formspree is a processor outside Mexico; sending the form means you accept that transfer.",
+            "Franco Alessandro Sanchez Trinidad, persona física, en Puebla, México. Correo: contacto@fsanchezt.dev. Sitio: https://www.fsanchezt.com.",
+            "Franco Alessandro Sanchez Trinidad, an individual, in Puebla, Mexico. Email: contacto@fsanchezt.dev. Site: https://www.fsanchezt.com.",
           )}
         </p>
-        <p class="t-body mt-4">
+
+        <h2 class="t-sub mt-10">{t("Datos que recabo", "Data I collect")}</h2>
+        <p class="t-body mt-3">
           {t(
-            "Conservo los mensajes el tiempo necesario para responder y, si hay un encargo, el tiempo de esa relación. Puedes pedir acceso, rectificación, cancelación u oposición escribiendo al mismo correo. No hay cookies de analítica ni anuncios en este sitio.",
-            "I keep messages as long as needed to reply and, if there is an engagement, for that relationship. You can request access, correction, deletion, or objection by writing to the same address. This site has no analytics or advertising cookies.",
+            "Solo lo que escribes en el formulario: nombre, correo y mensaje. No pido datos sensibles, fiscales, de salud ni de tarjeta.",
+            "Only what you type in the form: name, email, and message. I do not ask for sensitive, tax, health, or card data.",
           )}
         </p>
-        <p class="t-body mt-4">
+
+        <h2 class="t-sub mt-10">{t("Para qué", "Purpose")}</h2>
+        <p class="t-body mt-3">
           {t(
-            "Este aviso cubre solo el formulario de este dominio. El CV en PDF no envía datos tuyos. Última actualización: 27 de agosto de 2026.",
-            "This notice covers only the form on this domain. The PDF CV does not send your data. Last updated: 27 August 2026.",
+            "Para responder una consulta sobre un proyecto de software o de inteligencia artificial. No uso estos datos para publicidad, no los vendo y no armo un perfil con ellos.",
+            "To reply to a question about a software or AI project. I do not use this data for advertising, I do not sell it, and I do not build a profile from it.",
+          )}
+        </p>
+
+        <h2 class="t-sub mt-10">{t("Quién más los ve", "Who else sees it")}</h2>
+        <p class="t-body mt-3">
+          {t(
+            "El envío va por HTTPS a Formspree (formspree.io), que lo entrega a mi correo. Formspree trata el mensaje fuera de México. Al enviar, aceptas esa transferencia. No hay otros encargados.",
+            "The message goes over HTTPS to Formspree (formspree.io), which delivers it to my mailbox. Formspree processes it outside Mexico. Sending the form means you accept that transfer. There are no other processors.",
+          )}
+        </p>
+
+        <h2 class="t-sub mt-10">{t("Cuánto tiempo", "How long")}</h2>
+        <p class="t-body mt-3">
+          {t(
+            "El tiempo necesario para contestarte. Si el mensaje se convierte en un encargo, mientras dure esa relación y el plazo que la ley pida para conservar documentos.",
+            "As long as needed to reply. If the message becomes an engagement, for that relationship and for any period the law requires records to be kept.",
+          )}
+        </p>
+
+        <h2 class="t-sub mt-10">{t("Tus derechos", "Your rights")}</h2>
+        <p class="t-body mt-3">
+          {t(
+            "Puedes pedir acceso, rectificación, cancelación u oposición, y revocar este consentimiento, escribiendo a contacto@fsanchezt.dev. Si la respuesta no te basta, puedes acudir al INAI.",
+            "You can request access, correction, deletion, or objection, and you can withdraw this consent, by writing to contacto@fsanchezt.dev. If the reply is not enough, you can go to Mexico's INAI.",
+          )}
+        </p>
+
+        <h2 class="t-sub mt-10">{t("Cookies", "Cookies")}</h2>
+        <p class="t-body mt-3">
+          {t(
+            "Este sitio no usa cookies de analítica ni de anuncios.",
+            "This site does not use analytics or advertising cookies.",
+          )}
+        </p>
+
+        <h2 class="t-sub mt-10">{t("Alcance", "Scope")}</h2>
+        <p class="t-body mt-3">
+          {t(
+            "Cubre solo el formulario de este dominio. No cubre GitHub, LinkedIn ni el sitio de Formspree. Última actualización: 14 de octubre de 2026.",
+            "It covers only the form on this domain. It does not cover GitHub, LinkedIn, or Formspree's own site. Last updated: 14 October 2026.",
           )}
         </p>
         <p class="mt-10">

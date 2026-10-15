@@ -13,15 +13,21 @@ const { id, title, subtitle, meta, class: className = "" } = Astro.props;
 
 <section id={id} class={`band ${className}`}>
   {
-    title && (
-      <div class="cols in mb-12">
-        <p class="t-meta c-meta order-2 min-[900px]:order-1 min-[900px]:pt-2">{meta}</p>
-        <div class="c-main order-1 min-[900px]:order-2">
-          <h2 class="t-head">{title}</h2>
-          {subtitle && <p class="t-body mt-5">{subtitle}</p>}
+    title &&
+      (meta ? (
+        <div class="cols in mb-12">
+          <p class="t-meta c-meta order-2 min-[900px]:order-1 min-[900px]:pt-2">{meta}</p>
+          <div class="c-main order-1 min-[900px]:order-2">
+            <h2 class="t-head">{title}</h2>
+            {subtitle && <p class="t-body mt-4">{subtitle}</p>}
+          </div>
         </div>
-      </div>
-    )
+      ) : (
+        <div class="in mb-10 max-w-[76ch]">
+          <h2 class="t-head">{title}</h2>
+          {subtitle && <p class="t-body mt-4">{subtitle}</p>}
+        </div>
+      ))
   }
   <slot />
 </section>

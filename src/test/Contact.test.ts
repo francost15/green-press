@@ -38,4 +38,15 @@ describe("Contact", () => {
     const { container } = await renderAstro(Contact, { lang: "en" });
     expect(container.querySelector("[aria-live='polite']")).toBeInTheDocument();
   });
+
+  it("includes anti-bot honeypot and strict field length caps", async () => {
+    const { container } = await renderAstro(Contact, { lang: "en" });
+    const honeypot = container.querySelector('input[name="_gotcha"]');
+    expect(honeypot).toBeInTheDocument();
+    expect(honeypot).toHaveAttribute("tabindex", "-1");
+    expect(honeypot).toHaveAttribute("autocomplete", "off");
+    expect(container.querySelector("#contact-name")).toHaveAttribute("maxlength", "120");
+    expect(container.querySelector("#contact-email")).toHaveAttribute("maxlength", "254");
+    expect(container.querySelector("#contact-message")).toHaveAttribute("maxlength", "4000");
+  });
 });

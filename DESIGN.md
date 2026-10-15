@@ -1,52 +1,148 @@
 ---
 name: Franco Sanchez
-description: Workshop-notebook portfolio for an AI and software engineer.
+description: Product studio showcase and B2B AI engineering portfolio with fanned project deck and choreographed motion.
 colors:
-  paper: "#F3EEE4"
-  ink: "#171412"
-  mid: "#5C564E"
+  canvas: "#F8F8F6"
+  paper: "#F8F8F6"
+  paper-dim: "#F1F1EE"
+  surface: "#FFFFFF"
+  surface-muted: "#F1F1EE"
+  ink: "#0E0E11"
+  mid: "#52555F"
+  rule: "#E4E4E0"
+  lime: "#C8F904"
+  electric: "#2546F0"
   violet: "#6D28D9"
-  marker: "#E2C44D"
-  clay-navy: "#1C2740"
-  clay-blue: "#3D6FBF"
-  clay-orange: "#D4743A"
-  tape: "rgb(164 206 222 / 0.62)"
+  amber: "#FF6B2C"
+  navy: "#121829"
+  navy-deep: "#101729"
+  navy-mid: "#192440"
+  navy-dark: "#162038"
+  navy-black: "#0E1322"
+  electric-deep: "#1F3EE0"
+  green-online: "#16A34A"
+  scroll-thumb: "#D0D3DC"
+  tint-blue: "#EEF2FF"
+  tint-lime: "#F4FCE3"
+  tint-violet: "#F3E8FF"
+  tint-amber: "#FFF1EB"
+  tint-indigo: "#E0E7FF"
+  ink-indigo: "#1E3A8A"
+  ink-violet: "#4C1D95"
+  warn-bg: "#FEF9C3"
 typography:
   display:
-    fontFamily: "Silkscreen, General Sans, system-ui, sans-serif"
-    fontSize: "clamp(2.4rem, 6.6vw, 5.6rem)"
+    fontFamily: "General Sans, Silkscreen, system-ui, sans-serif"
+    fontSize: "clamp(2.65rem, 6.2vw, 5.35rem)"
+    fontWeight: 700
+    lineHeight: "0.96"
+    letterSpacing: "-0.045em"
+  head:
+    fontFamily: "General Sans, system-ui, sans-serif"
+    fontSize: "clamp(1.9rem, 3.6vw, 3.25rem)"
+    fontWeight: 650
+    lineHeight: "1.02"
+    letterSpacing: "-0.038em"
+  kicker:
+    fontFamily: "General Sans, system-ui, sans-serif"
+    fontSize: "clamp(2rem, 3.6vw, 3.25rem)"
+    fontWeight: 700
+    lineHeight: "1.06"
+    letterSpacing: "-0.038em"
+  card-head:
+    fontFamily: "General Sans, system-ui, sans-serif"
+    fontSize: "clamp(1.2rem, 1.55vw, 1.5rem)"
+    fontWeight: 650
+    lineHeight: "1.18"
+  sub:
+    fontFamily: "General Sans, system-ui, sans-serif"
+    fontSize: "clamp(1.08rem, 1.45vw, 1.35rem)"
+    fontWeight: 600
+    lineHeight: "1.28"
+    letterSpacing: "-0.02em"
+  lead:
+    fontFamily: "General Sans, system-ui, sans-serif"
+    fontSize: "clamp(1rem, 1.2vw, 1.125rem)"
     fontWeight: 400
-    lineHeight: "1.05"
-    letterSpacing: "0.02em"
+    lineHeight: "1.45"
   body:
+    fontFamily: "General Sans, system-ui, sans-serif"
+    fontSize: "clamp(1rem, 1.08vw, 1.0625rem)"
+    fontWeight: 400
+    lineHeight: "1.5"
+    letterSpacing: "normal"
+  body-fixed:
     fontFamily: "General Sans, system-ui, sans-serif"
     fontSize: "16px"
     fontWeight: 400
     lineHeight: "1.5"
-    letterSpacing: "normal"
+  ui:
+    fontFamily: "General Sans, system-ui, sans-serif"
+    fontSize: "15px"
+    fontWeight: 600
+    lineHeight: "1.4"
+  compact:
+    fontFamily: "General Sans, system-ui, sans-serif"
+    fontSize: "0.92rem"
+    fontWeight: 400
+    lineHeight: "1.42"
+  sm:
+    fontFamily: "General Sans, system-ui, sans-serif"
+    fontSize: "14px"
+    fontWeight: 600
+    lineHeight: "1.25"
+  xs:
+    fontFamily: "General Sans, system-ui, sans-serif"
+    fontSize: "13px"
+    fontWeight: 700
+    lineHeight: "1.2"
+  chip:
+    fontFamily: "General Sans, system-ui, sans-serif"
+    fontSize: "12.5px"
+    fontWeight: 600
+    lineHeight: "1.4"
   meta:
     fontFamily: "General Sans, system-ui, sans-serif"
     fontSize: "12px"
-    fontWeight: 500
+    fontWeight: 600
     lineHeight: "1.4"
-    letterSpacing: "0.08em"
+    letterSpacing: "0.07em"
+  badge:
+    fontFamily: "General Sans, system-ui, sans-serif"
+    fontSize: "11.5px"
+    fontWeight: 700
+    lineHeight: "1.2"
+  micro:
+    fontFamily: "General Sans, system-ui, sans-serif"
+    fontSize: "11px"
+    fontWeight: 700
+    lineHeight: "1.2"
+  print:
+    fontFamily: "General Sans, system-ui, sans-serif"
+    fontSize: "9pt"
+    fontWeight: 400
+    lineHeight: "1.2"
 rounded:
-  sm: "8px"
-  md: "12px"
+  xs: "5px"
+  sm: "12px"
+  md: "14px"
+  inner: "16px"
+  outer: "24px"
+  stage: "32px"
   pill: "999px"
 spacing:
   sm: "8px"
   md: "16px"
-  gutter: "clamp(1.25rem, 3vw, 3rem)"
+  gutter: "clamp(1.25rem, 3.2vw, 3.25rem)"
 components:
   button-primary:
     backgroundColor: "{colors.ink}"
-    textColor: "{colors.paper}"
+    textColor: "{colors.surface}"
     rounded: "{rounded.pill}"
     padding: "0 1.35rem"
     height: "48px"
   button-ghost:
-    backgroundColor: "transparent"
+    backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
     rounded: "{rounded.pill}"
     padding: "0 1.35rem"
@@ -55,36 +151,20 @@ components:
 
 # Design
 
-Recorded from the built world on 2026-09-06.
+Recorded for the Studio Showcase & Fanned Deck redesign on 2026-10-14.
 
 ## Overview
 
-A workshop notebook. Lined paper, a pixel name stamp, taped production screenshots, and clay folder tabs. Violet is the working accent. Marker yellow and clay tones are material. One light appearance. No dark mode. No red.
+A high-contrast product studio showcase built to convert B2B clients. Clean gallery canvas `#F8F8F6`, concentric pure white surfaces `#FFFFFF`, deep ink `#0E0E11`, electric blue `#2546F0`, and lime `#C8F904` conversion badges. Fanned 5-system project deck in the hero, floating glass metric chips, and a modular bento catalog.
 
 ## Colors
 
-Paper `#F3EEE4` is the sheet. Ink `#171412` is text and filled buttons. Mid `#5C564E` is secondary copy. Violet `#6D28D9` is the stamp, focus ring, and Sanchez. Marker `#E2C44D` is Home, sticky contact, and one project folder. Clay navy, blue, and orange color the remaining folders.
+Canvas `#F8F8F6` is the base. Surface `#FFFFFF` holds cards and the hero stage. Ink `#0E0E11` drives display type and primary pill CTAs. Lime `#C8F904` highlights directional arrows (`→`, `↗`) and key impact badges. Electric `#2546F0` and Violet `#6D28D9` anchor interactive states and system categories.
 
 ## Typography
 
-Silkscreen stamps the name only. General Sans does everything else, four steps: display, head, sub, meta. Body caps at 62ch.
+General Sans across all hierarchy levels: display (`700`), head (`650`), sub (`600`), body (`400`), and tabular uppercase meta (`600`).
 
 ## Layout
 
-1320px sheet. 900px breakpoint. Hero, Projects, About, Competencies, Experience, Education, Contact. Projects are five clay panels, not record rows. Competencies are wavy tags. Experience and education stay as rows on paper.
-
-## Elevation & Depth
-
-Polaroids and shots sit on paper with a short tinted shadow and a strip of tape. Panels use a deeper clay shadow. No glass. No neon glow.
-
-## Shapes
-
-Pills for nav, CTAs, and annotation. Folder panels 10px/22px. Fields 12px. Wavy clip on competency tags.
-
-## Components
-
-`.act` is the filled pill. `.act-ghost` is the outline. `.anno` is a fact chip. `.panel` is a project folder. `.polaroid` and `.shot` are taped captures. Errors double the ink border and tint the field.
-
-## Do's and Don'ts
-
-Do keep copy in the DOM at full opacity. Do honor `prefers-reduced-motion`. Do not hide project detail. Do not introduce dark mode, red, or a UI framework. Do not animate content in from `opacity: 0`.
+1340px sheet container with `900px` and `960px` breakpoints. Hero stage with fanned 5-card deck, followed by the modular 6-column bento project showcase, compact 3-card solution capabilities, condensed trajectory/education verification rows, and a hardened conversion form.

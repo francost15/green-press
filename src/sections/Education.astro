@@ -1,5 +1,4 @@
 ---
-import Section from "../components/Section.astro";
 import { education } from "../data/education";
 import { formatPeriod } from "../lib/dates";
 import { useTranslations, type Lang } from "../i18n";
@@ -12,45 +11,37 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<Section
-  id="educacion"
-  class="band-ink"
-  title={t("Educación", "Education")}
-  meta={t(`${education.length} títulos`, `${education.length} qualifications`)}
->
-  <ol class="m-0 list-none p-0">
+<section id="educacion" class="band">
+  <div class="cred-head">
+    <h2 class="t-head">{t("Formación", "Training")}</h2>
+    <p class="t-body">
+      {
+        t(
+          "Ingeniería de sistemas y posgrado en inteligencia artificial. El trabajo de arriba es lo que esa formación produce.",
+          "Systems engineering and graduate work in artificial intelligence. The projects above are what that training produces.",
+        )
+      }
+    </p>
+  </div>
+  <ol class="cred-list">
     {
       education.map((edu) => (
-        <li class="row">
-          <div class="row-n">
-            <p class="t-meta">{formatPeriod(edu.period, lang)}</p>
-          </div>
-          <div class="row-t">
-            <h3 class="t-sub">
+        <li>
+          <span class="cred-when tabular">{formatPeriod(edu.period, lang)}</span>
+          <div>
+            <h3>
               {t(edu.degree.es, edu.degree.en)}
               {edu.status === "in-progress" && (
-                <span class="accent"> · {t("en curso", "in progress")}</span>
+                <em>{t("en curso", "in progress")}</em>
               )}
             </h3>
-            <p class="t-meta mt-2 normal-case tracking-normal">
+            <p>
               {edu.institution}
-              {edu.location && `, ${edu.location}`}
+              {edu.location ? ` · ${edu.location}` : ""}
             </p>
-            {edu.highlights && (
-              <ul class="tags mt-4">
-                {(lang === "es" ? edu.highlights.es : edu.highlights.en).map((h) => (
-                  <li>{h}</li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <div class="row-d">
-            {edu.description && (
-              <p class="t-body text-[0.95rem]">{t(edu.description.es, edu.description.en)}</p>
-            )}
           </div>
         </li>
       ))
     }
   </ol>
-</Section>
+</section>

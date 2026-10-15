@@ -36,12 +36,16 @@ const messages = {
     "Enter your email, or I will have no way to reply.",
   ),
   emailInvalid: t(
-    "Ese correo no parece completo. Revisa que lleve una arroba y un dominio.",
-    "That email looks incomplete. Check that it has an @ and a domain.",
+    "Ese correo no parece completo. Revisa que lleve una arroba y un dominio válido.",
+    "That email looks incomplete. Check that it has an @ and a valid domain.",
   ),
   messageRequired: t(
     "Cuéntame algo del proyecto, aunque sea una frase.",
     "Tell me something about the project, even one sentence.",
+  ),
+  rateLimited: t(
+    "Acabas de enviar un mensaje. Espera un minuto antes de enviar otro.",
+    "You just sent a message. Please wait a minute before sending another.",
   ),
   sendFailed: t(
     "No se pudo enviar. Revisa tu conexión e inténtalo otra vez, o escríbeme directo a " +
@@ -67,146 +71,171 @@ const labels = {
 <Section
   id="contacto"
   class="band-violet"
-  title={t("Contacto", "Contact")}
-  meta={t("4 canales", "4 channels")}
+  title={t("Iniciemos tu proyecto", "Let's start your project")}
   subtitle={t(
-    "¿Una vacante o un proyecto? Escríbeme. El CV está en el hero y también como enlace de texto aquí.",
-    "An open role or a project? Write to me. The CV is in the hero, and as a text link here.",
+    "¿Buscas automatizar un flujo operativo, lanzar un agente de IA o construir software a medida? Cuéntame el objetivo y te respondo con una propuesta clara.",
+    "Looking to automate an operational workflow, launch an AI agent, or build custom software? Share your goal and I will reply with a clear roadmap.",
   )}
 >
   <div class="cols hair-t pt-10">
     <div class="c-meta">
-      <a href={profile.cvUrl} download class="link mb-8 inline-flex min-h-[44px] items-center text-[15px] font-semibold">
-        {t("Descargar CV", "Download CV")}
-      </a>
-
-      <p class="t-meta mb-3">{t("Encuéntrame en", "Find me on")}</p>
-      <ul class="flex flex-col">
-        {
-          contactLinks.map(({ icon, label, href, external }) => (
-            <li>
-              <a
-                href={href}
-                target={external ? "_blank" : undefined}
-                rel={external ? "noopener noreferrer" : undefined}
-                class="flex min-h-[44px] items-center gap-2.5 text-[15px] text-[var(--ink)] transition-colors duration-150 hover:text-[var(--violet)]"
-              >
-                <Icon name={icon} size={16} />
-                {label}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+      <div class="contact-channels-box">
+        <span class="edu-status-lime">
+          {t("Canales directos", "Direct channels")}
+        </span>
+        <ul class="m-0 mt-4 flex flex-col list-none p-0">
+          {
+            contactLinks.map(({ icon, label, href, external }) => (
+              <li>
+                <a
+                  href={href}
+                  target={external ? "_blank" : undefined}
+                  rel={external ? "noopener noreferrer" : undefined}
+                  class="contact-channel-link flex min-h-[44px] items-center gap-2.5 text-[15px] font-medium"
+                >
+                  <Icon name={icon} size={17} />
+                  {label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
 
-    <form
-      data-contact-form
-      data-endpoint={`https://formspree.io/f/${profile.formspreeId}`}
-      class="c-main flex flex-col gap-6"
-      novalidate
-      data-msg-name={messages.nameRequired}
-      data-msg-email={messages.emailRequired}
-      data-msg-email-invalid={messages.emailInvalid}
-      data-msg-message={messages.messageRequired}
-      data-msg-failed={messages.sendFailed}
-      data-msg-sent={messages.sent}
-    >
-      <div class="grid gap-6 sm:grid-cols-2">
-        <div>
-          <label for="contact-name" class="t-meta mb-2 block">
-            {t("Nombre", "Name")} <span aria-hidden="true">*</span>
-          </label>
+    <div class="c-main">
+      <form
+        data-contact-form
+        data-endpoint={`https://formspree.io/f/${profile.formspreeId}`}
+        class="flex flex-col gap-6"
+        novalidate
+        data-msg-name={messages.nameRequired}
+        data-msg-email={messages.emailRequired}
+        data-msg-email-invalid={messages.emailInvalid}
+        data-msg-message={messages.messageRequired}
+        data-msg-rate-limit={messages.rateLimited}
+        data-msg-failed={messages.sendFailed}
+        data-msg-sent={messages.sent}
+      >
+        {/* Honeypot anti-bot trap: off-screen, no text node to pollute copy/paste */}
+        <div class="hp-trap" aria-hidden="true">
           <input
             type="text"
-            id="contact-name"
-            name="name"
-            required
-            autocomplete="name"
-            class="field"
-            aria-describedby="contact-name-error"
+            id="contact-company-website"
+            name="_gotcha"
+            tabindex="-1"
+            autocomplete="off"
+            aria-label="Website"
           />
-          <p id="contact-name-error" class="field-error" hidden>
-            <Icon name="X" size={15} />
-            <span data-error-text></span>
-          </p>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-2">
+          <div>
+            <label for="contact-name" class="t-meta mb-2 block">
+              {t("Nombre", "Name")} <span aria-hidden="true">*</span>
+            </label>
+            <input
+              type="text"
+              id="contact-name"
+              name="name"
+              required
+              maxlength="120"
+              autocomplete="name"
+              class="field"
+              aria-describedby="contact-name-error"
+            />
+            <p id="contact-name-error" class="field-error" hidden>
+              <Icon name="X" size={15} />
+              <span data-error-text></span>
+            </p>
+          </div>
+
+          <div>
+            <label for="contact-email" class="t-meta mb-2 block">
+              Email <span aria-hidden="true">*</span>
+            </label>
+            <input
+              type="email"
+              id="contact-email"
+              name="email"
+              required
+              maxlength="254"
+              autocomplete="email"
+              class="field"
+              aria-describedby="contact-email-error"
+            />
+            <p id="contact-email-error" class="field-error" hidden>
+              <Icon name="X" size={15} />
+              <span data-error-text></span>
+            </p>
+          </div>
         </div>
 
         <div>
-          <label for="contact-email" class="t-meta mb-2 block">
-            Email <span aria-hidden="true">*</span>
+          <label for="contact-message" class="t-meta mb-2 block">
+            {t("Mensaje", "Message")} <span aria-hidden="true">*</span>
           </label>
-          <input
-            type="email"
-            id="contact-email"
-            name="email"
+          <textarea
+            id="contact-message"
+            name="message"
             required
-            autocomplete="email"
-            class="field"
-            aria-describedby="contact-email-error"
-          />
-          <p id="contact-email-error" class="field-error" hidden>
+            maxlength="4000"
+            rows="5"
+            class="field resize-y"
+            aria-describedby="contact-message-error"></textarea>
+          <p id="contact-message-error" class="field-error" hidden>
             <Icon name="X" size={15} />
             <span data-error-text></span>
           </p>
         </div>
-      </div>
 
-      <div>
-        <label for="contact-message" class="t-meta mb-2 block">
-          {t("Mensaje", "Message")} <span aria-hidden="true">*</span>
-        </label>
-        <textarea
-          id="contact-message"
-          name="message"
-          required
-          rows="6"
-          class="field resize-y"
-          aria-describedby="contact-message-error"></textarea>
-        <p id="contact-message-error" class="field-error" hidden>
-          <Icon name="X" size={15} />
-          <span data-error-text></span>
+        <div class="flex flex-wrap items-center gap-4">
+          <button
+            type="submit"
+            data-submit
+            data-label-idle={labels.idle}
+            data-label-sending={labels.sending}
+            data-label-sent={labels.sent}
+            class="act"
+          >
+            <span data-submit-label>{labels.idle}</span>
+            <span class="act-badge" aria-hidden="true">↗</span>
+          </button>
+
+          <p data-form-status role="status" aria-live="polite" class="text-[15px] font-semibold"></p>
+        </div>
+
+        <p class="t-meta mt-2 max-w-[54ch]">
+          {t(
+            "Al enviar, aceptas el aviso de privacidad. El mensaje viaja cifrado por HTTPS a Formspree y llega directo a mi buzón.",
+            "By sending, you accept the privacy notice. Your message is sent over HTTPS via Formspree directly to my mailbox.",
+          )}{" "}
+          <a href={lang === "es" ? "/es/privacidad/" : "/privacy/"} class="link">
+            {t("Aviso de privacidad", "Privacy notice")}
+          </a>
+          .
         </p>
-      </div>
-
-      <div class="flex flex-wrap items-center gap-4">
-        <button
-          type="submit"
-          data-submit
-          data-label-idle={labels.idle}
-          data-label-sending={labels.sending}
-          data-label-sent={labels.sent}
-          class="act"
-        >
-          <span data-submit-label>{labels.idle}</span>
-        </button>
-
-        {/* One status region for the whole form, next to the control that
-            triggers it — not a toast pinned to a corner of the viewport. */}
-        <p data-form-status role="status" aria-live="polite" class="text-[15px] font-semibold"></p>
-      </div>
-      <p class="t-meta mt-6 max-w-[48ch]">
-        {t(
-          "Al enviar, aceptas el aviso de privacidad. El mensaje viaja a Formspree y me llega al correo de contacto.",
-          "By sending, you accept the privacy notice. The message goes through Formspree and reaches my contact mailbox.",
-        )}{" "}
-        <a href={lang === "es" ? "/es/privacidad/" : "/privacy/"} class="link">
-          {t("Aviso de privacidad", "Privacy notice")}
-        </a>
-        .
-      </p>
-    </form>
+      </form>
+    </div>
   </div>
 </Section>
 
 <script>
+  const COOLDOWN_KEY = "fs_contact_cooldown_ts";
+  const COOLDOWN_MS = 60_000;
+  const FETCH_TIMEOUT_MS = 10_000;
+
   const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
 
   if (form) {
     const button = form.querySelector<HTMLButtonElement>("[data-submit]");
     const buttonLabel = form.querySelector<HTMLElement>("[data-submit-label]");
     const status = form.querySelector<HTMLElement>("[data-form-status]");
+    const honeypot = form.querySelector<HTMLInputElement>('input[name="_gotcha"]');
     const copy = form.dataset;
+
+    const sanitizeText = (raw: string, maxLen: number): string =>
+      raw.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "").trim().slice(0, maxLen);
 
     const fieldOf = (id: string) => document.getElementById(id) as HTMLInputElement | null;
 
@@ -231,22 +260,25 @@ const labels = {
       const invalid: (HTMLInputElement | HTMLTextAreaElement)[] = [];
 
       if (name) {
-        const bad = !name.value.trim();
+        const clean = sanitizeText(name.value, 120);
+        const bad = !clean;
         setFieldError(name, bad ? (copy.msgName ?? "") : null);
         if (bad) invalid.push(name);
       }
 
       if (email) {
-        const value = email.value.trim();
-        // Deliberately loose: something, an @, something, a dot, something.
-        const looksLikeEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        const value = sanitizeText(email.value, 254);
+        const looksLikeEmail =
+          value.length <= 254 &&
+          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/.test(value);
         const msg = !value ? copy.msgEmail : !looksLikeEmail ? copy.msgEmailInvalid : null;
         setFieldError(email, msg ?? null);
         if (msg) invalid.push(email);
       }
 
       if (message) {
-        const bad = !message.value.trim();
+        const clean = sanitizeText(message.value, 4000);
+        const bad = !clean;
         setFieldError(message, bad ? (copy.msgMessage ?? "") : null);
         if (bad) invalid.push(message);
       }
@@ -254,8 +286,6 @@ const labels = {
       return invalid;
     };
 
-    // Once a field has been marked, re-check it as the reader fixes it, so the
-    // error clears the moment it stops being true.
     for (const el of form.querySelectorAll<HTMLInputElement>("input, textarea")) {
       el.addEventListener("input", () => {
         if (el.hasAttribute("aria-invalid")) validate();
@@ -274,18 +304,49 @@ const labels = {
       if (label) buttonLabel.textContent = label;
     };
 
+    const isCooldownActive = (): boolean => {
+      try {
+        const last = Number(sessionStorage.getItem(COOLDOWN_KEY) ?? "0");
+        return last > 0 && Date.now() - last < COOLDOWN_MS;
+      } catch {
+        return false;
+      }
+    };
+
+    const markSentCooldown = () => {
+      try {
+        sessionStorage.setItem(COOLDOWN_KEY, String(Date.now()));
+      } catch {
+        // Ignore storage errors in private browsing
+      }
+    };
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
+      // Silent drop if honeypot is filled by a bot
+      if (honeypot && honeypot.value.trim().length > 0) {
+        setBusy("sent");
+        if (status) status.textContent = copy.msgSent ?? "";
+        form.reset();
+        return;
+      }
+
       const invalid = validate();
       if (invalid.length > 0) {
-        // Errors are announced assertively and the first one takes focus, so a
-        // screen-reader user is not left guessing why nothing happened.
         if (status) {
           status.setAttribute("aria-live", "assertive");
           status.textContent = "";
         }
         invalid[0].focus();
+        return;
+      }
+
+      if (isCooldownActive()) {
+        if (status) {
+          status.setAttribute("aria-live", "assertive");
+          status.textContent = copy.msgRateLimit ?? "";
+        }
         return;
       }
 
@@ -295,14 +356,31 @@ const labels = {
       }
       setBusy("sending");
 
+      const controller = new AbortController();
+      const timer = window.setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+
       try {
+        const payload = new FormData(form);
+        const nameInput = fieldOf("contact-name");
+        const emailInput = fieldOf("contact-email");
+        const messageInput = document.getElementById("contact-message") as HTMLTextAreaElement | null;
+        if (nameInput) payload.set("name", sanitizeText(nameInput.value, 120));
+        if (emailInput) payload.set("email", sanitizeText(emailInput.value, 254));
+        if (messageInput) payload.set("message", sanitizeText(messageInput.value, 4000));
+
         const response = await fetch(form.dataset.endpoint ?? "", {
           method: "POST",
-          body: new FormData(form),
+          body: payload,
           headers: { Accept: "application/json" },
+          mode: "cors",
+          credentials: "omit",
+          referrerPolicy: "strict-origin-when-cross-origin",
+          signal: controller.signal,
         });
+        window.clearTimeout(timer);
         if (!response.ok) throw new Error(`Request failed: ${response.status}`);
 
+        markSentCooldown();
         setBusy("sent");
         if (status) status.textContent = copy.msgSent ?? "";
         form.reset();
@@ -311,6 +389,7 @@ const labels = {
           if (status) status.textContent = "";
         }, 6000);
       } catch {
+        window.clearTimeout(timer);
         setBusy("idle");
         if (status) {
           status.setAttribute("aria-live", "assertive");

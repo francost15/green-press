@@ -1,61 +1,39 @@
 ---
 import Icon from "./Icon.astro";
-import { profile } from "../data/profile";
-import { localePath, otherLang, type Lang } from "../i18n";
+import { localePath, type Lang } from "../i18n";
 
 interface Props {
-  lang: Lang;
-  /**
-   * Path of the equivalent page in the other locale, below its locale root. Defaults to
-   * the locale home page — a project page must pass its own translated slug, otherwise
-   * switching language would drop the reader back on the home page.
-   */
+  lang?: Lang;
   altPath?: string;
 }
 
-const { lang, altPath = "" } = Astro.props;
+const { lang = "es" } = Astro.props;
 
 const navLinks = [
   { href: "#proyectos", es: "Proyectos", en: "Projects" },
-  { href: "#experiencia", es: "Experiencia", en: "Experience" },
+  { href: "#competencias", es: "Soluciones", en: "Solutions" },
+  { href: "#educacion", es: "Respaldo", en: "Credentials" },
   { href: "#contacto", es: "Contacto", en: "Contact" },
 ];
 
 const label = (link: (typeof navLinks)[number]) => (lang === "es" ? link.es : link.en);
 
-// Section anchors only resolve on the home page; everywhere else they need to jump back
-// to it first, or the nav silently does nothing.
 const home = localePath(lang);
-const isHome = Astro.url.pathname === home;
+const isHome = Astro.url.pathname === home || Astro.url.pathname === "/";
 const anchor = (hash: string) => (isHome ? hash : `${home}${hash.replace(/^\//, "")}`);
 
-const alt = otherLang(lang);
-const altHref = localePath(alt, altPath);
-const altLabel = alt.toUpperCase();
-const altTitle = lang === "es" ? "Switch to English" : "Cambiar a Español";
 const menuOpenLabel = lang === "es" ? "Abrir menú" : "Open menu";
 const menuCloseLabel = lang === "es" ? "Cerrar menú" : "Close menu";
+const ctaLabel = lang === "es" ? "Cotizar proyecto" : "Start a project";
 ---
 
-{/* The masthead is a permanent ruled bar. It never translates out of view: the
-    previous build hid it at page top while its links stayed in the tab order,
-    so a keyboard user tabbed into four links sitting above the viewport. */}
 <nav aria-label="Main navigation" class="site-nav fixed top-0 right-0 left-0 z-50">
-  <div
-    class="sheet flex items-center justify-between gap-4 hair-b py-3"
-  >
-    <a
-      href={anchor("#inicio")}
-      class="nav-brand flex min-h-[44px] items-center"
-    >
-      {profile.name}
-    </a>
-
-    {/* Desktop nav. Same 900px cut as .cols, not Tailwind md (768). */}
-    <div class="hidden items-center gap-2 min-[900px]:flex">
+  <div class="sheet flex items-center justify-end min-[900px]:justify-center py-4">
+    {/* Desktop unified larger floating dock */}
+    <div class="nav-capsule hidden items-center gap-3 min-[900px]:flex">
       <a
         href={anchor("#inicio")}
-        class="nav-pill nav-pill-home flex min-h-[44px] items-center px-3 text-[12px] font-bold uppercase"
+        class="nav-pill nav-pill-home flex min-h-[52px] items-center px-6 text-[16px] font-semibold"
       >
         {lang === "es" ? "Inicio" : "Home"}
       </a>
@@ -63,54 +41,27 @@ const menuCloseLabel = lang === "es" ? "Cerrar menú" : "Close menu";
         navLinks.map((link) => (
           <a
             href={anchor(link.href)}
-            class="nav-link nav-pill relative flex min-h-[44px] items-center px-3 text-[12px] font-bold uppercase"
+            class="nav-link nav-pill relative flex min-h-[52px] items-center px-6 text-[16px] font-semibold"
           >
             {label(link)}
           </a>
         ))
       }
 
-      <a
-        href={profile.links.github}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="flex min-h-[44px] min-w-[44px] items-center justify-center"
-        aria-label="GitHub"
-      >
-        <Icon name="GithubLogo" size={20} />
-      </a>
+      <span class="nav-divider" aria-hidden="true"></span>
 
-      {/* The language switch is a real link to the other locale, not client state.
-      */}
-      <a
-        href={altHref}
-        data-lang-switch
-        hreflang={alt}
-        aria-label={altTitle}
-        title={altTitle}
-        class="lang-switch flex min-h-[44px] items-center gap-1.5 px-2 text-[13px] font-bold uppercase"
-      >
-        <Icon name="Translate" size={14} />
-        <span class="flex w-6 justify-center">{altLabel}</span>
+      <a href={anchor("#contacto")} class="nav-cta">
+        <span>{ctaLabel}</span>
+        <span class="nav-cta-badge" aria-hidden="true">↗</span>
       </a>
-
     </div>
 
     {/* Mobile controls */}
-    <div class="flex items-center gap-1 min-[900px]:hidden">
-      <a
-        href={altHref}
-        data-lang-switch
-        hreflang={alt}
-        aria-label={altTitle}
-        class="lang-switch flex min-h-[44px] min-w-[44px] items-center justify-center text-[13px] font-bold uppercase"
-      >
-        {altLabel}
-      </a>
+    <div class="nav-mobile flex w-full items-center justify-end min-[900px]:hidden">
       <button
         type="button"
         data-menu-button
-        class="flex h-11 w-11 items-center justify-center"
+        class="nav-icon-btn flex h-11 w-11 items-center justify-center"
         aria-label={menuOpenLabel}
         aria-expanded="false"
         aria-controls="mobile-menu"
@@ -123,86 +74,275 @@ const menuCloseLabel = lang === "es" ? "Cerrar menú" : "Close menu";
     </div>
   </div>
 
-  {/* Mobile menu */}
+  {/* Mobile menu: full screen, the bar stays above it */}
   <div
     id="mobile-menu"
     data-mobile-menu
     hidden
-    class="hair-b bg-[var(--paper)] min-[900px]:hidden"
+    class="mobile-drawer min-[900px]:hidden"
   >
-    <div class="flex flex-col px-6 py-2">
+    <div class="mobile-links">
+      <a href={anchor("#inicio")} class="mobile-link">
+        <span class="mobile-index tabular">00</span>
+        <span>{lang === "es" ? "Inicio" : "Home"}</span>
+      </a>
       {
-        navLinks.map((link) => (
-          <a
-            href={anchor(link.href)}
-            class="nav-link flex min-h-[52px] items-center hair-b text-base uppercase"
-          >
-            {label(link)}
+        navLinks.map((link, i) => (
+          <a href={anchor(link.href)} class="mobile-link">
+            <span class="mobile-index tabular">0{i + 1}</span>
+            <span>{label(link)}</span>
           </a>
         ))
       }
-      <a
-        href={profile.links.github}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="flex min-h-[52px] items-center text-base uppercase"
-      >
-        GitHub
-      </a>
     </div>
+    <a href={anchor("#contacto")} class="nav-cta mobile-cta">
+      <span>{ctaLabel}</span>
+      <span class="nav-cta-badge" aria-hidden="true">↗</span>
+    </a>
   </div>
 </nav>
 
+<a href={anchor("#contacto")} class="thumb-cta min-[900px]:hidden" data-thumb-cta>
+  <span>{ctaLabel}</span>
+  <span class="nav-cta-badge" aria-hidden="true">↗</span>
+</a>
+
 <style>
   .site-nav {
-    background-color: var(--paper);
+    pointer-events: none;
   }
 
-  .nav-brand {
-    font-family: "Silkscreen", var(--font-sans);
-    font-weight: 400;
-    letter-spacing: 0.04em;
-    color: var(--ink);
-    text-decoration: none;
-    font-size: 13px;
+  @media (max-width: 899px) {
+    .site-nav {
+      background: #ffffff;
+      border-bottom: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+    }
+  }
+
+  .site-nav > div {
+    pointer-events: auto;
+  }
+
+  .nav-capsule {
+    padding: 0.55rem 0.65rem;
+    border-radius: var(--r-pill);
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
+    backdrop-filter: blur(18px);
+    border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+    box-shadow: var(--shadow-float);
+  }
+
+  .nav-divider {
+    width: 1px;
+    height: 30px;
+    margin-inline: 0.35rem;
+    background: var(--rule);
   }
 
   .nav-pill {
-    border: 1px solid transparent;
-    border-radius: 999px;
+    border-radius: var(--r-pill);
     text-decoration: none;
   }
 
   .nav-pill-home {
-    background: var(--marker);
+    background: var(--surface-muted);
     color: var(--ink);
-    text-decoration: none;
   }
 
   .nav-link,
-  .lang-switch {
+  .nav-icon-btn {
     color: var(--mid);
     text-decoration: none;
-    font-weight: 600;
-    letter-spacing: 0.04em;
+    border-radius: var(--r-pill);
     transition: color 150ms ease, background-color 150ms ease;
   }
 
   @media (hover: hover) and (pointer: fine) {
     .nav-link:hover,
-    .lang-switch:hover {
+    .nav-icon-btn:hover {
       color: var(--ink);
-      background: var(--paper-dim);
+      background: var(--surface-muted);
     }
   }
 
   .nav-link[aria-current="page"] {
-    color: var(--ink);
-    background: #ddd6fe;
+    color: var(--surface);
+    background: var(--ink);
   }
 
   .site-nav > div .nav-link[aria-current="page"]::after {
     display: none;
+  }
+
+  .nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 52px;
+    padding: 0 0.6rem 0 1.4rem;
+    border-radius: var(--r-pill);
+    background: var(--ink);
+    color: var(--surface);
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 180ms ease, transform 180ms var(--ease);
+  }
+
+  .nav-cta-badge {
+    display: inline-flex;
+    width: 38px;
+    height: 38px;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--r-pill);
+    background: var(--lime);
+    color: var(--lime-ink);
+    font-size: 16px;
+    font-weight: 800;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .nav-cta:hover {
+      background: var(--electric);
+      transform: translateY(-1px);
+    }
+  }
+
+  .site-nav > .sheet {
+    position: relative;
+    z-index: 2;
+  }
+
+  .mobile-drawer[hidden] {
+    display: none !important;
+  }
+
+  .mobile-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 5.5rem var(--gutter) calc(1rem + env(safe-area-inset-bottom));
+    background: #ffffff;
+  }
+
+  .mobile-links {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+
+  .mobile-cta {
+    margin-top: auto;
+    align-self: stretch;
+    justify-content: space-between;
+    min-height: 56px;
+  }
+
+  .thumb-cta {
+    position: fixed;
+    z-index: 45;
+    left: 0.85rem;
+    right: 0.85rem;
+    bottom: calc(0.7rem + env(safe-area-inset-bottom));
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 56px;
+    padding: 0 0.45rem 0 1.15rem;
+    border-radius: var(--r-pill);
+    background: var(--ink);
+    color: var(--surface);
+    font-size: 16px;
+    font-weight: 650;
+    text-decoration: none;
+    box-shadow: 0 12px 28px -10px rgb(14 14 17 / 0.45);
+  }
+
+  .mobile-link {
+    display: flex;
+    align-items: baseline;
+    gap: 0.85rem;
+    min-height: 64px;
+    padding-block: 0.35rem;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink);
+    font-size: clamp(1.7rem, 7vw, 2.15rem);
+    font-weight: 650;
+    letter-spacing: -0.03em;
+    text-decoration: none;
+  }
+
+  .mobile-index {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--mid);
+  }
+
+  :global(html.nav-open) .thumb-cta {
+    display: none;
+  }
+
+  @media (max-width: 899px) {
+    .thumb-cta {
+      display: flex;
+    }
+
+    :global(body:has(#inicio)) .thumb-cta {
+      display: none;
+    }
+
+    :global(html.show-thumb:not(.nav-open)) .thumb-cta {
+      display: flex;
+    }
+  }
+
+  @media (min-width: 900px) and (max-width: 1180px) {
+    .nav-capsule {
+      gap: 0.15rem;
+      padding: 0.35rem 0.4rem;
+    }
+
+    .nav-capsule .nav-pill,
+    .nav-capsule .nav-link {
+      min-height: 44px;
+      padding-inline: 0.75rem;
+      font-size: 14px;
+    }
+
+    .nav-capsule .nav-cta {
+      min-height: 44px;
+      padding-left: 0.9rem;
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 899px) {
+    .site-nav > .sheet {
+      padding-top: 0.65rem;
+      padding-bottom: 0.65rem;
+    }
+
+    .nav-mobile .nav-cta {
+      min-height: 44px;
+      padding: 0 0.35rem 0 0.9rem;
+      font-size: 14px;
+      gap: 0.45rem;
+    }
+
+    .nav-mobile .nav-cta-badge {
+      width: 30px;
+      height: 30px;
+      font-size: 14px;
+    }
+
+    .nav-mobile .nav-icon-btn {
+      background: var(--ink);
+      border: 0;
+      color: #ffffff;
+    }
   }
 </style>
 

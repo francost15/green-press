@@ -4,7 +4,6 @@ import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
 import Icon from "../components/Icon.astro";
 import { imageSizes, smallVariant } from "../data/imageSizes";
-import { profile } from "../data/profile";
 import { relatedProjects, type Project } from "../data/projects";
 import { breadcrumbSchema, projectWorkSchema } from "../data/structuredData";
 import { formatPeriod } from "../lib/dates";
@@ -49,96 +48,98 @@ const relatedIndex = lang === "es" ? "proyectos/" : "projects/";
   <Navbar lang={lang} altPath={altPath} />
 
   <main class="sheet layer pt-32 pb-24">
-      <a href={localePath(lang)} class="link inline-flex items-center gap-2 text-[15px] font-semibold">
-        <Icon name="CaretLeft" size={15} />
-        {t("Volver al inicio", "Back to home")}
-      </a>
+    <a href={localePath(lang)} class="link inline-flex items-center gap-2 text-[15px] font-semibold">
+      <Icon name="CaretLeft" size={15} />
+      {t("Volver al inicio", "Back to home")}
+    </a>
 
-      <div class="cols mt-10">
-        <div class="c-meta order-2 min-[900px]:order-1">
-          <p class="t-meta">{t("Impacto", "Impact")}</p>
-          <p data-speakable-impact class="m-0 mt-1 max-w-[34ch] text-[15px] font-medium leading-snug">
-            {description}
-          </p>
+    <div class="cols mt-10">
+      <div class="c-meta order-2 min-[900px]:order-1">
+        <div class="solution-card">
+          <div>
+            <p class="t-meta">{t("Impacto", "Impact")}</p>
+            <p data-speakable-impact class="m-0 mt-1 text-[15px] font-semibold leading-snug">
+              {description}
+            </p>
 
-          <p class="t-meta mt-7">{t("Periodo", "Period")}</p>
-          <p class="m-0 mt-1 text-[15px] font-medium">
-            <time datetime={periodPublished(project.period)}>{formatPeriod(project.period, lang)}</time>
-          </p>
+            <p class="t-meta mt-6">{t("Periodo", "Period")}</p>
+            <p class="m-0 mt-1 text-[15px] font-medium">
+              <time datetime={periodPublished(project.period)}>{formatPeriod(project.period, lang)}</time>
+            </p>
 
-          <p class="t-meta mt-7">{t("Cliente", "Client")}</p>
-          <p class="m-0 mt-1 text-[15px] font-medium">{t(project.client.es, project.client.en)}</p>
+            <p class="t-meta mt-6">{t("Cliente", "Client")}</p>
+            <p class="m-0 mt-1 text-[15px] font-medium">{t(project.client.es, project.client.en)}</p>
 
-          <p class="t-meta mt-7">{t("Rol", "Role")}</p>
-          <p class="m-0 mt-1 text-[15px] font-medium">{t(project.role.es, project.role.en)}</p>
+            <p class="t-meta mt-6">{t("Rol", "Role")}</p>
+            <p class="m-0 mt-1 text-[15px] font-medium">{t(project.role.es, project.role.en)}</p>
 
-          <p class="t-meta mt-7">{t("Stack", "Stack")}</p>
-          <ul class="tags mt-2">
-            {tags.map((tag) => <li>{tag}</li>)}
-          </ul>
+            <p class="t-meta mt-6">{t("Stack", "Stack")}</p>
+            <ul class="tags mt-2">
+              {tags.map((tag) => <li>{tag}</li>)}
+            </ul>
+          </div>
         </div>
+      </div>
 
-        <div class="c-main order-1 min-[900px]:order-2">
-          <h1 id="project-title" class="t-head">{title}</h1>
+      <div class="c-main order-1 min-[900px]:order-2">
+        <h1 id="project-title" class="t-head">{title}</h1>
 
-          {
-            images[0] && (
-              <figure class="shot mt-8">
-                <span class="tape" aria-hidden="true"></span>
-                <img
-                  src={images[0]}
-                  srcset={`${smallVariant(images[0])} 768w, ${images[0]} 1536w`}
-                  sizes="(max-width: 900px) 100vw, 800px"
-                  alt={alts[0] ?? `${title} ${t("captura", "screenshot")} 1`}
-                  width={imageSizes[images[0]]?.width}
-                  height={imageSizes[images[0]]?.height}
-                  loading="eager"
-                  decoding="async"
-                  class="img-reveal"
-                />
-              </figure>
-            )
-          }
+        {
+          images[0] && (
+            <figure class="shot mt-8">
+              <img
+                src={images[0]}
+                srcset={`${smallVariant(images[0])} 768w, ${images[0]} 1536w`}
+                sizes="(max-width: 900px) 100vw, 800px"
+                alt={alts[0] ?? `${title} ${t("captura", "screenshot")} 1`}
+                width={imageSizes[images[0]]?.width}
+                height={imageSizes[images[0]]?.height}
+                loading="eager"
+                decoding="async"
+                class="img-reveal"
+              />
+            </figure>
+          )
+        }
 
-          <section class="mt-10">
-            <h2 class="t-sub">{t("Problema", "The problem")}</h2>
-            <p class="t-body mt-4">{t(project.problem.es, project.problem.en)}</p>
-          </section>
+        <section class="mt-10">
+          <h2 class="t-sub">{t("Problema", "The problem")}</h2>
+          <p class="t-body mt-4">{t(project.problem.es, project.problem.en)}</p>
+        </section>
 
-          <section class="mt-10">
-            <h2 class="t-sub">{t("Solución", "The solution")}</h2>
-            <p class="t-body mt-4">{t(project.solution.es, project.solution.en)}</p>
-          </section>
+        <section class="mt-10">
+          <h2 class="t-sub">{t("Solución", "The solution")}</h2>
+          <p class="t-body mt-4">{t(project.solution.es, project.solution.en)}</p>
+        </section>
 
-          <section class="mt-10">
-            <h2 class="t-sub">{t("Arquitectura", "Architecture")}</h2>
-            <p class="t-body mt-4">{t(project.architecture.es, project.architecture.en)}</p>
-          </section>
+        <section class="mt-10">
+          <h2 class="t-sub">{t("Arquitectura", "Architecture")}</h2>
+          <p class="t-body mt-4">{t(project.architecture.es, project.architecture.en)}</p>
+        </section>
 
-          <section class="mt-10">
-            <h2 class="t-sub">{t("Cómo se midió", "How it was measured")}</h2>
-            <p class="t-body mt-4">{t(project.measurement.es, project.measurement.en)}</p>
-          </section>
+        <section class="mt-10">
+          <h2 class="t-sub">{t("Cómo se midió", "How it was measured")}</h2>
+          <p class="t-body mt-4">{t(project.measurement.es, project.measurement.en)}</p>
+        </section>
 
-          <section class="mt-10">
-            <h2 data-speakable-faq class="t-sub">{t(project.faq.q.es, project.faq.q.en)}</h2>
-            <p class="t-body mt-4">{t(project.faq.a.es, project.faq.a.en)}</p>
-          </section>
+        <section class="mt-10">
+          <h2 data-speakable-faq class="t-sub">{t(project.faq.q.es, project.faq.q.en)}</h2>
+          <p class="t-body mt-4">{t(project.faq.a.es, project.faq.a.en)}</p>
+        </section>
 
-          <section class="mt-10">
-            <h2 class="t-sub">{t("El trabajo", "The work")}</h2>
-            {body.split("\n\n").map((para) => <p class="t-body mt-4">{para}</p>)}
-          </section>
+        <section class="mt-10">
+          <h2 class="t-sub">{t("El trabajo", "The work")}</h2>
+          {body.split("\n\n").map((para) => <p class="t-body mt-4">{para}</p>)}
+        </section>
 
-          {
-            images.length > 1 && (
-              <section class="mt-14">
-                <h2 class="t-sub">{t("Capturas", "Screenshots")}</h2>
-                <div class="mt-6 flex flex-col gap-6">
-                  {images.slice(1).map((src, i) => (
-                    <figure class="shot">
-                      <span class="tape" aria-hidden="true"></span>
-                      <img
+        {
+          images.length > 1 && (
+            <section class="mt-14">
+              <h2 class="t-sub">{t("Capturas", "Screenshots")}</h2>
+              <div class="mt-6 flex flex-col gap-6">
+                {images.slice(1).map((src, i) => (
+                  <figure class="shot">
+                    <img
                       src={src}
                       srcset={`${smallVariant(src)} 768w, ${src} 1536w`}
                       sizes="(max-width: 900px) 100vw, 800px"
@@ -149,70 +150,84 @@ const relatedIndex = lang === "es" ? "proyectos/" : "projects/";
                       decoding="async"
                       class="img-reveal"
                     />
-                    </figure>
-                  ))}
-                </div>
-              </section>
-            )
-          }
-
-          {
-            related.length > 0 && (
-              <section class="mt-14">
-                <h2 class="t-sub">{t("En este registro", "Also in this record")}</h2>
-                <ul class="mt-4 flex flex-col gap-3 p-0">
-                  {related.map((item) => (
-                    <li>
-                      <a
-                        href={localePath(lang, `${relatedIndex}${item.slug}/`)}
-                        class="link text-[15px] font-semibold"
-                      >
-                        {t(item.title.es, item.title.en)}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )
-          }
-
-          {
-            (project.github || project.link) && (
-              <div class="hair-t mt-14 flex items-center gap-6 pt-6">
-                {project.github && (
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="link inline-flex min-h-[44px] items-center gap-2 text-[15px] font-semibold"
-                  >
-                    <Icon name="GithubLogo" size={17} /> GitHub
-                  </a>
-                )}
-                {project.link && (
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="link inline-flex min-h-[44px] items-center gap-2 text-[15px] font-semibold"
-                  >
-                    <Icon name="ArrowSquareOut" size={17} /> {t("Demo en vivo", "Live demo")}
-                  </a>
-                )}
+                  </figure>
+                ))}
               </div>
-            )
-          }
-          <div class="hair-t mt-16 flex flex-wrap items-center gap-3 pt-8">
-            <a href={profile.cvUrl} download class="link text-[15px] font-semibold">
-              {t("Descargar CV", "Download CV")}
-            </a>
-            <a href={localePath(lang, contactHash)} class="act act-ghost">
-              {t("Escríbeme", "Get in touch")}
-              <Icon name="ArrowRight" size={18} />
+            </section>
+          )
+        }
+
+        {
+          related.length > 0 && (
+            <section class="mt-14">
+              <h2 class="t-sub">{t("En este registro", "Also in this record")}</h2>
+              <ul class="mt-4 flex flex-col gap-3 p-0">
+                {related.map((item) => (
+                  <li>
+                    <a
+                      href={localePath(lang, `${relatedIndex}${item.slug}/`)}
+                      class="link text-[15px] font-semibold"
+                    >
+                      {t(item.title.es, item.title.en)}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+
+        {
+          (project.github || project.link) && (
+            <div class="hair-t mt-14 flex items-center gap-6 pt-6">
+              {project.github && (
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="link inline-flex min-h-[44px] items-center gap-2 text-[15px] font-semibold"
+                >
+                  <Icon name="GithubLogo" size={17} /> GitHub
+                </a>
+              )}
+              {project.link && (
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="link inline-flex min-h-[44px] items-center gap-2 text-[15px] font-semibold"
+                >
+                  <Icon name="ArrowSquareOut" size={17} /> {t("Demo en vivo", "Live demo")}
+                </a>
+              )}
+            </div>
+          )
+        }
+
+        <div class="contact-card mt-16 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <p class="t-sub">
+              {t(
+                "¿Necesitas un sistema similar en tu operación?",
+                "Need a similar system in your operations?",
+              )}
+            </p>
+            <p class="t-body mt-1">
+              {t(
+                "Hablemos sobre alcance, arquitectura e integración.",
+                "Let's discuss scope, architecture, and integration.",
+              )}
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <a href={localePath(lang, contactHash)} class="act">
+              <span>{t("Iniciar un proyecto", "Start a project")}</span>
+              <span class="act-badge" aria-hidden="true">↗</span>
             </a>
           </div>
         </div>
       </div>
+    </div>
   </main>
 
   <Footer lang={lang} />

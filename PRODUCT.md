@@ -8,19 +8,14 @@ web
 
 ## Users
 
-**Primary: technical recruiters and hiring managers** screening Franco Sanchez for a
-full-time engineering position. They arrive from a job application, a LinkedIn profile, or a
-search, scan fast, and are looking for verifiable trajectory, stack, and credentials. The CV
-download is their conversion.
+**Primary: founders, CTOs, and operations managers** evaluating Franco Sanchez to build and
+ship a production AI or software system for their business. They read for delivered outcomes,
+measured ROI, and execution certainty; initiating a project via the contact form is their
+primary conversion.
 
-**Secondary: founders, CTOs, and managers** evaluating Franco to build an AI product for
-them. They read for delivered outcomes and execution risk; the contact form is their
-conversion.
-
-Both audiences are served. **When a design decision cannot satisfy both, the recruiter
-wins.** The site currently carries signals aimed at the client audience — an "available for
-projects" badge, cost-reduction framing in the tagline — which is a deliberate secondary
-track, not the primary one.
+**Secondary: technical recruiters and hiring managers** screening Franco for senior AI and
+software engineering roles. They verify trajectory, stack, and credentials, with the CV
+download available as a secondary action in the hero and trajectory sections.
 
 Audience is bilingual: Spanish and English are equal-priority, not a translation of a
 primary. Franco is based in Puebla, México, which puts Spanish-first local readers and
@@ -90,12 +85,14 @@ but sits below the actions at lower weight.
 
 - Name: **Franco Sanchez**. Title: **AI & Software Engineer**.
 - Voice: direct, outcome-first, numeric. First person. No hedging, no marketing inflation.
-- Visual world as of 2026-09-06 (user-pinned **Mundo nuevo**): a workshop notebook.
-  Lined paper, pixel name stamp, taped production screenshots, clay folder tabs.
-  Violet `#6D28D9` remains the working accent. Marker yellow and clay blues/oranges
-  are material, not a second brand. The Swiss editorial sheet is retired.
-- Franco asked for "a more designer feel with better animation" on 2026-08-05, then
-  for presence and GSAP, then for this world. Motion is part of the brand now.
+- Visual world as of 2026-10-14 (user-pinned **Estudio de Producto & Vitrina en Abanico**):
+  clean gallery canvas (`#F8F8F6`), concentric pure white surfaces (`#FFFFFF`), deep ink
+  (`#0E0E11`), electric blue (`#2546F0`), and lime (`#C8F904`) directional conversion
+  signals (`→`, `↗`). Fanned 5-system interactive deck in the hero, floating glass metric
+  chips, and a modular bento project catalog. The workshop notebook and Swiss sheet are
+  retired.
+- Motion is central to the brand: choreographed GSAP entrance, interactive fanned deck hover
+  physics, and scroll-driven reveals.
 - Bilingual parity is an identity commitment, not a feature.
 - `Towel S.A. de C.V.` is a normal employer and stays in both the visible experience section
   and the JSON-LD `worksFor`. Confirmed 2026-08-02 — do not re-raise.

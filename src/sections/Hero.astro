@@ -1,9 +1,7 @@
 ---
-import { profile } from "../data/profile";
 import { projects } from "../data/projects";
-import { experience } from "../data/experience";
-import { smallVariant } from "../data/imageSizes";
-import { useTranslations, type Lang } from "../i18n";
+import { imageSizes, smallVariant } from "../data/imageSizes";
+import { localePath, useTranslations, type Lang } from "../i18n";
 
 interface Props {
   lang: Lang;
@@ -12,123 +10,133 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
-const shipped = projects.length;
-const engineeringSince = experience[experience.length - 1].period.start.slice(0, 4);
-const current = experience[0];
+const indexSegment = lang === "es" ? "proyectos/" : "projects/";
 
-const annotations = [
-  { label: t("Perfil", "Role"), value: t(profile.title.es, profile.title.en) },
-  { label: t("Base", "Based in"), value: t(profile.location.es, profile.location.en) },
-  {
-    label: t("En producción", "In production"),
-    value: t(`${shipped} sistemas`, `${shipped} systems`),
-  },
-  {
-    label: t("Ingeniería desde", "Engineering since"),
-    value: engineeringSince,
-  },
-];
+const cardAccents = [
+  "fan-card-accent-blue",
+  "fan-card-accent-lime",
+  "fan-card-accent-violet",
+  "fan-card-accent-dark",
+  "fan-card-accent-amber",
+] as const;
 
-const polaroids = [
-  {
-    src: "/projects/ai-dashboard-1.webp",
-    alt: t(
-      "Dashboard de inteligencia de negocio en Towel",
-      "Business intelligence dashboard at Towel",
-    ),
-    caption: "Towel",
-  },
-  {
-    src: "/projects/cfdi-1.webp",
-    alt: t("Formulario de emisión CFDI en Idea15", "CFDI issuance form at Idea15"),
-    caption: "Idea15",
-  },
-  {
-    src: "/projects/rag-chatbot-1.webp",
-    alt: t("Asistente RAG de la UVP", "UVP RAG assistant"),
-    caption: "UVP",
-  },
-];
+let shotCount = 0;
 ---
 
-<section id="inicio" class="band">
-  <div class="cols">
-    <dl class="c-meta order-2 m-0 flex flex-col gap-4 min-[900px]:order-1 min-[900px]:pt-2">
-      {
-        annotations.map((a) => (
-          <div>
-            <dt class="t-meta">{a.label}</dt>
-            <dd class="mask m-0 mt-1 text-[15px] font-medium">
-              <span data-hero-fact>{a.value}</span>
-            </dd>
-          </div>
-        ))
-      }
-    </dl>
-
-    <div class="c-main order-1 min-[900px]:order-2">
-      <div class="mb-4 flex flex-wrap gap-2" aria-hidden="true">
-        <span class="anno anno-marker" data-anno>{t(profile.title.es, profile.title.en)}</span>
-        <span class="anno anno-blue" data-anno>{t(profile.location.es, profile.location.en)}</span>
-        <span class="anno anno-clay" data-anno>{current.company}</span>
-        <span class="anno anno-violet" data-anno>
-          {t(`${shipped} sistemas en producción`, `${shipped} systems in production`)}
+<section id="inicio" class="band hero-work">
+  <div class="hero-stage">
+    {/* Wide 2-line Display Proposition with Ruang Edit Lime Arrow Pill */}
+    <div class="hero-headline-wrap">
+      <h1 class="hero-display-headline">
+        <span class="hero-static mask d1">
+          <span data-hero-line>{t("Sistemas de IA", "Production AI")}</span>
         </span>
-      </div>
-
-      <h1 class="t-display">
-        <span class="name-box">
-          <svg class="name-box-stroke" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            <rect data-name-box x="1.5" y="1.5" width="97" height="97" pathLength="100"></rect>
-          </svg>
-          <span class="mask d1"><span data-hero-name>Franco</span></span>{" "}
-          <span class="mask d2"><span class="accent" data-hero-name>Sanchez</span></span>
+        <span class="hero-line-2 mask d2">
+          <span data-hero-line>
+            <span class="verb-slot" data-verb-slot>
+              <span class="verb-track" data-verb-track>
+                {
+                  (
+                    lang === "es"
+                      ? [
+                          { word: "operan", tone: "blue" },
+                          { word: "miden", tone: "violet" },
+                          { word: "escalan", tone: "lime" },
+                          { word: "automatizan", tone: "amber" },
+                        ]
+                      : [
+                          { word: "ship", tone: "blue" },
+                          { word: "measure", tone: "violet" },
+                          { word: "scale", tone: "lime" },
+                          { word: "automate", tone: "amber" },
+                        ]
+                  ).map(({ word, tone }) => (
+                    <span class={`verb-badge verb-badge-${tone}`} data-verb>
+                      {word}
+                    </span>
+                  ))
+                }
+              </span>
+            </span>
+            {t("tu negocio.", "your business.")}
+          </span>
         </span>
       </h1>
-      <p class="t-meta mask d3 mt-3">
-        <span data-hero-line>{profile.legalName}</span>
-      </p>
+    </div>
 
-      <p class="t-sub mask d4 mt-6 max-w-[36ch]">
-        <span data-hero-line>
-          {
-            t(
-              "Cinco sistemas de IA en producción: planta, CFDI, universidad, reclutamiento.",
-              "Five AI systems in production: plant floor, CFDI, university, recruitment.",
-            )
-          }
-        </span>
-      </p>
-
-      <div class="mask d5 mt-8">
-        <span class="flex flex-wrap items-center gap-3" data-hero-line>
-          <a href={profile.cvUrl} download class="act">
-            {t("Descargar CV", "Download CV")}
-          </a>
-          <a href="#proyectos" class="act act-ghost">
-            {t("Ver el registro", "See the record")}
-          </a>
-        </span>
-      </div>
-
-      <div class="polaroid-row">
+    <p class="hero-subcopy mask d2">
+      <span data-hero-line>
         {
-          polaroids.map((shot) => (
-            <figure class="polaroid" data-polaroid>
-              <span class="tape" aria-hidden="true"></span>
-              <img
-                src={shot.src}
-                srcset={`${smallVariant(shot.src)} 768w, ${shot.src} 1536w`}
-                sizes="(min-width: 900px) 220px, 160px"
-                alt={shot.alt}
-                width="768"
-                height="386"
-                loading="eager"
-                decoding="async"
-              />
-              <figcaption>{shot.caption}</figcaption>
-            </figure>
-          ))
+          t(
+            "Cinco sistemas de IA en producción: planta, CFDI, universidad, reclutamiento.",
+            "Five AI systems in production: plant floor, CFDI, university, recruitment.",
+          )
+        }
+      </span>
+    </p>
+
+    {/* Clean 2-Button Sales CTA Row */}
+    <div class="hero-cta-row" data-hero-line>
+      <a href="#contacto" class="act">
+        <span>{t("Iniciar un proyecto", "Start a project")}</span>
+        <span class="act-badge" aria-hidden="true">↗</span>
+      </a>
+      <a href="#proyectos" class="act act-ghost">
+        {t("Ver proyectos", "Explore projects")}
+      </a>
+    </div>
+
+    {/* Fanned Project Deck + Mindly Floating Glass Chips & Pallet Ross Cursor Tags */}
+    <div class="fan-arena">
+      <div class="fan-deck" data-fan-deck>
+        {
+          projects.map((project, index) => {
+            const src = project.images?.[0];
+            const dims = src ? imageSizes[src] : undefined;
+            const alt =
+              (lang === "es" ? project.imageAlts?.es[0] : project.imageAlts?.en[0]) ??
+              t(project.title.es, project.title.en);
+            const href = localePath(lang, `${indexSegment}${project.slug}/`);
+            const isPrimaryWorkShot = Boolean(src && shotCount < 3);
+            if (isPrimaryWorkShot) shotCount += 1;
+
+            return (
+              <a
+                href={href}
+                class={`fan-card ${cardAccents[index] ?? "fan-card-accent-blue"}`}
+                data-fan-card
+                data-work-shot={isPrimaryWorkShot ? "" : undefined}
+              >
+                <div class="fan-card-media">
+                  {src ? (
+                    <img
+                      src={src}
+                      srcset={`${smallVariant(src)} 768w, ${src} 1536w`}
+                      sizes="(min-width: 960px) 540px, (min-width: 640px) 50vw, 94vw"
+                      alt={alt}
+                      width={dims?.width ?? 768}
+                      height={dims?.height ?? 386}
+                      loading={index === 0 ? "eager" : "lazy"}
+                      decoding="async"
+                    />
+                  ) : (
+                    <div class="fan-card-blueprint" aria-hidden="true">
+                      <span class="tabular font-bold uppercase tracking-wider opacity-75">
+                        ERP · SQL · Planta
+                      </span>
+                      <span class="text-[13px] font-semibold">
+                        {t("8 estaciones conectadas en tiempo real", "8 plant stations connected live")}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div class="fan-card-body">
+                  <p class="fan-card-title">{t(project.title.es, project.title.en)}</p>
+                </div>
+              </a>
+            );
+          })
         }
       </div>
     </div>

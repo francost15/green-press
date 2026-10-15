@@ -8,7 +8,7 @@ function reducedMotion(): boolean {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-/** Hover accordion and polaroid tilt for the workshop notebook. */
+/** Interactive studio choreography: fanned deck hover physics, floating glass chips, and bento card focus. */
 export function initAtelier(root: ParentNode = document): AtelierHandle {
   const host = root instanceof Document ? root.documentElement : document.documentElement;
   if (host.dataset.atelierReady === "1") return idle;
@@ -16,6 +16,7 @@ export function initAtelier(root: ParentNode = document): AtelierHandle {
 
   const index = root.querySelector<HTMLElement>("[data-project-index]");
   const panels = Array.from(root.querySelectorAll<HTMLElement>("[data-panel]"));
+  const fanCards = Array.from(root.querySelectorAll<HTMLElement>("[data-fan-card]"));
   const polaroids = Array.from(root.querySelectorAll<HTMLElement>("[data-polaroid]"));
   const annos = Array.from(root.querySelectorAll<HTMLElement>("[data-anno]"));
 
@@ -60,10 +61,78 @@ export function initAtelier(root: ParentNode = document): AtelierHandle {
     };
   });
 
+  mm.add("(min-width: 960px)", () => {
+    if (fanCards.length === 0) return;
+
+    const cleanups: Array<() => void> = [];
+
+    fanCards.forEach((card, activeIdx) => {
+      const onEnter = () => {
+        fanCards.forEach((sibling, idx) => {
+          const offset = idx - activeIdx;
+          if (idx === activeIdx) {
+            gsap.to(sibling, {
+              y: -18,
+              rotation: 0,
+              scale: 1.05,
+              duration: 0.34,
+              ease: "power3.out",
+              overwrite: "auto",
+            });
+          } else {
+            const baseAngle = (idx - 2) * 4;
+            const spread = offset < 0 ? -10 : 10;
+            gsap.to(sibling, {
+              x: spread,
+              y: Math.abs( idx - 2 ) * 6 + 4,
+              rotation: baseAngle + (offset < 0 ? -1.5 : 1.5),
+              scale: 0.98,
+              duration: 0.34,
+              ease: "power3.out",
+              overwrite: "auto",
+            });
+          }
+        });
+      };
+
+      const onLeave = () => {
+        fanCards.forEach((sibling, idx) => {
+          const baseAngle = (idx - 2) * 4;
+          const baseY = idx === 2 ? -4 : Math.abs(idx - 2) === 1 ? 6 : 18;
+          gsap.to(sibling, {
+            x: 0,
+            y: baseY,
+            rotation: baseAngle,
+            scale: 1,
+            duration: 0.42,
+            ease: "power3.out",
+            overwrite: "auto",
+          });
+        });
+      };
+
+      card.addEventListener("pointerenter", onEnter);
+      card.addEventListener("focusin", onEnter);
+      card.addEventListener("pointerleave", onLeave);
+      card.addEventListener("focusout", onLeave);
+
+      cleanups.push(() => {
+        card.removeEventListener("pointerenter", onEnter);
+        card.removeEventListener("focusin", onEnter);
+        card.removeEventListener("pointerleave", onLeave);
+        card.removeEventListener("focusout", onLeave);
+      });
+    });
+
+    return () => {
+      for (const fn of cleanups) fn();
+    };
+  });
+
   if (polaroids.length > 0) {
     tweens.push(
       gsap.to(polaroids, {
-        y: 8,
+        y: 6,
         duration: 3.2,
         yoyo: true,
         repeat: -1,
@@ -76,7 +145,7 @@ export function initAtelier(root: ParentNode = document): AtelierHandle {
   if (annos.length > 0) {
     tweens.push(
       gsap.to(annos, {
-        y: -6,
+        y: -5,
         duration: 2.4,
         yoyo: true,
         repeat: -1,

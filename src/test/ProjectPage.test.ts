@@ -25,20 +25,9 @@ describe("ProjectPage", () => {
     expect(container.textContent).not.toContain(cfdi.problem.en);
   });
 
-  // Regression guard: the language switch used to drop the reader on the locale home page
-  // instead of the same project in the other language.
-  it("switches language to the same project, not the home page", async () => {
-    const en = await renderAstro(ProjectPage, { lang: "en", project: cfdi });
-    expect(en.container.querySelector("[data-lang-switch]")).toHaveAttribute(
-      "href",
-      `/es/proyectos/${cfdi.slug}/`,
-    );
-
+  it("does not render a language switch in the navbar", async () => {
     const es = await renderAstro(ProjectPage, { lang: "es", project: cfdi });
-    expect(es.container.querySelector("[data-lang-switch]")).toHaveAttribute(
-      "href",
-      `/projects/${cfdi.slug}/`,
-    );
+    expect(es.container.querySelector("[data-lang-switch]")).toBeNull();
   });
 
   it("gives every screenshot intrinsic dimensions", async () => {

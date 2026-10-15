@@ -1,7 +1,7 @@
 ---
 import Section from "../components/Section.astro";
 import { projects } from "../data/projects";
-import { smallVariant } from "../data/imageSizes";
+import { imageSizes, smallVariant } from "../data/imageSizes";
 import { localePath, useTranslations, type Lang } from "../i18n";
 
 interface Props {
@@ -13,57 +13,75 @@ const t = useTranslations(lang);
 
 const indexSegment = lang === "es" ? "proyectos/" : "projects/";
 
-const clay = ["panel-navy", "panel-marker", "panel-violet", "panel-orange", "panel-blue"] as const;
+const kpis = [
+  { num: "−90%", label: { es: "tiempo de reporte semanal", en: "weekly report time" } },
+  { num: "80%", label: { es: "del flujo contable automatizado", en: "of the accounting flow automated" } },
+  { num: "65%", label: { es: "de consultas resueltas solas", en: "of tier-1 queries resolved" } },
+  { num: "+40%", label: { es: "de visibilidad en planta", en: "plant-floor visibility" } },
+  { num: "−75%", label: { es: "en el filtrado inicial", en: "initial screening time" } },
+] as const;
 ---
 
 <Section
   id="proyectos"
-  title={t("¿Qué sistemas pagué con trabajo real?", "What systems did someone pay to keep running?")}
-  meta={t(`${projects.length} entradas`, `${projects.length} entries`)}
+  title={t("Trabajo en producción", "Work in production")}
   subtitle={t(
-    "Cinco sistemas en producción: ERP y dashboard en Towel, CFDI en Idea15, RAG en la UVP, matching de CVs para LTC. Cada página nombra cliente, fechas y cómo se midió el impacto. No son demos.",
-    "Five systems in production: ERP and dashboard at Towel, CFDI at Idea15, RAG at UVP, CV matching for LTC. Each page names the client, the dates, and how impact was measured. Not demos.",
+    "Cinco sistemas que alguien paga por seguir usando. Abre cualquiera para ver arquitectura, cliente y cómo se midió el retorno.",
+    "Five systems someone still pays to keep running. Open any of them for the architecture, the client, and how the return was measured.",
   )}
 >
-  <ul class="project-panels m-0 list-none p-0" data-project-index>
+  <ul class="case-index m-0 list-none p-0" data-project-index>
     {
       projects.map((project, i) => {
         const href = localePath(lang, `${indexSegment}${project.slug}/`);
         const tags = lang === "es" ? project.tags.es : project.tags.en;
         const cover = project.images?.[0];
-        const alt = (lang === "es" ? project.imageAlts?.es[0] : project.imageAlts?.en[0]) ??
+        const dims = cover ? imageSizes[cover] : undefined;
+        const alt =
+          (lang === "es" ? project.imageAlts?.es[0] : project.imageAlts?.en[0]) ??
           t(project.title.es, project.title.en);
+        const kpi = kpis[i] ?? kpis[0];
+        const featured = i === 0;
+
         return (
-          <li class={`panel ${clay[i] ?? "panel-navy"}${i === 0 ? " is-open" : ""}`} data-panel>
-            <a href={href} class="row-link">
-              <span class="panel-tab">{String(i + 1).padStart(2, "0")}</span>
-              {
-                cover ? (
+          <li class={featured ? "case-feature" : "case-tile"} data-panel>
+            <a href={href} class="case-link">
+              <div class="case-media">
+                {cover ? (
                   <img
                     src={cover}
                     srcset={`${smallVariant(cover)} 768w, ${cover} 1536w`}
-                    sizes="(min-width: 900px) 28vw, 100vw"
+                    sizes={featured ? "(min-width: 900px) 58vw, 100vw" : "(min-width: 900px) 28vw, 100vw"}
                     alt={alt}
-                    width="768"
-                    height="386"
-                    loading={i === 0 ? "eager" : "lazy"}
+                    width={dims?.width ?? 768}
+                    height={dims?.height ?? 386}
+                    loading={i < 2 ? "eager" : "lazy"}
                     decoding="async"
                   />
                 ) : (
-                  <span class="panel-void" aria-hidden="true"></span>
-                )
-              }
-              <div class="panel-copy">
-                <h3 class="t-sub">{t(project.title.es, project.title.en)}</h3>
-                <ul class="tags mt-3">
-                  {tags.slice(0, 5).map((tag) => (
-                    <li>{tag}</li>
-                  ))}
-                </ul>
-                <p class="t-meta mt-4">{t("Impacto", "Impact")}</p>
-                <p class="mt-1 text-[0.95rem]" data-speakable-impact>
+                  <div class="case-blueprint">
+                    <span>ERP · PostgreSQL</span>
+                    <strong>
+                      {t("8 estaciones en piso, en vivo", "8 shop-floor stations, live")}
+                    </strong>
+                  </div>
+                )}
+              </div>
+              <div class="case-copy">
+                <div class="case-meta">
+                  <span class="tabular">{String(i + 1).padStart(2, "0")}</span>
+                  <span>{t(project.client.es, project.client.en)}</span>
+                  <span class="case-go" aria-hidden="true">↗</span>
+                </div>
+                <h3>{t(project.title.es, project.title.en)}</h3>
+                <p class="case-kpi">
+                  <strong class="tabular">{kpi.num}</strong>
+                  <span>{t(kpi.label.es, kpi.label.en)}</span>
+                </p>
+                <p class="case-impact" data-speakable-impact>
                   {t(project.impact.es, project.impact.en)}
                 </p>
+                <p class="case-tags">{tags.slice(0, 4).join(" · ")}</p>
               </div>
             </a>
           </li>
@@ -72,4 +90,3 @@ const clay = ["panel-navy", "panel-marker", "panel-violet", "panel-orange", "pan
     }
   </ul>
 </Section>
-
