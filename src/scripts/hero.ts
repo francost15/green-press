@@ -124,7 +124,7 @@ function startVerbCycle(hero: HTMLElement): { kill: () => void } {
       overwrite: "auto",
     });
     gsap.to(slot, {
-      width: words[next].offsetWidth,
+      width: words[next].scrollWidth,
       height,
       maxHeight: height,
       duration: 0.55,
@@ -140,7 +140,7 @@ function startVerbCycle(hero: HTMLElement): { kill: () => void } {
     if (stopped) return;
     height = words[0].offsetHeight;
     if (height < 1) return;
-    gsap.set(slot, { height, maxHeight: height, width: words[0].offsetWidth });
+    gsap.set(slot, { height, maxHeight: height, width: words[0].scrollWidth });
     gsap.set(track, { y: 0 });
     timer = window.setInterval(step, 2200);
   };

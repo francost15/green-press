@@ -93,24 +93,39 @@ export function initNavbar(doc: Document = document) {
   menu?.addEventListener("keydown", onEscape);
 
   const thumb = doc.querySelector<HTMLElement>("[data-thumb-cta]");
-  let heroVisible = false;
+  let heroVisible = Boolean(doc.getElementById("inicio"));
+  let formVisible = false;
 
   const syncThumb = () => {
     const menuOpen = doc.documentElement.classList.contains("nav-open");
-    const show = !menuOpen && !heroVisible;
+    const show = !menuOpen && !heroVisible && !formVisible;
     doc.documentElement.classList.toggle("show-thumb", show);
   };
 
-  const inicio = doc.getElementById("inicio");
-  if (thumb && inicio && typeof IntersectionObserver !== "undefined") {
-    const heroWatch = new IntersectionObserver(
-      ([entry]) => {
-        heroVisible = entry.isIntersecting && entry.intersectionRatio > 0.35;
-        syncThumb();
-      },
-      { threshold: [0, 0.35, 0.6] },
-    );
-    heroWatch.observe(inicio);
+  if (thumb && typeof IntersectionObserver !== "undefined") {
+    const inicio = doc.getElementById("inicio");
+    if (inicio) {
+      const heroWatch = new IntersectionObserver(
+        ([entry]) => {
+          heroVisible = entry.isIntersecting && entry.intersectionRatio > 0.25;
+          syncThumb();
+        },
+        { threshold: [0, 0.25, 0.6] },
+      );
+      heroWatch.observe(inicio);
+    }
+
+    const form = doc.getElementById("contacto");
+    if (form) {
+      const formWatch = new IntersectionObserver(
+        ([entry]) => {
+          formVisible = entry.isIntersecting && entry.intersectionRatio > 0.2;
+          syncThumb();
+        },
+        { threshold: [0, 0.2, 0.5] },
+      );
+      formWatch.observe(form);
+    }
   }
 
   syncThumb();
