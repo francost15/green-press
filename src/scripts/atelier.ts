@@ -17,8 +17,6 @@ export function initAtelier(root: ParentNode = document): AtelierHandle {
   const index = root.querySelector<HTMLElement>("[data-project-index]");
   const panels = Array.from(root.querySelectorAll<HTMLElement>("[data-panel]"));
   const fanCards = Array.from(root.querySelectorAll<HTMLElement>("[data-fan-card]"));
-  const polaroids = Array.from(root.querySelectorAll<HTMLElement>("[data-polaroid]"));
-  const annos = Array.from(root.querySelectorAll<HTMLElement>("[data-anno]"));
 
   if (reducedMotion()) {
     panels[0]?.classList.add("is-open");
@@ -30,7 +28,6 @@ export function initAtelier(root: ParentNode = document): AtelierHandle {
   }
 
   const mm = gsap.matchMedia();
-  const tweens: gsap.core.Tween[] = [];
 
   mm.add("(min-width: 900px)", () => {
     if (!index || panels.length === 0) return;
@@ -129,37 +126,10 @@ export function initAtelier(root: ParentNode = document): AtelierHandle {
     };
   });
 
-  if (polaroids.length > 0) {
-    tweens.push(
-      gsap.to(polaroids, {
-        y: 6,
-        duration: 3.2,
-        yoyo: true,
-        repeat: -1,
-        ease: "sine.inOut",
-        stagger: { each: 0.35, from: "random" },
-      }),
-    );
-  }
-
-  if (annos.length > 0) {
-    tweens.push(
-      gsap.to(annos, {
-        y: -5,
-        duration: 2.4,
-        yoyo: true,
-        repeat: -1,
-        ease: "sine.inOut",
-        stagger: 0.18,
-      }),
-    );
-  }
-
   return {
     kill() {
       delete host.dataset.atelierReady;
       mm.revert();
-      for (const tween of tweens) tween.kill();
     },
   };
 }

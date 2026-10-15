@@ -14,9 +14,10 @@ describe("i18n", () => {
     expect(useTranslations("es")("Hola", "Hello")).toBe("Hola");
   });
 
-  it("leaves the default locale unprefixed and prefixes the other", () => {
+  it("leaves English unprefixed and serves the Spanish home at /", () => {
     expect(localePath("en")).toBe("/");
-    expect(localePath("es")).toBe("/es/");
+    expect(localePath("es")).toBe("/");
+    expect(localePath("es", "proyectos/foo/")).toBe("/es/proyectos/foo/");
   });
 
   it("joins a sub-path onto the locale root", () => {

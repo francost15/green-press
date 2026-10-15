@@ -14,9 +14,13 @@ const selfUrls = (html: string) =>
 
 describe("canonical host", () => {
   it("is a single origin across the home page", async () => {
-    const { html } = await renderAstro(Portfolio, { lang: "en" });
+    const { html } = await renderAstro(Portfolio, { lang: "es" });
     const offHost = selfUrls(html).filter((url) => !url.startsWith(SITE));
     expect(offHost).toEqual([]);
+    expect(html).toContain(`rel="canonical" href="${SITE}/"`);
+    expect(html).toContain(`hreflang="es" href="${SITE}/"`);
+    expect(html).not.toContain(`hreflang="en" href="${SITE}/"`);
+    expect(html).not.toContain(`${SITE}/es/"`);
   });
 
   it("is a single origin across a project page", async () => {

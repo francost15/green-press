@@ -24,9 +24,12 @@ export function useTranslations(lang: Lang) {
   };
 }
 
-/** Path to a page in the given language. English is the unprefixed default. */
+/** Path to a page in the given language. English stays unprefixed.
+ * The Spanish home is the page at `/` (there is no separate English home).
+ * Spanish project and privacy URLs stay under `/es/`. */
 export function localePath(lang: Lang, path = ""): string {
   const clean = path.replace(/^\/+/, "");
+  if (lang === "es" && clean === "") return "/";
   const prefix = lang === defaultLang ? "/" : `/${lang}/`;
   return `${prefix}${clean}`;
 }

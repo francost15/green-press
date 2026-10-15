@@ -5,7 +5,7 @@ import Footer from "../components/Footer.astro";
 import Icon from "../components/Icon.astro";
 import { imageSizes, smallVariant } from "../data/imageSizes";
 import { relatedProjects, type Project } from "../data/projects";
-import { breadcrumbSchema, projectWorkSchema } from "../data/structuredData";
+import { breadcrumbSchema, faqSchema, projectWorkSchema } from "../data/structuredData";
 import { formatPeriod } from "../lib/dates";
 import { periodPublished } from "../lib/iso";
 import { SITE, localePath, useTranslations, type Lang } from "../i18n";
@@ -41,6 +41,7 @@ const relatedIndex = lang === "es" ? "proyectos/" : "projects/";
   altPath={altPath}
   schemas={[
     projectWorkSchema(lang, project, canonicalUrl),
+    faqSchema(lang, project),
     breadcrumbSchema(lang, project, canonicalUrl),
   ]}
 >

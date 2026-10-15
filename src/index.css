@@ -14,14 +14,6 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: "Silkscreen";
-  src: url("/fonts/silkscreen-400.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 @theme {
   --font-sans: "General Sans", system-ui, sans-serif;
   --font-display: "General Sans", system-ui, sans-serif;
@@ -328,7 +320,7 @@
   display: block;
 }
 
-.hero-line-2 [data-hero-line] {
+.hero-line-2-row {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -336,21 +328,20 @@
 }
 
 .verb-slot {
-  display: flex;
-  justify-content: center;
+  position: relative;
+  display: block;
   overflow: hidden;
-  height: 1.15em;
-  flex-shrink: 0;
-  line-height: 0;
+  height: 1.2em;
+  min-height: 0;
+  max-height: 1.2em;
+  flex: 0 0 1.2em;
+  vertical-align: middle;
 }
 
 .verb-track {
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-shrink: 0;
-  gap: 0;
-  line-height: 1;
 }
 
 .verb-badge {
@@ -358,10 +349,10 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  height: 1.15em;
+  height: 1.2em;
   margin: 0;
-  padding: 0 0.42em;
-  border-radius: 0.32em;
+  padding: 0 0.38em 0.02em;
+  border-radius: 0.34em;
   line-height: 1;
   white-space: nowrap;
 }
@@ -412,15 +403,6 @@
   color: var(--mid);
 }
 
-.hero-cred {
-  position: relative;
-  z-index: 2;
-  margin-top: 0.35rem;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--mid);
-}
-
 .hero-cta-row {
   position: relative;
   z-index: 2;
@@ -444,33 +426,41 @@
   }
 
   #inicio.hero-work {
-    padding-top: 5.75rem;
-    padding-bottom: 2.75rem;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    padding-top: 5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  #inicio .hero-stage {
+    width: 100%;
   }
 
   .hero-display-headline {
-    font-size: clamp(2.2rem, 10.4vw, 2.9rem);
+    font-size: clamp(2.65rem, 12.5vw, 3.5rem);
   }
 
-  .hero-line-2 [data-hero-line] {
+  .hero-line-2-row {
     flex-direction: column;
-    gap: 0.08em;
+    gap: 0.15em;
   }
 
   .hero-subcopy {
-    margin-top: 1rem;
-    font-size: 1.05rem;
+    margin-top: 1.35rem;
+    font-size: 1.2rem;
   }
 
   .hero-cta-row {
     flex-direction: column;
-    width: min(100%, 22rem);
+    width: min(100%, 24rem);
+    margin-top: 1.75rem;
   }
 
   .hero-cta-row .act {
     width: 100%;
-    min-height: 52px;
-    font-size: 16px;
+    min-height: 56px;
+    font-size: 17px;
   }
 }
 
@@ -600,7 +590,7 @@
     z-index 0ms;
 }
 
-@media (max-width: 899px) {
+@media (max-width: 959px) {
   .fan-arena {
     display: none;
   }
@@ -1535,7 +1525,6 @@
   color: var(--surface);
   border-radius: var(--r-outer);
   box-shadow: var(--shadow-float);
-  border-left: 6px solid var(--lime);
 }
 
 .edu-period-dark {

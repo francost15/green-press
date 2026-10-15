@@ -34,11 +34,6 @@ export function initHero(root: ParentNode = document): HeroMotionHandle {
     gsap.set(chips, { willChange: "transform", y: 14, scale: 0.95 });
   }
 
-  const box = hero.querySelector<SVGGeometryElement>("[data-name-box]");
-  if (box) {
-    gsap.set(box, { strokeDasharray: 100, strokeDashoffset: 100 });
-  }
-
   const tl = gsap.timeline({
     defaults: { ease: "power3.out" },
     onComplete: () => {
@@ -54,10 +49,6 @@ export function initHero(root: ParentNode = document): HeroMotionHandle {
       });
     },
   });
-
-  if (box) {
-    tl.to(box, { strokeDashoffset: 0, duration: 1.05, ease: "power2.out" }, 0.15);
-  }
 
   if (names.length > 0) {
     tl.to(names, { yPercent: 0, duration: 0.78, stagger: 0.08 }, 0.04).to(
@@ -110,7 +101,7 @@ export function initHero(root: ParentNode = document): HeroMotionHandle {
   };
 }
 
-/** Notion-style verb slot: one word visible, the next slides up as the window resizes. */
+/** One verb visible. The next slides up and the window width follows that word. */
 function startVerbCycle(hero: HTMLElement): { kill: () => void } {
   const slot = hero.querySelector<HTMLElement>("[data-verb-slot]");
   const track = hero.querySelector<HTMLElement>("[data-verb-track]");
@@ -118,45 +109,50 @@ function startVerbCycle(hero: HTMLElement): { kill: () => void } {
   if (!slot || !track || words.length < 2) return { kill() {} };
 
   let index = 0;
-  const measure = () => {
-    const box = words[0].getBoundingClientRect();
-    const current = words[index] ?? words[0];
-    const height = Math.floor(box.height);
-    const width = Math.ceil(current.getBoundingClientRect().width);
-    if (height < 1 || width < 1) return height;
-    gsap.set(slot, { height, width });
-    gsap.set(track, { y: -index * height });
-    return height;
-  };
-
-  let height = measure();
-  let tween: gsap.core.Timeline | null = null;
+  let height = 0;
+  let timer = 0;
+  let stopped = false;
 
   const step = () => {
+    height = words[0].offsetHeight;
+    if (height < 1) return;
     const next = (index + 1) % words.length;
-    tween = gsap.timeline({
-      defaults: { duration: 0.62, ease: "power3.inOut" },
+    gsap.to(track, {
+      y: -next * height,
+      duration: 0.55,
+      ease: "power3.inOut",
+      overwrite: "auto",
+    });
+    gsap.to(slot, {
+      width: words[next].offsetWidth,
+      height,
+      maxHeight: height,
+      duration: 0.55,
+      ease: "power3.inOut",
+      overwrite: "auto",
       onComplete: () => {
         index = next;
       },
     });
-    tween
-      .to(track, { y: -next * height }, 0)
-      .to(slot, { width: Math.ceil(words[next].getBoundingClientRect().width) }, 0);
   };
 
-  const timer = window.setInterval(step, 2400);
-  const onResize = () => {
-    height = measure();
-    index = 0;
+  const boot = () => {
+    if (stopped) return;
+    height = words[0].offsetHeight;
+    if (height < 1) return;
+    gsap.set(slot, { height, maxHeight: height, width: words[0].offsetWidth });
+    gsap.set(track, { y: 0 });
+    timer = window.setInterval(step, 2200);
   };
-  window.addEventListener("resize", onResize);
+
+  const ready = document.fonts?.ready ?? Promise.resolve();
+  ready.then(() => requestAnimationFrame(boot));
 
   return {
     kill() {
+      stopped = true;
       window.clearInterval(timer);
-      window.removeEventListener("resize", onResize);
-      tween?.kill();
+      gsap.killTweensOf([track, slot]);
     },
   };
 }

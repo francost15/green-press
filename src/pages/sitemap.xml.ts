@@ -27,18 +27,28 @@ const entries: Entry[] = [
 
 export const GET: APIRoute = () => {
   const urls = entries
-    .flatMap((entry) => [
-      { loc: `${SITE}${localePath("en", entry.en)}`, entry },
-      { loc: `${SITE}${localePath("es", entry.es)}`, entry },
-    ])
-    .map(({ loc, entry }) => {
+    .flatMap((entry) => {
+      const enLoc = `${SITE}${localePath("en", entry.en)}`;
+      const esLoc = `${SITE}${localePath("es", entry.es)}`;
+      return enLoc === esLoc
+        ? [{ loc: esLoc, entry, home: true }]
+        : [
+            { loc: enLoc, entry, home: false },
+            { loc: esLoc, entry, home: false },
+          ];
+    })
+    .map(({ loc, entry, home }) => {
       const enHref = `${SITE}${localePath("en", entry.en)}`;
       const esHref = `${SITE}${localePath("es", entry.es)}`;
+      const alternates = home
+        ? `    <xhtml:link rel="alternate" hreflang="es" href="${esHref}" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${esHref}" />`
+        : `    <xhtml:link rel="alternate" hreflang="en" href="${enHref}" />
+    <xhtml:link rel="alternate" hreflang="es" href="${esHref}" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${esHref}" />`;
       return `  <url>
     <loc>${loc}</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="${enHref}" />
-    <xhtml:link rel="alternate" hreflang="es" href="${esHref}" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="${enHref}" />
+${alternates}
     <lastmod>${entry.lastmod}</lastmod>
     <priority>${entry.priority}</priority>
   </url>`;

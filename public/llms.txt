@@ -1,10 +1,10 @@
 # Franco Sanchez - AI & Software Engineer
 
-> Five AI systems in production, not demos: textile ERP, CFDI fiscal invoicing, and a university RAG assistant.
+> Franco Sanchez diseña sistemas de IA y software que ya operan en producción: ERP textil, facturación CFDI y un asistente RAG universitario.
 
-Available in [English](https://www.fsanchezt.com/) and [Spanish](https://www.fsanchezt.com/es/).
-Full corpus: [llms-full.txt](https://www.fsanchezt.com/llms-full.txt)
-Privacy: [en](https://www.fsanchezt.com/privacy/) · [es](https://www.fsanchezt.com/es/privacidad/)
+Sitio en español: https://www.fsanchezt.com/
+Páginas de proyecto también en inglés bajo /projects/. Corpus: [llms-full.txt](https://www.fsanchezt.com/llms-full.txt)
+Privacidad: https://www.fsanchezt.com/es/privacidad/
 
 ## Overview
 Franco Alessandro Sanchez Trinidad is an AI & Software Engineer based in Puebla, Mexico. He designs and deploys production AI systems and full-stack architectures. Legal name appears on the home page. Canonical title: AI & Software Engineer.

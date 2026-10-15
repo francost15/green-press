@@ -44,7 +44,7 @@ const copy = {
   es: {
     title: "Franco Sanchez - Ingeniero de IA y Software",
     description:
-      "Franco Sanchez, Ingeniero de IA y Software en Puebla, México. Cinco sistemas de IA en producción: ERP textil, facturación CFDI, asistente RAG universitario, dashboards de BI y matching de talento.",
+      "Franco Sanchez diseña sistemas de IA y software que ya operan: ERP textil, facturación CFDI, un asistente RAG universitario, dashboards de BI y matching de talento. Puebla, México.",
     social:
       "Cinco sistemas de IA en producción, no demos: ERP textil, facturación CFDI, asistente RAG universitario.",
     ogLocale: "es_ES",
@@ -62,6 +62,7 @@ const esPath = lang === "es" ? path : (altPath ?? path);
 const canonical = `${SITE}${localePath(lang, path)}`;
 const enHref = `${SITE}${localePath("en", enPath)}`;
 const esHref = `${SITE}${localePath("es", esPath)}`;
+const homeCollision = enHref === esHref;
 
 const ogImage = `${SITE}/og-image.png`;
 ---
@@ -81,9 +82,20 @@ const ogImage = `${SITE}/og-image.png`;
     <meta name="author" content="Franco Sanchez" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang="en" href={enHref} />
-    <link rel="alternate" hreflang="es" href={esHref} />
-    <link rel="alternate" hreflang="x-default" href={enHref} />
+    {
+      homeCollision ? (
+        <>
+          <link rel="alternate" hreflang="es" href={esHref} />
+          <link rel="alternate" hreflang="x-default" href={esHref} />
+        </>
+      ) : (
+        <>
+          <link rel="alternate" hreflang="en" href={enHref} />
+          <link rel="alternate" hreflang="es" href={esHref} />
+          <link rel="alternate" hreflang="x-default" href={esHref} />
+        </>
+      )
+    }
 
     <!-- Open Graph / Facebook / LinkedIn -->
     <meta property="og:type" content="website" />
@@ -106,7 +118,6 @@ const ogImage = `${SITE}/og-image.png`;
 
     <!-- Fonts — self-hosted only, no third-party origin. -->
     <link rel="preload" href="/fonts/general-sans-var.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/silkscreen-400.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Structured data — readable by AI crawlers without JavaScript -->
     {

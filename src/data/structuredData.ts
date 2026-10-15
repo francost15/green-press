@@ -17,17 +17,17 @@ export function websiteSchema() {
     "@id": `${SITE}/#website`,
     url: SITE,
     name: "Franco Sanchez",
-    inLanguage: ["en", "es"],
+    inLanguage: "es",
     publisher: { "@id": `${SITE}/#person` },
   };
 }
 
 export function profilePageSchema(lang: Lang) {
-  const url = lang === "es" ? `${SITE}/es/` : `${SITE}/`;
+  const url = `${SITE}/`;
   return {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
-    "@id": `${url}#profile`,
+    "@id": `${SITE}/#profile`,
     url,
     inLanguage: lang,
     mainEntity: { "@id": `${SITE}/#person` },
@@ -116,7 +116,7 @@ export function personSchema(lang: Lang) {
     sameAs: [profile.links.github, profile.links.linkedin],
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["[data-speakable-impact]", "#acerca .t-body"],
+      cssSelector: ["[data-speakable-impact]"],
     },
   };
 }
@@ -185,8 +185,25 @@ export function projectWorkSchema(
   };
 }
 
+export function faqSchema(lang: Lang, project: (typeof projects)[number]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: lang === "es" ? project.faq.q.es : project.faq.q.en,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: lang === "es" ? project.faq.a.es : project.faq.a.en,
+        },
+      },
+    ],
+  };
+}
+
 export function breadcrumbSchema(lang: Lang, project: (typeof projects)[number], canonicalUrl: string) {
-  const home = lang === "es" ? `${SITE}/es/` : `${SITE}/`;
+  const home = `${SITE}/`;
   const homeName = lang === "es" ? "Inicio" : "Home";
   const title = lang === "es" ? project.title.es : project.title.en;
   return {
