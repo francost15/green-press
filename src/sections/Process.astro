@@ -10,7 +10,7 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<section id="proceso" class="band">
+<section id="proceso" class="band process-band">
   <div class="offer-head">
     <h2 class="t-head">{t("Cómo empieza un proyecto", "How a project starts")}</h2>
     <p class="t-body">
@@ -26,11 +26,9 @@ const t = useTranslations(lang);
     {
       processSteps.map((step, idx) => (
         <li class={idx === 0 ? "is-now" : undefined}>
-          <span class="process-mark" aria-hidden="true"></span>
-          <div>
-            <h3>{t(step.title.es, step.title.en)}</h3>
-            <p>{t(step.detail.es, step.detail.en)}</p>
-          </div>
+          <span class="process-n tabular">0{idx + 1}</span>
+          <h3>{t(step.title.es, step.title.en)}</h3>
+          <p>{t(step.detail.es, step.detail.en)}</p>
         </li>
       ))
     }
