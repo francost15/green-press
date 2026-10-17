@@ -73,11 +73,11 @@ const kpis = [
                   <span>{t(project.client.es, project.client.en)}</span>
                   <span class="case-go" aria-hidden="true">↗</span>
                 </div>
-                <h3>{t(project.title.es, project.title.en)}</h3>
                 <p class="case-kpi">
-                  <strong class="tabular">{kpi.num}</strong>
+                  <strong class="tabular" data-case-figure>{kpi.num}</strong>
                   <span>{t(kpi.label.es, kpi.label.en)}</span>
                 </p>
+                <h3>{t(project.title.es, project.title.en)}</h3>
                 <p class="case-impact" data-speakable-impact>
                   {t(project.impact.es, project.impact.en)}
                 </p>

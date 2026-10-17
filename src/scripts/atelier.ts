@@ -1,4 +1,38 @@
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const OFFER_BY_FAN = ["1", "1", "0", "1", "2"] as const;
+
+function bindOffer(root: ParentNode): () => void {
+  const band = root.querySelector<HTMLElement>("#servicios");
+  const cards = Array.from(root.querySelectorAll<HTMLElement>("[data-fan-card]"));
+  if (!band || cards.length === 0) return () => {};
+
+  const pick = (index: number) => {
+    const offer = OFFER_BY_FAN[index] ?? "0";
+    band.dataset.offer = offer;
+    band.querySelectorAll(".offer-list li").forEach((item, i) => {
+      item.classList.toggle("is-lead", String(i) === offer);
+    });
+  };
+
+  const cleanups: Array<() => void> = [];
+  cards.forEach((card, index) => {
+    const onFocus = () => pick(index);
+    card.addEventListener("pointerenter", onFocus);
+    card.addEventListener("focusin", onFocus);
+    cleanups.push(() => {
+      card.removeEventListener("pointerenter", onFocus);
+      card.removeEventListener("focusin", onFocus);
+    });
+  });
+
+  return () => {
+    for (const fn of cleanups) fn();
+  };
+}
 
 export type AtelierHandle = { kill: () => void };
 
@@ -18,10 +52,13 @@ export function initAtelier(root: ParentNode = document): AtelierHandle {
   const panels = Array.from(root.querySelectorAll<HTMLElement>("[data-panel]"));
   const fanCards = Array.from(root.querySelectorAll<HTMLElement>("[data-fan-card]"));
 
+  const releaseOffer = bindOffer(root);
+
   if (reducedMotion()) {
     panels[0]?.classList.add("is-open");
     return {
       kill() {
+        releaseOffer();
         delete host.dataset.atelierReady;
       },
     };
@@ -126,8 +163,64 @@ export function initAtelier(root: ParentNode = document): AtelierHandle {
     };
   });
 
+  mm.add("(min-width: 960px)", () => {
+    const fan = root.querySelector<HTMLElement>(".fan-arena");
+    const cards = Array.from(root.querySelectorAll<HTMLElement>(".fan-arena [data-fan-card]"));
+    const figure = root.querySelector<HTMLElement>("[data-case-figure]");
+    if (!fan || cards.length === 0) return;
+
+    const rest = [
+      { y: 18, rotation: -8 },
+      { y: 6, rotation: -4 },
+      { y: -4, rotation: 0 },
+      { y: 6, rotation: 4 },
+      { y: 18, rotation: 8 },
+    ];
+    const fanTween = gsap.timeline({
+      scrollTrigger: {
+        trigger: fan,
+        start: "top 62%",
+        end: "bottom 38%",
+        scrub: 0.4,
+        onLeave: () => gsap.set(cards, { clearProps: "transform" }),
+        onLeaveBack: () => gsap.set(cards, { clearProps: "transform" }),
+      },
+    });
+    cards.forEach((card, index) => {
+      const from = rest[index] ?? { y: 0, rotation: 0 };
+      const to =
+        index === 0
+          ? { y: -26, rotation: 0, scale: 1.06 }
+          : { y: from.y + 16, rotation: from.rotation, scale: 0.94 };
+      fanTween.fromTo(card, { ...from, scale: 1 }, { ...to, immediateRender: false, duration: 0.5 }, 0);
+    });
+
+    const figureTween = figure
+      ? gsap.fromTo(
+          figure,
+          { scale: 0.9 },
+          {
+            scale: 1,
+            duration: 0.45,
+            ease: "power3.out",
+            immediateRender: false,
+            transformOrigin: "left center",
+            scrollTrigger: { trigger: figure, start: "top 88%", once: true },
+          },
+        )
+      : null;
+
+    return () => {
+      fanTween.scrollTrigger?.kill();
+      fanTween.kill();
+      figureTween?.scrollTrigger?.kill();
+      figureTween?.kill();
+    };
+  });
+
   return {
     kill() {
+      releaseOffer();
       delete host.dataset.atelierReady;
       mm.revert();
     },

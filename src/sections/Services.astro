@@ -10,7 +10,7 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<section id="servicios" class="band offer-band">
+<section id="servicios" class="band offer-band" data-offer="0">
   <div class="offer-head">
     <h2 class="t-head">{t("Servicios", "Services")}</h2>
     <p class="t-body">
@@ -25,7 +25,7 @@ const t = useTranslations(lang);
   <ol class="offer-list">
     {
       services.map((service, idx) => (
-        <li>
+        <li class={idx === 0 ? "is-lead" : undefined}>
           <span class="offer-n tabular">0{idx + 1}</span>
           <div>
             <h3>{t(service.title.es, service.title.en)}</h3>
@@ -39,7 +39,7 @@ const t = useTranslations(lang);
   </ol>
   <p class="offer-foot">
     <a href="#contacto">
-      {t("¿No sabes cuál necesitas? Cuéntame tu problema", "Not sure which one? Tell me the problem")}
+      {t("Cotizar proyecto", "Start a project")}
       <span aria-hidden="true"> ↗</span>
     </a>
   </p>
