@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { competencies } from "../data/competencies";
+import { processSteps, services } from "../data/services";
 import { education } from "../data/education";
 import { experience } from "../data/experience";
 import { profile } from "../data/profile";
@@ -50,8 +50,15 @@ ${project.body.es}
     )
     .join("\n");
 
-  const comps = competencies
-    .map((item) => `- ${item.title.en} (${item.techs.join(", ")}): ${item.description.en}`)
+  const comps = services
+    .map(
+      (item) =>
+        `- ${item.title.en}: ${item.audience.en} ${item.deliverable.en} ${item.proof.en}`,
+    )
+    .join("\n");
+
+  const steps = processSteps
+    .map((step, index) => `${index + 1}. ${step.title.en}: ${step.detail.en}`)
     .join("\n");
 
   const body = `# Franco Sanchez - full corpus
@@ -69,9 +76,13 @@ ${profile.bio.en}
 
 ${profile.bio.es}
 
-## Competencies
+## Services
 
 ${comps}
+
+## Process
+
+${steps}
 
 ## Experience
 

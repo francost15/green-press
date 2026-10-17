@@ -6,9 +6,8 @@ describe("Hero", () => {
   it("renders the value proposition in the top-level heading", async () => {
     const { container } = await renderAstro(Hero, { lang: "en" });
     const heading = container.querySelector("h1");
-    expect(heading?.textContent).toContain("Production AI");
-    expect(heading?.textContent).toContain("your business.");
-    expect(heading?.textContent).toContain("ship");
+    expect(heading?.textContent).toContain("I automate the operation");
+    expect(heading?.textContent).toContain("of your business with AI, in weeks.");
   });
 
   it("puts real project captures next to the name", async () => {
@@ -20,8 +19,8 @@ describe("Hero", () => {
 
   it("renders the English sales CTAs and fanned deck by default", async () => {
     const { getByText, queryByText, container } = await renderAstro(Hero, { lang: "en" });
-    expect(getByText("Start a project")).toBeInTheDocument();
-    expect(getByText("Explore projects")).toBeInTheDocument();
+    expect(getByText("Message me on WhatsApp")).toBeInTheDocument();
+    expect(getByText("See the work")).toBeInTheDocument();
     expect(queryByText("Download CV")).toBeNull();
     expect(container.querySelectorAll("[data-fan-card]").length).toBe(5);
     expect(container.querySelectorAll("[data-anno]").length).toBe(0);
@@ -29,15 +28,20 @@ describe("Hero", () => {
 
   it("renders the Spanish sales CTAs for es", async () => {
     const { getByText, queryByText } = await renderAstro(Hero, { lang: "es" });
-    expect(getByText("Iniciar un proyecto")).toBeInTheDocument();
-    expect(getByText("Ver proyectos")).toBeInTheDocument();
+    expect(getByText("Escríbeme por WhatsApp")).toBeInTheDocument();
+    expect(getByText("Ver casos")).toBeInTheDocument();
     expect(queryByText("Descargar CV")).toBeNull();
   });
 
   it("keeps one subtext and no availability line in the first viewport", async () => {
     const { getByText, queryByText } = await renderAstro(Hero, { lang: "en" });
     expect(
-      getByText("Five AI systems in production: plant floor, CFDI, university, recruitment."),
+      getByText(
+        "Assistants that answer with your company's own information, dashboards that stop being assembled by hand, and a first product version ready to show. For small businesses and startups.",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      getByText("5 systems in production · −90% on the weekly report · 80% of an accounting flow automated"),
     ).toBeInTheDocument();
     expect(queryByText("Franco Alessandro Sanchez Trinidad")).toBeNull();
     expect(queryByText(/Mtro/i)).toBeNull();

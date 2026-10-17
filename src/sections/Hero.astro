@@ -1,6 +1,7 @@
 ---
 import { projects } from "../data/projects";
 import { imageSizes, smallVariant } from "../data/imageSizes";
+import { profile } from "../data/profile";
 import { localePath, useTranslations, type Lang } from "../i18n";
 
 interface Props {
@@ -11,6 +12,11 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 
 const indexSegment = lang === "es" ? "proyectos/" : "projects/";
+const waText = t(
+  "Hola Franco, quiero automatizar un proceso de mi negocio.",
+  "Hi Franco, I want to automate a process in my business.",
+);
+const waHref = `https://wa.me/${profile.phone.replace(/\D/g, "")}?text=${encodeURIComponent(waText)}`;
 
 const cardAccents = [
   "fan-card-accent-blue",
@@ -29,36 +35,11 @@ let shotCount = 0;
     <div class="hero-headline-wrap">
       <h1 class="hero-display-headline">
         <span class="hero-static mask d1">
-          <span data-hero-line>{t("Sistemas de IA", "Production AI")}</span>
+          <span data-hero-line>{t("Automatizo la operación", "I automate the operation")}</span>
         </span>
-        <span class="hero-line-2">
-          <span class="hero-line-2-row">
-            <span class="verb-slot" data-verb-slot>
-              <span class="verb-track" data-verb-track>
-                {
-                  (
-                    lang === "es"
-                      ? [
-                          { word: "operan", tone: "blue" },
-                          { word: "miden", tone: "violet" },
-                          { word: "escalan", tone: "lime" },
-                          { word: "mejoran", tone: "amber" },
-                        ]
-                      : [
-                          { word: "ship", tone: "blue" },
-                          { word: "measure", tone: "violet" },
-                          { word: "scale", tone: "lime" },
-                          { word: "improve", tone: "amber" },
-                        ]
-                  ).map(({ word, tone }) => (
-                    <span class={`verb-badge verb-badge-${tone}`} data-verb>
-                      {word}
-                    </span>
-                  ))
-                }
-              </span>
-            </span>
-            {t("tu negocio.", "your business.")}
+        <span class="hero-static mask d2">
+          <span data-hero-line>
+            {t("de tu negocio con IA, en semanas.", "of your business with AI, in weeks.")}
           </span>
         </span>
       </h1>
@@ -68,8 +49,8 @@ let shotCount = 0;
       <span data-hero-line>
         {
           t(
-            "Cinco sistemas de IA en producción: planta, CFDI, universidad, reclutamiento.",
-            "Five AI systems in production: plant floor, CFDI, university, recruitment.",
+            "Asistentes que responden con la información de tu empresa, tableros que dejan de armarse a mano y una primera versión de producto lista para enseñar. Para PyMEs y startups.",
+            "Assistants that answer with your company's own information, dashboards that stop being assembled by hand, and a first product version ready to show. For small businesses and startups.",
           )
         }
       </span>
@@ -77,14 +58,22 @@ let shotCount = 0;
 
     {/* Clean 2-Button Sales CTA Row */}
     <div class="hero-cta-row" data-hero-line>
-      <a href="#contacto" class="act">
-        <span>{t("Iniciar un proyecto", "Start a project")}</span>
+      <a href={waHref} class="act" target="_blank" rel="noopener noreferrer">
+        <span>{t("Escríbeme por WhatsApp", "Message me on WhatsApp")}</span>
         <span class="act-badge" aria-hidden="true">↗</span>
       </a>
       <a href="#proyectos" class="act act-ghost">
-        {t("Ver proyectos", "Explore projects")}
+        {t("Ver casos", "See the work")}
       </a>
     </div>
+    <p class="hero-proof">
+      {
+        t(
+          "5 sistemas en producción · −90% en el reporte semanal · 80% de un flujo contable automatizado",
+          "5 systems in production · −90% on the weekly report · 80% of an accounting flow automated",
+        )
+      }
+    </p>
 
     {/* Fanned Project Deck + Mindly Floating Glass Chips & Pallet Ross Cursor Tags */}
     <div class="fan-arena">

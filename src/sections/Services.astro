@@ -1,0 +1,46 @@
+---
+import { services } from "../data/services";
+import { useTranslations, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="servicios" class="band offer-band">
+  <div class="offer-head">
+    <h2 class="t-head">{t("Qué puedes encargar", "What you can commission")}</h2>
+    <p class="t-body">
+      {
+        t(
+          "Tres encargos. Cada uno ya corrió en un sistema que alguien pagó.",
+          "Three engagements. Each one already ran in a system someone paid for.",
+        )
+      }
+    </p>
+  </div>
+  <ol class="offer-list">
+    {
+      services.map((service, idx) => (
+        <li>
+          <span class="offer-n tabular">0{idx + 1}</span>
+          <div>
+            <h3>{t(service.title.es, service.title.en)}</h3>
+            <p>{t(service.audience.es, service.audience.en)}</p>
+            <p>{t(service.deliverable.es, service.deliverable.en)}</p>
+            <p class="offer-proof">{t(service.proof.es, service.proof.en)}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+  <p class="offer-foot">
+    <a href="#contacto">
+      {t("¿No sabes cuál necesitas? Cuéntame tu problema", "Not sure which one? Tell me the problem")}
+      <span aria-hidden="true"> ↗</span>
+    </a>
+  </p>
+</section>

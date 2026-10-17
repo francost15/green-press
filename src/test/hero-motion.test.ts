@@ -23,7 +23,7 @@ describe("hero motion", () => {
     expect(hero.dataset.heroMotion).toBe("gsap");
     expect(hero.querySelector(".hero-ch")).toBeNull();
     expect(hero.querySelector("h1")?.textContent).toContain(
-      "your business.",
+      "of your business with AI, in weeks.",
     );
 
     handle.kill();
@@ -47,7 +47,7 @@ describe("hero motion", () => {
 
     expect(hero.dataset.heroMotion).toBeUndefined();
     expect(hero.querySelector("h1")?.textContent).toContain(
-      "your business.",
+      "of your business with AI, in weeks.",
     );
   });
 });

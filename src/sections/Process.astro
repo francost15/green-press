@@ -1,0 +1,38 @@
+---
+import { processSteps } from "../data/services";
+import { useTranslations, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="proceso" class="band">
+  <div class="offer-head">
+    <h2 class="t-head">{t("Cómo empieza un proyecto", "How a project starts")}</h2>
+    <p class="t-body">
+      {
+        t(
+          "El precio y las fechas quedan por escrito en la propuesta.",
+          "The price and the dates are written down in the proposal.",
+        )
+      }
+    </p>
+  </div>
+  <ol class="process-list">
+    {
+      processSteps.map((step, idx) => (
+        <li>
+          <span class="process-n tabular">0{idx + 1}</span>
+          <div>
+            <h3>{t(step.title.es, step.title.en)}</h3>
+            <p>{t(step.detail.es, step.detail.en)}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</section>

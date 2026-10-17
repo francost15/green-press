@@ -11,13 +11,15 @@ describe("Navbar markup", () => {
   it("renders the nav links in the active language", async () => {
     const en = await renderAstro(Navbar, { lang: "en" });
     expect(en.getAllByText("Projects").length).toBeGreaterThan(0);
-    expect(en.getAllByText("Solutions").length).toBeGreaterThan(0);
+    expect(en.getAllByText("Services").length).toBeGreaterThan(0);
+    expect(en.getAllByText("Process").length).toBeGreaterThan(0);
     expect(en.getAllByText("Credentials").length).toBeGreaterThan(0);
     expect(en.getAllByText("Contact").length).toBeGreaterThan(0);
 
     const es = await renderAstro(Navbar, { lang: "es" });
     expect(es.getAllByText("Proyectos").length).toBeGreaterThan(0);
-    expect(es.getAllByText("Soluciones").length).toBeGreaterThan(0);
+    expect(es.getAllByText("Servicios").length).toBeGreaterThan(0);
+    expect(es.getAllByText("Proceso").length).toBeGreaterThan(0);
     expect(es.getAllByText("Respaldo").length).toBeGreaterThan(0);
     expect(es.getAllByText("Contacto").length).toBeGreaterThan(0);
   });
