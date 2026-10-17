@@ -177,12 +177,12 @@
 .social-rail a {
   position: relative;
   display: flex;
-  width: 46px;
-  height: 46px;
+  width: 40px;
+  height: 40px;
   align-items: center;
   justify-content: center;
   border-radius: var(--r-pill);
-  background: var(--surface-muted);
+  background: transparent;
   color: var(--ink);
   transition:
     color 180ms ease,
@@ -208,17 +208,48 @@
   transition: opacity 180ms ease, translate 200ms var(--ease);
 }
 
-.social-rail a:hover {
-  color: var(--lime-ink);
-  background: var(--lime);
-  transform: translateX(-3px) scale(1.06);
-  box-shadow: 0 8px 20px -6px color-mix(in srgb, var(--lime) 85%, transparent);
-}
-
-.social-rail a:hover::before,
 .social-rail a:focus-visible::before {
   opacity: 1;
   translate: 0 0;
+}
+
+.social-rail a.is-gh,
+.social-rail a.is-gh:hover,
+.social-rail a.is-gh:focus-visible {
+  color: #181717;
+  background: transparent;
+  box-shadow: none;
+}
+
+.social-rail a.is-in,
+.social-rail a.is-in:hover,
+.social-rail a.is-in:focus-visible {
+  color: #0a66c2;
+  background: transparent;
+  box-shadow: none;
+}
+
+.social-rail a.is-mail,
+.social-rail a.is-mail:hover,
+.social-rail a.is-mail:focus-visible {
+  color: #0e0e11;
+  background: transparent;
+  box-shadow: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .social-rail a:hover {
+    transform: translateX(-3px) scale(1.04);
+  }
+
+  .social-rail a:hover::before {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  .social-rail a:hover:active {
+    transform: translateX(-2px) scale(0.97);
+  }
 }
 
 .social-rail a.is-wa,
@@ -229,23 +260,23 @@
   box-shadow: none;
 }
 
-.social-rail a:active { transform: scale(0.96); }
+.social-rail a:active { transform: scale(0.97); }
 
 @keyframes rail-in {
-  from { opacity: 0; translate: 12px 0; }
+  from { opacity: 0; translate: 8px 0; }
   to { opacity: 1; translate: 0 0; }
 }
 
 .social-rail a {
   animation-name: rail-in;
-  animation-duration: 520ms;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-duration: 280ms;
+  animation-timing-function: var(--ease);
   animation-fill-mode: both;
 }
 
-.social-rail a:nth-child(2) { animation-delay: 70ms; }
-.social-rail a:nth-child(3) { animation-delay: 140ms; }
-.social-rail a:nth-child(4) { animation-delay: 210ms; }
+.social-rail a:nth-child(2) { animation-delay: 40ms; }
+.social-rail a:nth-child(3) { animation-delay: 80ms; }
+.social-rail a:nth-child(4) { animation-delay: 120ms; }
 
 @media (min-width: 1240px) {
   .social-rail { display: flex; }
@@ -999,7 +1030,7 @@
   height: 100%;
   object-fit: cover;
   object-position: left top;
-  transition: transform 420ms var(--ease);
+  transition: transform 220ms var(--ease);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1279,7 +1310,11 @@
   }
 }
 
-.act:active { transform: scale(0.98); }
+.act:active { transform: scale(0.97); }
+
+@media (hover: hover) and (pointer: fine) {
+  .act:hover:active { transform: translateY(-1px) scale(0.97); }
+}
 
 .act:disabled {
   cursor: not-allowed;
@@ -1395,7 +1430,7 @@
   to { translate: 0 0; }
 }
 
-.mask > * { animation: lift 750ms var(--ease) both; }
+.mask > * { animation: lift 480ms var(--ease) both; }
 .d1 > * { animation-delay: 50ms; }
 .d2 > * { animation-delay: 100ms; }
 .d3 > * { animation-delay: 150ms; }
@@ -2131,7 +2166,7 @@
   }
 
   @keyframes list-in {
-    from { opacity: 0; translate: 0 16px; }
+    from { opacity: 0; translate: 0 8px; }
     to { opacity: 1; translate: 0 0; }
   }
 

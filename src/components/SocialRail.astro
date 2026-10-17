@@ -12,21 +12,21 @@ interface Props {
 const { lang } = Astro.props;
 
 const links = [
-  { icon: "GithubLogo", label: "GitHub", href: profile.links.github, external: true, wa: false },
-  { icon: "LinkedinLogo", label: "LinkedIn", href: profile.links.linkedin, external: true, wa: false },
+  { icon: "GithubLogo", label: "GitHub", href: profile.links.github, external: true, tone: "gh" },
+  { icon: "LinkedinLogo", label: "LinkedIn", href: profile.links.linkedin, external: true, tone: "in" },
   {
     icon: "EnvelopeSimple",
     label: lang === "es" ? "Correo" : "Email",
     href: `mailto:${profile.email}`,
     external: false,
-    wa: false,
+    tone: "mail",
   },
   {
     icon: "WhatsappLogo",
     label: "WhatsApp",
     href: `https://wa.me/${profile.phone.replace(/\D/g, "")}?text=${encodeURIComponent(lang === "es" ? waText : "Hi Franco, I want to automate a process in my business.")}`,
     external: true,
-    wa: true,
+    tone: "wa",
   },
 ];
 ---
@@ -35,16 +35,16 @@ const links = [
     collide with the sheet, and the footer already carries these links. */}
 <aside class="social-rail" aria-label={lang === "es" ? "Redes" : "Social links"}>
   {
-    links.map(({ icon, label, href, external, wa }) => (
+    links.map(({ icon, label, href, external, tone }) => (
       <a
         href={href}
         aria-label={label}
         data-label={label}
-        class={wa ? "is-wa" : undefined}
+        class={`is-${tone}`}
         target={external ? "_blank" : undefined}
         rel={external ? "noopener noreferrer" : undefined}
       >
-        <Icon name={icon} size={wa ? 34 : 22} />
+        <Icon name={icon} size={34} />
       </a>
     ))
   }

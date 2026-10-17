@@ -72,7 +72,7 @@ export function initAtelier(root: ParentNode = document): AtelierHandle {
               y: -18,
               rotation: 0,
               scale: 1.05,
-              duration: 0.34,
+              duration: 0.22,
               ease: "power3.out",
               overwrite: "auto",
             });
@@ -84,7 +84,7 @@ export function initAtelier(root: ParentNode = document): AtelierHandle {
               y: Math.abs( idx - 2 ) * 6 + 4,
               rotation: baseAngle + (offset < 0 ? -1.5 : 1.5),
               scale: 0.98,
-              duration: 0.34,
+              duration: 0.22,
               ease: "power3.out",
               overwrite: "auto",
             });
@@ -101,7 +101,7 @@ export function initAtelier(root: ParentNode = document): AtelierHandle {
             y: baseY,
             rotation: baseAngle,
             scale: 1,
-            duration: 0.42,
+            duration: 0.16,
             ease: "power3.out",
             overwrite: "auto",
           });

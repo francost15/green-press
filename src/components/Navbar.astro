@@ -203,11 +203,15 @@ const ctaLabel = lang === "es" ? "Cotizar proyecto" : "Start a project";
     font-weight: 800;
   }
 
+  .nav-cta:active { transform: scale(0.97); }
+
   @media (hover: hover) and (pointer: fine) {
     .nav-cta:hover {
       background: var(--electric);
       transform: translateY(-1px);
     }
+
+    .nav-cta:hover:active { transform: translateY(0) scale(0.97); }
   }
 
   .site-nav > .sheet {
