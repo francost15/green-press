@@ -13,6 +13,7 @@ describe("Footer", () => {
     expect(getByRole("link", { name: "LinkedIn" })).toBeInTheDocument();
     expect(getByRole("link", { name: "GitHub" })).toBeInTheDocument();
     expect(getByRole("link", { name: "Email" })).toBeInTheDocument();
+    expect(getByRole("link", { name: "WhatsApp" })).toBeInTheDocument();
   });
 
   it("opens external links safely", async () => {

@@ -6,10 +6,21 @@ interface Props {
   lang?: Lang;
 }
 
+const { lang = "es" } = Astro.props;
+
+const waText =
+  lang === "es"
+    ? "Hola Franco, quiero automatizar un proceso de mi negocio."
+    : "Hi Franco, I want to automate a process in my business.";
+
 const links = [
   { label: "GitHub", href: profile.links.github },
   { label: "LinkedIn", href: profile.links.linkedin },
   { label: "Email", href: `mailto:${profile.email}` },
+  {
+    label: "WhatsApp",
+    href: `https://wa.me/${profile.phone.replace(/\D/g, "")}?text=${encodeURIComponent(waText)}`,
+  },
 ];
 
 const currentYear = new Date().getFullYear();

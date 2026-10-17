@@ -3,6 +3,8 @@ import Icon from "./Icon.astro";
 import { profile } from "../data/profile";
 import type { Lang } from "../i18n";
 
+const waText = "Hola Franco, quiero automatizar un proceso de mi negocio.";
+
 interface Props {
   lang: Lang;
 }
@@ -10,13 +12,21 @@ interface Props {
 const { lang } = Astro.props;
 
 const links = [
-  { icon: "GithubLogo", label: "GitHub", href: profile.links.github, external: true },
-  { icon: "LinkedinLogo", label: "LinkedIn", href: profile.links.linkedin, external: true },
+  { icon: "GithubLogo", label: "GitHub", href: profile.links.github, external: true, wa: false },
+  { icon: "LinkedinLogo", label: "LinkedIn", href: profile.links.linkedin, external: true, wa: false },
   {
     icon: "EnvelopeSimple",
     label: lang === "es" ? "Correo" : "Email",
     href: `mailto:${profile.email}`,
     external: false,
+    wa: false,
+  },
+  {
+    icon: "WhatsappLogo",
+    label: "WhatsApp",
+    href: `https://wa.me/${profile.phone.replace(/\D/g, "")}?text=${encodeURIComponent(lang === "es" ? waText : "Hi Franco, I want to automate a process in my business.")}`,
+    external: true,
+    wa: true,
   },
 ];
 ---
@@ -25,11 +35,12 @@ const links = [
     collide with the sheet, and the footer already carries these links. */}
 <aside class="social-rail" aria-label={lang === "es" ? "Redes" : "Social links"}>
   {
-    links.map(({ icon, label, href, external }) => (
+    links.map(({ icon, label, href, external, wa }) => (
       <a
         href={href}
         aria-label={label}
         data-label={label}
+        class={wa ? "is-wa" : undefined}
         target={external ? "_blank" : undefined}
         rel={external ? "noopener noreferrer" : undefined}
       >

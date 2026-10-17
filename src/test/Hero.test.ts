@@ -6,8 +6,9 @@ describe("Hero", () => {
   it("renders the value proposition in the top-level heading", async () => {
     const { container } = await renderAstro(Hero, { lang: "en" });
     const heading = container.querySelector("h1");
-    expect(heading?.textContent).toContain("I automate the operation");
-    expect(heading?.textContent).toContain("of your business with AI, in weeks.");
+    expect(heading?.textContent).toContain("Production AI");
+    expect(heading?.textContent).toContain("your business.");
+    expect(heading?.textContent).toContain("ship");
   });
 
   it("puts real project captures next to the name", async () => {
@@ -33,16 +34,12 @@ describe("Hero", () => {
     expect(queryByText("Descargar CV")).toBeNull();
   });
 
-  it("keeps one subtext and no availability line in the first viewport", async () => {
+  it("keeps the headline free of the production list and availability line", async () => {
     const { getByText, queryByText } = await renderAstro(Hero, { lang: "en" });
     expect(
-      getByText(
-        "Assistants that answer with your company's own information, dashboards that stop being assembled by hand, and a first product version ready to show. For small businesses and startups.",
-      ),
-    ).toBeInTheDocument();
-    expect(
-      getByText("5 systems in production · −90% on the weekly report · 80% of an accounting flow automated"),
-    ).toBeInTheDocument();
+      queryByText("Five AI systems in production: plant floor, CFDI, university, recruitment."),
+    ).toBeNull();
+    expect(queryByText(/90% on the weekly report/)).toBeNull();
     expect(queryByText("Franco Alessandro Sanchez Trinidad")).toBeNull();
     expect(queryByText(/Mtro/i)).toBeNull();
     expect(queryByText(/Available for full-time/i)).toBeNull();
