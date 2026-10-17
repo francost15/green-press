@@ -221,9 +221,12 @@
   translate: 0 0;
 }
 
-.social-rail a.is-wa {
-  color: var(--lime-ink);
-  background: var(--lime);
+.social-rail a.is-wa,
+.social-rail a.is-wa:hover,
+.social-rail a.is-wa:focus-visible {
+  color: #25d366;
+  background: transparent;
+  box-shadow: none;
 }
 
 .social-rail a:active { transform: scale(0.96); }
